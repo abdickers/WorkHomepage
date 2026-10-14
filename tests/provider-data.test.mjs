@@ -39,3 +39,15 @@ test("log display masks auth callback parameters and bearer credentials", () => 
   assert.equal(maskLog("Bearer abc.def-123"), "Bearer [redacted]");
   assert.ok(maskLog("a".repeat(2000)).length <= 1600);
 });
+
+test("hosted MCP null structuredContent falls back to the text payload", () => {
+  assert.equal(
+    records({
+      structuredContent: null,
+      content: [
+        { type: "text", text: '{"items":[{"name":"Production flow"}]}' },
+      ],
+    })[0].name,
+    "Production flow",
+  );
+});

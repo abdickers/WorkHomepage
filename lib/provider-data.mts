@@ -7,7 +7,7 @@ export function providerData(value: unknown): any {
     throw new Error("Unrecognized provider response");
   const obj = value as Record<string, any>;
   if (obj.isError === true) throw new Error("Provider returned an error");
-  if (obj.structuredContent !== undefined)
+  if (obj.structuredContent !== undefined && obj.structuredContent !== null)
     return providerData(obj.structuredContent);
   if (Array.isArray(obj.content)) {
     for (const block of obj.content) {

@@ -70,8 +70,6 @@ function failure(result: any) {
 }
 export function Operations() {
   const [tab, setTab] = useState("celigo");
-  const [diagnostics,setDiagnostics]=useState<string>("");
-  async function inspectConnection(){try{const r=await fetch("/api/operations/context");const d=await r.json() as any;setDiagnostics(JSON.stringify(d.status==="success"?d.connectors.map((c:any)=>({id:c.connectorId,policy:c.policy,tools:c.tools?.map((t:any)=>({actionName:t.actionName,description:t.description,inputSchema:t.inputSchema}))??null})):d,null,2));}catch{setDiagnostics("Connection details unavailable.");}}
   const [auto, setAuto] = useState(true);
   const [feeds, setFeeds] = useState<Record<string, Feed>>({
     celigo: blank(),
@@ -125,6 +123,14 @@ export function Operations() {
             authPath: data.chatGPTSignInPath,
           },
         );
+      }
+      if (source === "celigo") {
+        if (data.sources?.flows?.status === "success")
+          records(data.sources.flows.result);
+        if (data.sources?.jobs?.status === "success")
+          records(data.sources.jobs.result);
+      } else if (source === "cloudflare") {
+        records(data.result, "events");
       }
       setFeeds((f) => ({
         ...f,
@@ -489,8 +495,6 @@ export function Operations() {
             )}
         </div>
       )}
-      <button className="text-action" onClick={inspectConnection}>Connection details</button>
-      {diagnostics&&<pre className="connection-details">{diagnostics}</pre>}
       <div className="panel-foot">
         <span className={"local-dot " + (stale ? "stale-dot" : "")} />
         <span>

@@ -81,11 +81,3 @@ export async function POST(
     { status: 404, headers },
   );
 }
-
-/** Owner-private diagnostics: tool metadata only, never credentials or invocation tokens. */
-export async function GET(_request:Request,context:{params:Promise<{source:string}>}) {
- const {source}=await context.params;
- if(source!=='context'||!await getChatGPTUser())return Response.json({status:'not_found'},{status:404,headers});
- const result=await connectorsForRequest().getContext();
- return Response.json(result,{headers});
-}
