@@ -8,11 +8,31 @@
       "connector_ids": [
         "connector_947e0d954944416db111db556030eea6"
       ]
+    },
+    {
+      "id": "plugin_asdk_app_6ac7b2189d148191805ef2c78f3fbb3c",
+      "connector_ids": [
+        "asdk_app_6ac7b2189d148191805ef2c78f3fbb3c"
+      ]
+    },
+    {
+      "id": "plugin_connector_1p_689987207de08191979cf68eca2941c6",
+      "connector_ids": [
+        "connector_20205bf7d4e99a89d7154bb849718324"
+      ]
     }
   ],
   "connectors": [
     {
       "id": "connector_947e0d954944416db111db556030eea6",
+      "action_selection_mode": "read_only"
+    },
+    {
+      "id": "asdk_app_6ac7b2189d148191805ef2c78f3fbb3c",
+      "action_selection_mode": "read_only"
+    },
+    {
+      "id": "connector_20205bf7d4e99a89d7154bb849718324",
       "action_selection_mode": "read_only"
     }
   ]

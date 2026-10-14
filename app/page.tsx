@@ -29,6 +29,9 @@ import {
   Shield,
   Mountain,
 } from "lucide-react";
+import { BrandLogo } from "@/components/dashboard/brand-logo";
+import { Operations } from "@/components/dashboard/operations";
+import { Palantir } from "@/components/dashboard/palantir";
 type Task = {
   id: string;
   text: string;
@@ -85,6 +88,85 @@ const initialLinks: Link[] = [
     color: "#97bcad",
   },
 ];
+initialLinks.push(
+  {
+    name: "BigCommerce",
+    url: "https://login.bigcommerce.com/",
+    abbr: "BC",
+    color: "#a5b2de",
+  },
+  {
+    name: "Vercel",
+    url: "https://vercel.com/dashboard",
+    abbr: "V",
+    color: "#e5e5e5",
+  },
+  {
+    name: "Cloudflare",
+    url: "https://dash.cloudflare.com/",
+    abbr: "CF",
+    color: "#eea453",
+  },
+  {
+    name: "Jira",
+    url: "https://start.atlassian.com/",
+    abbr: "J",
+    color: "#76a8ee",
+  },
+  {
+    name: "Confluence",
+    url: "https://start.atlassian.com/",
+    abbr: "C",
+    color: "#81a9e4",
+  },
+  { name: "Zoom", url: "https://zoom.us/", abbr: "Z", color: "#729ff1" },
+  { name: "Claude", url: "https://claude.ai/", abbr: "C", color: "#d99e7e" },
+  {
+    name: "Gemini",
+    url: "https://gemini.google.com/",
+    abbr: "G",
+    color: "#94b5ed",
+  },
+);
+const fellowshipNames = [
+  "NetSuite",
+  "GitHub",
+  "Celigo",
+  "BigCommerce",
+  "Dotdigital",
+  "Jira",
+  "Confluence",
+  "Avalara",
+  "Cybersource",
+  "Netlify",
+  "Cloudflare",
+];
+initialLinks.push(
+  {
+    name: "Dotdigital",
+    url: "https://dotdigital.com/",
+    abbr: "D",
+    color: "#e092be",
+  },
+  {
+    name: "Avalara",
+    url: "https://www.avalara.com/",
+    abbr: "A",
+    color: "#ef9a60",
+  },
+  {
+    name: "Cybersource",
+    url: "https://www.cybersource.com/",
+    abbr: "C",
+    color: "#79add0",
+  },
+  {
+    name: "Netlify",
+    url: "https://app.netlify.com/",
+    abbr: "N",
+    color: "#75c7bc",
+  },
+);
 const routines: Task[] = [
   {
     id: "routine-1",
@@ -156,7 +238,16 @@ export default function Dashboard() {
       l = read<Link[]>("command-links-v1", initialLinks);
     setTasks(Array.isArray(t) ? t : routines);
     setNotes(Array.isArray(n) ? n : []);
-    setLinks(Array.isArray(l) ? l : initialLinks);
+    setLinks(
+      Array.isArray(l)
+        ? [
+            ...l,
+            ...initialLinks.filter(
+              (item) => !l.some((saved) => saved.name === item.name),
+            ),
+          ]
+        : initialLinks,
+    );
     setLight(read("command-light", false));
     setNow(new Date());
     setReady(true);
@@ -449,36 +540,27 @@ export default function Dashboard() {
         </nav>
         <div className="side-divider" />
         <div className="side-label">THE FELLOWSHIP</div>
-        <a
-          className="side-link"
-          href="https://system.netsuite.com/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <span className="tiny-logo">N</span>NetSuite
-          <ArrowUpRight size={14} />
-        </a>
-        <a
-          className="side-link"
-          href="https://integrator.io/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <span className="tiny-logo orange">c</span>Celigo
-          <ArrowUpRight size={14} />
-        </a>
-        <a
-          className="side-link"
-          href="https://github.com/abdickers"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <span className="tiny-logo">
-            <Command size={15} />
-          </span>
-          GitHub
-          <ArrowUpRight size={14} />
-        </a>
+        <nav className="fellowship-nav" aria-label="The Fellowship">
+          {fellowshipNames.map((name) => {
+            const link =
+              links.find((l) => l.name === name) ||
+              initialLinks.find((l) => l.name === name)!;
+            return (
+              <a
+                className="side-link"
+                href={link.url}
+                key={name}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Open ${name}`}
+              >
+                <BrandLogo name={name} className="sidebar-logo" />
+                <span>{name}</span>
+                <ArrowUpRight size={13} />
+              </a>
+            );
+          })}
+        </nav>
         <div className="sidebar-bottom">
           <div className="side-quote">
             <Mountain size={25} />
@@ -536,14 +618,18 @@ export default function Dashboard() {
             <div className="hero-shade" />
             <div className="hero-copy">
               <div className="eyebrow">
-                <span /> THE WORLD CAN WAIT A MINUTE
+                <span /> THE COUNCIL IS IN SESSION
               </div>
               <h1>
+                Adam’s Middle-earth
+                <br />
+                <em>Command Center</em>
+              </h1>
+              <p>
                 Good{" "}
                 {hour < 12 ? "morning" : hour < 17 ? "afternoon" : "evening"},
-                Adam.
-              </h1>
-              <p>A clear head. A little perspective. A plan for the day.</p>
+                Adam. All that is yours to do, see, and know.
+              </p>
               <button
                 className="gold-button"
                 onClick={() => {
@@ -904,83 +990,8 @@ export default function Dashboard() {
                 </div>
               </section>
             )}
-            {(view === "overview" || view === "systems") && (
-              <section className="panel systems">
-                <div className="panel-heading">
-                  <div>
-                    <RadioTower size={17} />
-                    <h3>The beacons</h3>
-                  </div>
-                  <span className="tag">CONNECTIONS</span>
-                </div>
-                <div className="system-row">
-                  <span className="system-symbol green">
-                    <CalendarDays size={18} />
-                  </span>
-                  <div>
-                    <strong>Google Calendar</strong>
-                    <small>Primary calendar · today’s agenda</small>
-                  </div>
-                  <span
-                    className={
-                      "status " + (agendaState === "success" ? "live" : "")
-                    }
-                  >
-                    {agendaState === "success"
-                      ? "Verified"
-                      : agendaState === "loading"
-                        ? "Checking"
-                        : agendaState === "error"
-                          ? "Unavailable"
-                          : "Ready to check"}
-                  </span>
-                </div>
-                {[
-                  [
-                    "Celigo",
-                    "Production & sandbox",
-                    "c",
-                    "https://integrator.io/",
-                  ],
-                  [
-                    "NetSuite",
-                    "ERP & business operations",
-                    "N",
-                    "https://system.netsuite.com/",
-                  ],
-                  [
-                    "GitHub",
-                    "Repositories & pull requests",
-                    "GH",
-                    "https://github.com/abdickers",
-                  ],
-                ].map(([name, desc, symbol, url]) => (
-                  <div className="system-row" key={name}>
-                    <span className="system-symbol">{symbol}</span>
-                    <div>
-                      <strong>{name}</strong>
-                      <small>{desc}</small>
-                    </div>
-                    <a
-                      href={url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="status"
-                    >
-                      Open app
-                      <ArrowUpRight size={12} />
-                    </a>
-                  </div>
-                ))}
-                <div className="system-note">
-                  <Link2 size={14} />
-                  <span>
-                    Celigo, NetSuite, and GitHub show shortcuts only. Live
-                    monitoring hasn’t been connected to this page.
-                  </span>
-                </div>
-              </section>
-            )}
+            {(view === "overview" || view === "systems") && <Operations />}
+            {view === "overview" && <Palantir />}
             {(section("notes") || view === "priorities") && (
               <section className="panel capture">
                 <div className="panel-heading">
@@ -1078,7 +1089,7 @@ export default function Dashboard() {
             <>
               <section className="tools-section">
                 <div className="tools-title">
-                  <h3>The tools of the trade</h3>
+                  <h3>The Fellowship & daily tools</h3>
                   <button
                     className="text-action"
                     onClick={() => setSettings(true)}
@@ -1087,29 +1098,55 @@ export default function Dashboard() {
                     <Settings size={13} />
                   </button>
                 </div>
-                <div className="tool-grid">
-                  {links
-                    .filter((l) =>
-                      l.name.toLowerCase().includes(query.toLowerCase()),
-                    )
-                    .map((l) => (
-                      <a
-                        className="tool"
-                        key={l.name}
-                        href={l.url}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <span
-                          className="tool-logo"
-                          style={{ color: l.color, background: `${l.color}14` }}
-                        >
-                          {l.abbr}
-                        </span>
-                        <span>{l.name}</span>
-                        <ArrowUpRight size={13} />
-                      </a>
-                    ))}
+                <div className="tool-groups">
+                  {[
+                    { title: "The Fellowship", names: fellowshipNames },
+                    {
+                      title: "Daily tools",
+                      names: [
+                        "Gmail",
+                        "Calendar",
+                        "Slack",
+                        "Drive",
+                        "Zoom",
+                        "Vercel",
+                      ],
+                    },
+                    {
+                      title: "AI council",
+                      names: ["ChatGPT", "Claude", "Gemini"],
+                    },
+                  ].map((group) => (
+                    <div className="tool-group" key={group.title}>
+                      <h4>{group.title}</h4>
+                      <div className="tool-grid">
+                        {group.names
+                          .map((name) => links.find((l) => l.name === name))
+                          .filter(
+                            (l): l is Link =>
+                              !!l &&
+                              l.name
+                                .toLowerCase()
+                                .includes(query.toLowerCase()),
+                          )
+                          .map((l) => (
+                            <a
+                              className="tool"
+                              key={l.name}
+                              href={l.url}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <span className="tool-logo">
+                                <BrandLogo name={l.name} />
+                              </span>
+                              <span>{l.name}</span>
+                              <ArrowUpRight size={13} />
+                            </a>
+                          ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </section>
               <section className="focus-band">
