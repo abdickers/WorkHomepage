@@ -3317,3 +3317,4 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
   }
 }
+.connection-details{white-space:pre-wrap;overflow-wrap:anywhere;max-height:250px;overflow:auto;font-size:10px;color:var(--muted);background:var(--input);padding:10px;border:1px solid var(--line)}
