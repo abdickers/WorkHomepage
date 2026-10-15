@@ -153,6 +153,7 @@ function FeedFooter({
   );
 }
 function Ravens() {
+  const [connectionInfo,setConnectionInfo]=useState<any>(null);
   const mail = useDaily("mail"),
     slack = useDaily("slack");
   const [tab, setTab] = useState("inbox");
@@ -202,6 +203,7 @@ function Ravens() {
       )}
       <FeedLinks feed={feed} />
       <FeedFooter {...current} />
+      {feed && feed.status !== "success" && <details><summary>Connection diagnostics</summary><button onClick={async()=>{try{const response=await fetch('/api/daily/connections',{method:'POST'});setConnectionInfo(await response.json());}catch{setConnectionInfo({status:'unavailable'});}}}>Check connected app capabilities</button>{connectionInfo&&<pre style={{maxHeight:200,overflow:'auto',fontSize:10,whiteSpace:'pre-wrap'}}>{JSON.stringify(connectionInfo,null,2)}</pre>}</details>}
     </section>
   );
 }
