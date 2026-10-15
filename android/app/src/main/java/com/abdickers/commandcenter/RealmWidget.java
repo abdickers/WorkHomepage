@@ -31,6 +31,9 @@ public class RealmWidget extends AppWidgetProvider {
     private static void update(Context c,AppWidgetManager m,int id){
         String realm=selected(c); boolean work=Realms.WORK.equals(realm);
         RemoteViews v=new RemoteViews(c.getPackageName(),R.layout.realm_widget);
+        int height=m.getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,300);
+        if(height<300){v.setViewVisibility(R.id.widget_orb,android.view.View.GONE);v.setViewVisibility(R.id.widget_subtitle,android.view.View.GONE);}
+        if(height<240){v.setViewVisibility(R.id.widget_heading,android.view.View.GONE);v.setViewVisibility(R.id.widget_hint,android.view.View.GONE);v.setTextViewTextSize(R.id.widget_title,android.util.TypedValue.COMPLEX_UNIT_SP,18);}
         v.setTextViewText(R.id.widget_title,Realms.title(realm));
         v.setTextViewText(R.id.widget_subtitle,work?"Work command center":"Personal command center");
         v.setTextViewText(R.id.widget_personal,work?"PERSONAL":"✦ PERSONAL");
