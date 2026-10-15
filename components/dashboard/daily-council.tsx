@@ -1,4 +1,5 @@
 "use client";
+import { accountLink, WORK_EMAIL } from "@/lib/account-links.mjs";
 import { useEffect, useRef, useState } from "react";
 import {
   Bird,
@@ -52,7 +53,7 @@ function FeedLinks({ feed }: { feed: Feed | undefined }) {
             {feed.items?.map((item) => (
               <a
                 className="daily-entry"
-                href={item.href}
+                href={accountLink(item.href, WORK_EMAIL)}
                 target="_blank"
                 rel="noopener noreferrer"
                 key={item.id}
@@ -335,7 +336,7 @@ function InvoiceEditor({
         </span>
       </summary>
       <div className="invoice-editor">
-        <a href={row.sourceUrl} target="_blank" rel="noopener noreferrer">
+        <a href={accountLink(row.sourceUrl, WORK_EMAIL)} target="_blank" rel="noopener noreferrer">
           Open original invoice in Gmail <ArrowUpRight size={13} />
         </a>
         <p>{row.subject}</p>

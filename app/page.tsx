@@ -45,6 +45,7 @@ type Note = { id: string; text: string; created: string };
 type Link = { name: string; url: string; abbr: string; color: string };
 import { parseEvents, eventTime } from "@/lib/dashboard-data.mjs";
 import type { AgendaEvent as Agenda } from "@/lib/dashboard-data.mjs";
+import { accountLink, WORK_EMAIL, PERSONAL_URL, WORK_URL } from "@/lib/account-links.mjs";
 const initialLinks: Link[] = [
   {
     name: "NetSuite",
@@ -509,7 +510,7 @@ export default function Dashboard() {
   }
   const section = (name: string) => view === "overview" || view === name;
   return (
-    <div className={light ? "app light" : "app"}>
+    <div className={light ? "app light" : "app"} data-command-realm="work" style={{"--realm-art": "url(/art/middle-earth-council-display-3840.jpg)"} as React.CSSProperties}>
       <aside className="sidebar">
         <a className="brand" href="#" onClick={() => setView("overview")}>
           <span className="ring-mark">A</span>
@@ -519,6 +520,7 @@ export default function Dashboard() {
             <strong>CENTER</strong>
           </span>
         </a>
+        <nav className="realm-switch" aria-label="Command center"><a href={PERSONAL_URL}>The Shire</a><a href={WORK_URL} aria-current="page">Work</a></nav>
         <div className="side-label">YOUR DAILY COUNCIL</div>
         <nav aria-label="Main navigation">
           {[
@@ -550,7 +552,7 @@ export default function Dashboard() {
             return (
               <a
                 className="side-link"
-                href={link.url}
+                href={accountLink(link.url, WORK_EMAIL, link.name)}
                 key={name}
                 target="_blank"
                 rel="noreferrer"
@@ -580,7 +582,7 @@ export default function Dashboard() {
             <span className="avatar">AD</span>
             <div>
               <strong>Adam Dickerson</strong>
-              <small>Keeper of all the hats</small>
+              <small className="realm-account">{WORK_EMAIL}</small>
             </div>
             <span className="presence" />
           </div>
@@ -897,7 +899,7 @@ export default function Dashboard() {
                     <h3>Today’s agenda</h3>
                   </div>
                   <a
-                    href="https://calendar.google.com/calendar/u/0/r/day"
+                    href={accountLink("https://calendar.google.com/calendar/r/day", WORK_EMAIL)}
                     target="_blank"
                     rel="noreferrer"
                     aria-label="Open Google Calendar"
@@ -933,9 +935,9 @@ export default function Dashboard() {
                         key={i}
                         className="event"
                         href={
-                          safeUrl(e.htmlLink || e.url || e.display_url || "")
+                          accountLink(safeUrl(e.htmlLink || e.url || e.display_url || "")
                             ? e.htmlLink || e.url || e.display_url
-                            : "https://calendar.google.com/"
+                            : "https://calendar.google.com/calendar/r", WORK_EMAIL)
                         }
                         target="_blank"
                         rel="noreferrer"
@@ -1150,7 +1152,7 @@ export default function Dashboard() {
                             <a
                               className="tool"
                               key={l.name}
-                              href={l.url}
+                              href={accountLink(l.url, WORK_EMAIL, l.name)}
                               target="_blank"
                               rel="noreferrer"
                             >

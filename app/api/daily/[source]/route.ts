@@ -1,3 +1,4 @@
+import { requireWorkGoogle } from "@/lib/google-account";
 import { connectorsForRequest } from "@/lib/connectors";
 import { providerData } from "@/lib/provider-data.mjs";
 import { safeSource, slackMessages } from "@/lib/daily-data.mjs";
@@ -13,6 +14,10 @@ export async function POST(
   const auth = await dailyOwner(request);
   if (auth.error) return auth.error;
   const { source } = await context.params;
+  if (source === "mail") {
+    const accountError = await requireWorkGoogle(GMAIL);
+    if (accountError) return Response.json({status:"success", feeds:{inbox:accountError}}, {headers:privateHeaders});
+  }
   const client = connectorsForRequest();
   async function read(
     connector: string,

@@ -1,3 +1,4 @@
+import { requireWorkGoogle } from "@/lib/google-account";
 import { and, eq } from "drizzle-orm";
 import { invoices } from "@/db/schema";
 import { getDb } from "@/db";
@@ -38,6 +39,8 @@ export async function POST(request: Request) {
         (typeof body.cursor !== "string" || body.cursor.length > 3000)
       )
         return fail("Invalid scan cursor.");
+      const accountError = await requireWorkGoogle(GMAIL);
+      if (accountError) return Response.json(accountError, {headers:privateHeaders});
       const client = connectorsForRequest();
       const result = await client.invoke(GMAIL, "search_emails", {
         query: INVOICE_QUERY,

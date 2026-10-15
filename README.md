@@ -60,3 +60,12 @@ The dashboard owns its dark/light appearance. A server-rendered `darkreader-lock
 The generated background and its exact prompt are documented in `public/art/ASSET-NOTES.md`. The original generated master is retained, with a separate 3840-pixel-wide display derivative. Routine layout changes reuse these files.
 
 Local software logo copies and their source URLs are documented in `public/logos/SOURCES.md`; no runtime logo service is required.
+
+
+### Twin dashboard account routing
+
+Personal now uses https://abdickers.github.io/HomePage/ (`abdickers@gmail.com`). Work uses `dickersona@76fireworks.com`. Both share the same `realm-theme.css` and `account-links.mjs` contents, while layouts and data remain appropriate to each realm. Google links pin the realm account and remove stale numeric selectors. Only exact generic work-service defaults are upgraded to the verified tenant/login URLs; customized paths survive. ChatGPT uses its own visible account switcher and shared browser session, with the expected email shown in the companion panel.
+
+Calendar, inbox and invoice scans check their Google connector profile before reading content. A wrong or unverified connector identity stops the read. Owner-only deployment access, read-only connector permissions and invoice recipient rules are preserved.
+
+Android 0.1.2 points Personal to the approved abdickers/HomePage URL. Existing installed builds retain their baked-in URL until replaced. CI debug signing is ephemeral; export app-local data before uninstalling an older differently signed build. No signing secret is cached or stored in the repo.

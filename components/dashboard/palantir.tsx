@@ -19,14 +19,14 @@ export function Palantir() {
       } else {
         companion = window.open(
           url,
-          "adam-palantir",
+          "adam-work-palantir",
           "popup=yes,width=720,height=1000,resizable=yes,scrollbars=yes",
         );
       }
     } catch {
       companion = window.open(
         url,
-        "adam-palantir",
+        "adam-work-palantir",
         "popup=yes,width=720,height=1000,resizable=yes,scrollbars=yes",
       );
     }
@@ -65,6 +65,7 @@ export function Palantir() {
           <div className="orb-plinth" />
         </div>
         <h4>A little counsel. A clearer path.</h4>
+        <p className="realm-account">Use dickersona@76fireworks.com in ChatGPT’s account switcher. Companion windows share your browser login.</p>
         <p className="palantir-description">
           Bring a question, untangle a problem, or turn a rough thought into a
           plan.
@@ -112,7 +113,7 @@ export function Palantir() {
           </p>
         )}
         <div className="panel-foot">
-          <span>Companion window · your existing ChatGPT login</span>
+          <span>Work account · dickersona@76fireworks.com</span>
         </div>
       </details>
     </section>

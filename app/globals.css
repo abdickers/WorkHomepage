@@ -1,3 +1,4 @@
+@import "../public/realm-theme.css";
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;450;500;550;600;650;700&display=swap");
 :root {
   color-scheme: dark;

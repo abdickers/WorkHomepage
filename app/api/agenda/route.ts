@@ -1,4 +1,6 @@
-import { getChatGPTUser, chatGPTSignInPath } from "@/app/chatgpt-auth";
+import { requireWorkGoogle } from "@/lib/google-account";
+import { dailyOwner } from "@/lib/daily-server";
+import { chatGPTSignInPath } from "@/app/chatgpt-auth";
 import { connectorsForRequest } from "@/lib/connectors";
 import { chicagoWindow } from "@/lib/dashboard-data.mjs";
 import { connectorResponse } from "@/lib/connector-errors.mjs";
@@ -9,15 +11,8 @@ export async function POST(request: Request) {
       { status: "invalid_request", message: "Same-origin request required." },
       { status: 403 },
     );
-  if (!(await getChatGPTUser()))
-    return Response.json(
-      {
-        status: "reauthentication_required",
-        message: "Sign in to load your calendar.",
-        chatGPTSignInPath: chatGPTSignInPath("/"),
-      },
-      { status: 401, headers: { "Cache-Control": "private, no-store" } },
-    );
+  const auth = await dailyOwner(request);
+  if (auth.error) return auth.error;
   let body: { day?: unknown; offset?: unknown };
   try {
     const parsed = await request.json();
@@ -57,6 +52,8 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+  const accountError = await requireWorkGoogle("connector_947e0d954944416db111db556030eea6");
+  if (accountError) return Response.json(accountError, { headers: {"Cache-Control":"private, no-store"} });
   const client = connectorsForRequest();
   const result = await client.invoke(
     "connector_947e0d954944416db111db556030eea6",
