@@ -48,6 +48,8 @@ export async function POST(request: Request) {
         text += decoder.decode(chunk.value, { stream: true });
       }
     input = JSON.parse(text + decoder.decode());
+    if (!input || typeof input !== "object" || Array.isArray(input))
+      return reply({ message: "Invalid request." }, 400);
   } catch {
     return reply({ message: "Invalid request." }, 400);
   }
@@ -91,9 +93,7 @@ export async function POST(request: Request) {
         )
       : null;
     const needsConsent = [flows, jobs, logs].some(
-      (r) =>
-        r.status === "reauthentication_required" ||
-        r.status === "tool_not_found",
+      (r) => r.status === "reauthentication_required",
     );
     return reply({
       evidence,
