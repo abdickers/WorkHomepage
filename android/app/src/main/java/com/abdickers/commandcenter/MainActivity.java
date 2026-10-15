@@ -42,6 +42,7 @@ public class MainActivity extends Activity {
     private TextView status;
     private ProgressBar progress;
     private boolean desktop=false;
+    private View workLanding;
 
     @Override public void onCreate(Bundle state){
         super.onCreate(state);
@@ -64,13 +65,13 @@ public class MainActivity extends Activity {
         content=new FrameLayout(this);root.addView(content,new LinearLayout.LayoutParams(-1,0,1));
         status=new TextView(this);status.setTextColor(GOLD);status.setTextSize(11);status.setPadding(dp(14),dp(5),dp(14),dp(5));status.setVisibility(View.GONE);root.addView(status);
         LinearLayout tools=new LinearLayout(this);tools.setPadding(dp(4),0,dp(4),dp(4));
-        addTool(tools,"←",()->{WebView page=current();if(page.canGoBack())page.goBack();},"Back within dashboard");
-        addTool(tools,"Refresh",()->current().reload(),"Refresh selected dashboard");
+        addTool(tools,"←",()->{WebView page=current();if(page!=null&&page.canGoBack())page.goBack();else if(Realms.usesBrowser(realm))select(Realms.PERSONAL);},"Back within dashboard");
+        addTool(tools,"Refresh",()->{if(Realms.usesBrowser(realm))openBrowser(Uri.parse(Realms.WORK_URL));else if(current()!=null)current().reload();},"Refresh selected dashboard");
         addTool(tools,"Browser",()->openBrowser(Uri.parse(Realms.url(realm))),"Open selected command center in your browser for browser sign-in");
-        addTool(tools,"Fit / desktop",()->{desktop=!desktop;for(WebView w:pages.values()){w.getSettings().setUseWideViewPort(desktop);w.getSettings().setLoadWithOverviewMode(desktop);}current().reload();},"Toggle mobile and desktop page sizing");
+        addTool(tools,"Fit / desktop",()->{if(Realms.usesBrowser(realm)){message("Work uses your browser's page sizing controls.");return;}desktop=!desktop;for(WebView w:pages.values()){w.getSettings().setUseWideViewPort(desktop);w.getSettings().setLoadWithOverviewMode(desktop);}if(current()!=null)current().reload();},"Toggle mobile and desktop page sizing");
         root.addView(tools);setContentView(root);
         String initial=getIntent().getStringExtra("realm");select(initial==null?RealmWidget.selected(this):initial);
-        if(Build.VERSION.SDK_INT>=33)getOnBackInvokedDispatcher().registerOnBackInvokedCallback(0,()->{if(current().canGoBack())current().goBack();else finish();});
+        if(Build.VERSION.SDK_INT>=33)getOnBackInvokedDispatcher().registerOnBackInvokedCallback(0,()->{if(current()!=null&&current().canGoBack())current().goBack();else finish();});
     }
     private int dp(int n){return Math.round(n*getResources().getDisplayMetrics().density);}
     @Override public void onWindowFocusChanged(boolean focused){super.onWindowFocusChanged(focused);if(focused&&Build.VERSION.SDK_INT>=30){WindowInsetsController controller=getWindow().getInsetsController();if(controller!=null){controller.hide(WindowInsets.Type.statusBars());controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);}}}
@@ -81,6 +82,18 @@ public class MainActivity extends Activity {
     private void select(String value){
         realm=Realms.normalize(value);RealmWidget.select(this,realm);
         for(WebView w:pages.values()){w.setVisibility(View.GONE);w.onPause();}
+        personal.setAlpha(Realms.PERSONAL.equals(realm)?1f:.55f);work.setAlpha(Realms.WORK.equals(realm)?1f:.55f);
+        personal.setSelected(Realms.PERSONAL.equals(realm));work.setSelected(Realms.WORK.equals(realm));
+        message("");
+        if(workLanding!=null)workLanding.setVisibility(View.GONE);
+        if(Realms.usesBrowser(realm)){
+            progress.setVisibility(View.GONE);
+            if(workLanding==null){workLanding=createWorkLanding();content.addView(workLanding,new FrameLayout.LayoutParams(-1,-1));}
+            workLanding.setVisibility(View.VISIBLE);
+            // Launch once per explicit realm selection / widget open, never from onResume.
+            openBrowser(Uri.parse(Realms.WORK_URL));
+            return;
+        }
         WebView page=pages.get(realm);
         if(page==null){page=createPage();pages.put(realm,page);content.addView(page,new FrameLayout.LayoutParams(-1,-1));page.loadUrl(Realms.url(realm));}
         page.setVisibility(View.VISIBLE);page.onResume();
@@ -88,6 +101,14 @@ public class MainActivity extends Activity {
         personal.setSelected(Realms.PERSONAL.equals(realm));work.setSelected(Realms.WORK.equals(realm));
         progress.setVisibility(page.getProgress()<100?View.VISIBLE:View.GONE);
         message("");
+    }
+    private View createWorkLanding(){
+        LinearLayout landing=new LinearLayout(this);landing.setOrientation(LinearLayout.VERTICAL);landing.setGravity(Gravity.CENTER);landing.setPadding(dp(28),dp(24),dp(28),dp(24));
+        TextView title=new TextView(this);title.setText("✦\nThe White Tower");title.setGravity(Gravity.CENTER);title.setTypeface(Typeface.SERIF);title.setTextColor(GOLD);title.setTextSize(30);landing.addView(title);
+        TextView copy=new TextView(this);copy.setText("Your work command center opens in a browser-backed tab so ChatGPT sign-in and the dashboard share one session.\n\nComplete sign-in and keep using the dashboard there. Close the tab to return here and switch realms.");copy.setTextColor(Color.rgb(207,215,196));copy.setTextSize(16);copy.setGravity(Gravity.CENTER);copy.setPadding(0,dp(24),0,dp(24));landing.addView(copy);
+        Button open=button("Open Work Command Center  ↗");open.setOnClickListener(v->openBrowser(Uri.parse(Realms.WORK_URL)));landing.addView(open,new LinearLayout.LayoutParams(-1,dp(56)));
+        Button shire=button("Return to Personal · The Shire");shire.setOnClickListener(v->select(Realms.PERSONAL));landing.addView(shire,new LinearLayout.LayoutParams(-1,dp(56)));
+        return landing;
     }
     @SuppressLint("SetJavaScriptEnabled") private WebView createPage(){
         WebView w=new WebView(this);w.setBackgroundColor(INK);
@@ -121,13 +142,11 @@ public class MainActivity extends Activity {
     private boolean internal(Uri uri){
         if(!"https".equals(uri.getScheme())||uri.getUserInfo()!=null)return false;
         String host=uri.getHost();
-        return "adams-middle-earth-command.spirit-of-76-1921.chatgpt.site".equals(host)
-            || ("inkedsage.github.io".equals(host)&&uri.getPath()!=null&&uri.getPath().startsWith("/Homepage/"))
-            || "auth.openai.com".equals(host)||"chatgpt.com".equals(host);
+        return "inkedsage.github.io".equals(host)&&uri.getPath()!=null&&uri.getPath().startsWith("/Homepage/");
     }
     private void openBrowser(Uri uri){
         if(!"https".equals(uri.getScheme())||uri.getHost()==null||uri.getUserInfo()!=null){message("Only secure web links can be opened from this app.");return;}
-        try{new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder().setToolbarColor(INK).build()).setShowTitle(true).build().launchUrl(this,uri);}
+        try{new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder().setToolbarColor(INK).build()).setShowTitle(true).setUrlBarHidingEnabled(true).build().launchUrl(this,uri);}
         catch(android.content.ActivityNotFoundException e){try{startActivity(new Intent(Intent.ACTION_VIEW,uri));}catch(android.content.ActivityNotFoundException noBrowser){message("Install a web browser to open this link.");}}
     }
     private void pinWidget(){
@@ -139,5 +158,5 @@ public class MainActivity extends Activity {
     @Override protected void onPause(){super.onPause();for(WebView w:pages.values())w.onPause();CookieManager.getInstance().flush();}
     @Override protected void onResume(){super.onResume();if(current()!=null)current().onResume();}
     @Override protected void onDestroy(){for(WebView w:pages.values())w.destroy();super.onDestroy();}
-    @Override public void onBackPressed(){if(current().canGoBack())current().goBack();else super.onBackPressed();}
+    @Override public void onBackPressed(){if(current()!=null&&current().canGoBack())current().goBack();else super.onBackPressed();}
 }
