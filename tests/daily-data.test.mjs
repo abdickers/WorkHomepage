@@ -27,13 +27,13 @@ const message = (to = "Adam <dickersona@76fireworks.com>") => ({
 });
 test("invoice intake uses only exact authorized original To recipients", () => {
   assert.equal(
-    invoiceRecipient("IT <iteservices@76fireworks.com>, other@example.com"),
+    invoiceRecipient("IT <itservices@76fireworks.com>, other@example.com"),
     true,
   );
   assert.equal(invoiceRecipient("otherdickersona@76fireworks.com"), false);
-  assert.equal(invoiceRecipient("itservices@76fireworks.com"), false);
+  assert.equal(invoiceRecipient("iteservices@76fireworks.com"), false);
   assert.equal(invoiceCandidate(email, message("other@example.com")), null);
-  assert.match(INVOICE_QUERY, /to:iteservices@76fireworks.com/);
+  assert.match(INVOICE_QUERY, /to:itservices@76fireworks.com/);
 });
 test("extracts deterministic candidates but keeps financial inclusion pending review", () => {
   const c = invoiceCandidate(email, message());

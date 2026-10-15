@@ -1,9 +1,9 @@
 export const INVOICE_RECIPIENTS = [
   "dickersona@76fireworks.com",
-  "iteservices@76fireworks.com",
+  "itservices@76fireworks.com",
 ];
 export const INVOICE_QUERY =
-  'newer_than:90d -in:spam -in:trash -in:sent {to:dickersona@76fireworks.com to:iteservices@76fireworks.com} {subject:invoice subject:"payment due" subject:"amount due"}';
+  'newer_than:90d -in:spam -in:trash -in:sent {to:dickersona@76fireworks.com to:itservices@76fireworks.com} {subject:invoice subject:"payment due" subject:"amount due"}';
 export function safeSource(value: unknown, host: string) {
   try {
     const u = new URL(String(value));
@@ -187,10 +187,20 @@ export function slackMessages(data: any) {
           id: href,
           href,
           title:
-            block.match(/^From:\s*(.+)$/m)?.[1]?.slice(0, 160) ||
-            "Slack message",
+            block
+              .match(/^From:\s*(.+)$/m)?.[1]
+              ?.replace(/\s*\(ID: [A-Z0-9]+\)/g, "")
+              .slice(0, 160) || "Slack message",
           meta:
-            block.match(/^Channel:\s*(.+)$/m)?.[1]?.slice(0, 120) || "Slack",
+            [
+              block
+                .match(/^Channel:\s*(.+)$/m)?.[1]
+                ?.replace(/\s*\(ID: [A-Z0-9]+\)/g, ""),
+              block.match(/^Time:\s*(.+)$/m)?.[1],
+            ]
+              .filter(Boolean)
+              .join(" · ")
+              .slice(0, 180) || "Slack",
           text: (block.split(/Text:\s*\n/)[1] || "")
             .replace(/\n---\s*$/, " ")
             .slice(0, 500),

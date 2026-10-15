@@ -14,10 +14,6 @@ export async function POST(
   if (auth.error) return auth.error;
   const { source } = await context.params;
   const client = connectorsForRequest();
-  if(source === "connections") {
-    const context = await client.getContext();
-    return Response.json(context, {headers:privateHeaders});
-  }
   async function read(
     connector: string,
     action: string,

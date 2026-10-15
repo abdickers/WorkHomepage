@@ -4689,3 +4689,30 @@ main {
     max-height: 300px;
   }
 }
+.daily-watch {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #adb49b;
+  margin: 0 0 12px;
+}
+.daily-watch input {
+  accent-color: #b79e5d;
+}
+.realm-flow-link,
+.error-bar-label a {
+  color: #d7c28a;
+  text-decoration: none;
+}
+.realm-flow-link {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  padding: 6px;
+}
+.error-bar-label a:hover,
+.realm-flow-link:hover {
+  text-decoration: underline;
+}

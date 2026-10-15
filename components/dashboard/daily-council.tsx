@@ -25,6 +25,7 @@ type Feed = {
   more?: boolean;
   chatGPTSignInPath?: string;
   retryAfterMs?: number;
+  stale?: boolean;
 };
 function LoadState({ feed }: { feed: Feed | undefined }) {
   if (!feed)
@@ -33,6 +34,7 @@ function LoadState({ feed }: { feed: Feed | undefined }) {
   return (
     <p className="daily-error">
       {feed.message || "Source unavailable."}{" "}
+      {feed.stale && "Showing a previous snapshot."}{" "}
       {feed.status === "reauthentication_required" &&
         feed.chatGPTSignInPath && (
           <a href={feed.chatGPTSignInPath}>Connect →</a>
@@ -44,7 +46,7 @@ function FeedLinks({ feed }: { feed: Feed | undefined }) {
   return (
     <>
       <LoadState feed={feed} />
-      {feed?.status === "success" && (
+      {(feed?.status === "success" || feed?.stale) && (
         <>
           <div className="daily-list">
             {feed.items?.map((item) => (
@@ -83,7 +85,7 @@ function FeedLinks({ feed }: { feed: Feed | undefined }) {
     </>
   );
 }
-function useDaily(source: string) {
+function useDaily(source: string, watch: boolean) {
   const [data, setData] = useState<any>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
@@ -91,7 +93,10 @@ function useDaily(source: string) {
     retryAt = useRef(0);
   async function refresh() {
     if (active.current) return;
-    if (Date.now() < retryAt.current) { setError("Please wait a moment before refreshing this source again."); return; }
+    if (Date.now() < retryAt.current) {
+      setError("Please wait a moment before refreshing this source again.");
+      return;
+    }
     active.current = true;
     setBusy(true);
     setError("");
@@ -105,10 +110,20 @@ function useDaily(source: string) {
       const d: any = await response.json();
       if (d.status !== "success") {
         retryAt.current = Date.now() + Math.max(60000, d.retryAfterMs || 0);
-        setData((previous:any) => previous?.fetchedAt ? previous : d);
+        setData((previous: any) => (previous?.fetchedAt ? previous : d));
         throw Error(d.message || "Source unavailable.");
       }
-      setData(d);
+      setData((previous: any) => ({
+        ...d,
+        feeds: Object.fromEntries(
+          Object.entries(d.feeds).map(([key, value]: [string, any]) => [
+            key,
+            value.status !== "success" && previous?.feeds?.[key]?.items
+              ? { ...value, items: previous.feeds[key].items, stale: true }
+              : value,
+          ]),
+        ),
+      }));
       const waits = Object.values(d.feeds).map((f: any) => f.retryAfterMs || 0);
       retryAt.current = Date.now() + Math.max(10000, ...waits);
     } catch (e) {
@@ -122,7 +137,18 @@ function useDaily(source: string) {
   }
   useEffect(() => {
     refresh();
-  }, [source]); // Initial read only. Refresh is explicit to avoid background quota use.
+  }, [source]);
+  useEffect(() => {
+    if (!watch) return;
+    const timer = setInterval(() => {
+      if (
+        document.visibilityState === "visible" &&
+        Date.now() >= retryAt.current
+      )
+        refresh();
+    }, 300000);
+    return () => clearInterval(timer);
+  }, [source, watch]);
   return { data, busy, error, refresh };
 }
 function FeedFooter({
@@ -142,7 +168,7 @@ function FeedFooter({
         {error
           ? `Refresh failed${data?.fetchedAt ? " · showing previous snapshot" : ""}`
           : data?.fetchedAt
-            ? `Read ${new Date(data.fetchedAt).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/Chicago" })} CT`
+            ? `${Object.values(data.feeds || {}).some((f: any) => f.status !== "success") ? "Last attempt" : "Read"} ${new Date(data.fetchedAt).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/Chicago" })} CT`
             : "Read only · refresh on demand"}
       </span>
       <button disabled={busy} onClick={refresh} aria-label="Refresh feed">
@@ -152,10 +178,9 @@ function FeedFooter({
     </footer>
   );
 }
-function Ravens() {
-  const [connectionInfo,setConnectionInfo]=useState<any>(null);
-  const mail = useDaily("mail"),
-    slack = useDaily("slack");
+function Ravens({ watch }: { watch: boolean }) {
+  const mail = useDaily("mail", watch),
+    slack = useDaily("slack", watch);
   const [tab, setTab] = useState("inbox");
   const current = tab === "inbox" ? mail : slack;
   const feed = current.data?.feeds?.[tab];
@@ -203,12 +228,11 @@ function Ravens() {
       )}
       <FeedLinks feed={feed} />
       <FeedFooter {...current} />
-      {feed && feed.status !== "success" && <details><summary>Connection diagnostics</summary><button onClick={async()=>{try{const response=await fetch('/api/daily/connections',{method:'POST'});setConnectionInfo(await response.json());}catch{setConnectionInfo({status:'unavailable'});}}}>Check connected app capabilities</button>{connectionInfo&&<pre style={{maxHeight:200,overflow:'auto',fontSize:10,whiteSpace:'pre-wrap'}}>{JSON.stringify(connectionInfo,null,2)}</pre>}</details>}
     </section>
   );
 }
-function Quests() {
-  const source = useDaily("jira");
+function Quests({ watch }: { watch: boolean }) {
+  const source = useDaily("jira", watch);
   const [tab, setTab] = useState("assigned");
   return (
     <section className="panel daily-panel quests">
@@ -460,7 +484,10 @@ function Treasury() {
           type="month"
           aria-label="Budget month"
           value={month}
-          onChange={(e) => setMonth(e.target.value)}
+          onChange={(e) => {
+            if (/^\d{4}-(?:0[1-9]|1[0-2])$/.test(e.target.value))
+              setMonth(e.target.value);
+          }}
           required
         />
       </div>
@@ -520,7 +547,7 @@ function Treasury() {
       </div>
       <p className="daily-footnote">
         Past 90 days · To: dickersona@76fireworks.com or
-        iteservices@76fireworks.com · 10 messages per scan. Amounts in
+        itservices@76fireworks.com · 10 messages per scan. Amounts in
         attachments may need manual review.
       </p>
       {scan && (
@@ -563,17 +590,29 @@ function Treasury() {
         )}
       </div>
       <footer className="daily-feed-footer">
-        Private, persistent ledger · reviewed by you · no email sent to Claude
+        Based on saved invoices only · private, persistent ledger · no email
+        sent to Claude
       </footer>
     </section>
   );
 }
 export function DailyCouncil() {
+  const [watch, setWatch] = useState(true);
   return (
-    <div className="daily-council">
-      <Ravens />
-      <Quests />
-      <Treasury />
-    </div>
+    <>
+      <label className="daily-watch">
+        <input
+          type="checkbox"
+          checked={watch}
+          onChange={(e) => setWatch(e.target.checked)}
+        />{" "}
+        Watch ravens & quests · every 5 minutes while visible
+      </label>
+      <div className="daily-council">
+        <Ravens watch={watch} />
+        <Quests watch={watch} />
+        <Treasury />
+      </div>
+    </>
   );
 }
