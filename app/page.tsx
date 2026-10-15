@@ -654,7 +654,7 @@ export default function Dashboard() {
             </div>
             <div className="hero-bottom">
               <span>
-                <Shield size={13} /> Personal command center
+                <Shield size={13} /> Work command center
               </span>
               <a
                 className="landscape-link"
