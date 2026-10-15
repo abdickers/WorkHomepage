@@ -51,6 +51,8 @@ The key's Drive source is not required at runtime and Drive is not added to the 
 
 ## Saved artwork and logos
 
+The dashboard owns its dark/light appearance. A server-rendered `darkreader-lock` meta tag requests that Dark Reader leave this Site's colors and imagery intact. Both hero background declarations use the same saved artwork to avoid a transformed legacy rule restoring the old image. Theme choice is saved separately per browser. Wide monitors use the four-column operations layout; narrower panes stack the same panels.
+
 The generated background and its exact prompt are documented in `public/art/ASSET-NOTES.md`. The original generated master is retained, with a separate 3840-pixel-wide display derivative. Routine layout changes reuse these files.
 
 Local software logo copies and their source URLs are documented in `public/logos/SOURCES.md`; no runtime logo service is required.

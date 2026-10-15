@@ -11,6 +11,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        {/* The dashboard owns both themes; extension recoloring can replace its artwork. */}
+        <meta name="darkreader-lock" />
+      </head>
       <body>{children}</body>
     </html>
   );
