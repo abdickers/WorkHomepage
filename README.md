@@ -51,6 +51,10 @@ The key's Drive source is not required at runtime and Drive is not added to the 
 
 ## Saved artwork and logos
 
+The visual operations board uses original inline SVG artwork in `components/dashboard/realm-widgets.tsx`: beacon towers, a selectable flow constellation, error-share bars, sampled Worker-event runes, a quest-progress seal, and a Central-time clock. Counts use the existing live feeds; flames mean nonzero counts, never a health score. Error, running, paused, and idle markers are distinct; idle does not establish successful sync. Detailed flow/log tables remain available under Inspect disclosures. The Council's orb is decorative and brightens only during a request.
+
+On 4K displays the landscape header is roughly 650 pixels high, compared with the previous 240-pixel minimum. It reuses the saved 3840-pixel artwork. No new raster asset generation is needed.
+
 The dashboard owns its dark/light appearance. A server-rendered `darkreader-lock` meta tag requests that Dark Reader leave this Site's colors and imagery intact. Both hero background declarations use the same saved artwork to avoid a transformed legacy rule restoring the old image. Theme choice is saved separately per browser. Wide monitors use the four-column operations layout; narrower panes stack the same panels.
 
 The generated background and its exact prompt are documented in `public/art/ASSET-NOTES.md`. The original generated master is retained, with a separate 3840-pixel-wide display derivative. Routine layout changes reuse these files.

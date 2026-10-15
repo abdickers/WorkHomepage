@@ -32,6 +32,7 @@ import {
 import { BrandLogo } from "@/components/dashboard/brand-logo";
 import { Operations } from "@/components/dashboard/operations";
 import { Palantir } from "@/components/dashboard/palantir";
+import { QuestSeal, DayDial } from "@/components/dashboard/realm-widgets";
 type Task = {
   id: string;
   text: string;
@@ -652,6 +653,14 @@ export default function Dashboard() {
               <span>
                 <Shield size={13} /> Personal command center
               </span>
+              <a
+                className="landscape-link"
+                href="/art/middle-earth-council-display-3840.jpg"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View full scene <ArrowUpRight size={12} />
+              </a>
               <span>
                 {now?.toLocaleTimeString("en-US", {
                   timeZone: "America/Chicago",
@@ -765,6 +774,7 @@ export default function Dashboard() {
                   </div>
                   <span className="tag">PERSONAL</span>
                 </div>
+                <QuestSeal done={done.length} total={tasks.length} />
                 <div
                   className="task-tabs"
                   role="group"
@@ -909,6 +919,11 @@ export default function Dashboard() {
                     · Central
                   </span>
                 </div>
+                <DayDial
+                  now={now}
+                  events={agenda.length}
+                  loaded={agendaState === "success"}
+                />
                 {agenda.length > 0 ? (
                   <div className="events">
                     {agenda.map((e, i) => (

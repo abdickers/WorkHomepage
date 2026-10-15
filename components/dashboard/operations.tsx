@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { BrandLogo } from "./brand-logo";
 import { maskLog, providerData, records } from "@/lib/provider-data.mjs";
+import { Beacon, FlowConstellation, WorkerRunes } from "./realm-widgets";
 type Feed = {
   state: "idle" | "loading" | "success" | "error" | "auth";
   data: any;
@@ -181,10 +182,14 @@ export function Operations() {
   const feed = feeds[tab];
   const flows = rows(feeds.celigo.data?.sources?.flows),
     jobs = rows(feeds.celigo.data?.sources?.jobs);
-  const totalErrors = flows?.reduce(
-    (n, f) => n + (Number(f.numOpenError) || 0),
-    0,
-  );
+  const totalErrors = flows?.every(
+    (f) =>
+      typeof f.numOpenError === "number" &&
+      Number.isFinite(f.numOpenError) &&
+      f.numOpenError >= 0,
+  )
+    ? flows.reduce((n, f) => n + f.numOpenError, 0)
+    : undefined;
   const jobByFlow = new Map<string, any>();
   jobs?.forEach((j) => {
     const id = j._flowId || j.flow?._id;
@@ -201,7 +206,9 @@ export function Operations() {
     (feed.state === "error" || now - Date.parse(feed.fetchedAt) > 130000);
   const sources = feeds.celigo.data?.sources;
   return (
-    <section className="panel operations systems">
+    <section
+      className={"panel operations systems " + (stale ? "realm-stale" : "")}
+    >
       <div className="panel-heading">
         <div>
           <RadioTower size={19} />
@@ -258,29 +265,33 @@ export function Operations() {
       </div>
       {tab === "celigo" && (
         <>
-          <div className="operations-metrics">
-            <div>
-              <span className="metric-dot running" />
-              Running
-              <strong>
-                {jobs ? jobs.filter((j) => j.status === "running").length : "—"}
-              </strong>
-            </div>
-            <div>
-              <span className="metric-dot queued" />
-              Queued
-              <strong>
-                {jobs ? jobs.filter((j) => j.status === "queued").length : "—"}
-              </strong>
-            </div>
-            <div>
-              <span className="metric-dot errors" />
-              Open errors<strong>{totalErrors ?? "—"}</strong>
-            </div>
-            <div>
-              Flows returned<strong>{flows?.length ?? "—"}</strong>
-            </div>
+          <div className="realm-beacons">
+            <Beacon
+              label="Running"
+              tone="active"
+              value={
+                jobs ? jobs.filter((j) => j.status === "running").length : null
+              }
+            />
+            <Beacon
+              label="Queued"
+              tone="queued"
+              value={
+                jobs ? jobs.filter((j) => j.status === "queued").length : null
+              }
+            />
+            <Beacon
+              label="Open errors"
+              tone="error"
+              value={totalErrors ?? null}
+            />
+            <Beacon
+              label="Flows returned"
+              tone="roster"
+              value={flows?.length ?? null}
+            />
           </div>
+          <FlowConstellation flows={flows} jobs={jobs} stale={!!stale} />
           {(failure(sources?.flows) || failure(sources?.jobs)) && (
             <p className="connection-message warning">
               Partial result:{" "}
@@ -288,86 +299,83 @@ export function Operations() {
             </p>
           )}
           {flows ? (
-            <div className="operations-table-scroll">
-              <table className="operations-table">
-                <thead>
-                  <tr>
-                    <th>Production flow</th>
-                    <th>State</th>
-                    <th>Last triggered · CT</th>
-                    <th>Open errors</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[...flows]
-                    .sort(
-                      (a, b) =>
-                        (Number(b.numOpenError) || 0) -
-                        (Number(a.numOpenError) || 0),
-                    )
-                    .map((f) => {
-                      const job = jobByFlow.get(f._id);
-                      const status =
-                        job?.status ||
-                        (f.disabled
-                          ? "Paused"
-                          : f.numOpenError > 0
-                            ? "Needs attention"
-                            : "Idle");
-                      return (
-                        <tr key={f._id}>
-                          <td>
-                            <a
-                              href="https://integrator.io/"
-                              target="_blank"
-                              rel="noreferrer"
+            <details className="realm-detail-table">
+              <summary>
+                Inspect {flows.length} flows{" "}
+                <span>Names · state · last trigger</span>
+              </summary>
+              <div className="operations-table-scroll">
+                <table className="operations-table">
+                  <thead>
+                    <tr>
+                      <th>Production flow</th>
+                      <th>State</th>
+                      <th>Last triggered · CT</th>
+                      <th>Open errors</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[...flows]
+                      .sort(
+                        (a, b) =>
+                          (Number(b.numOpenError) || 0) -
+                          (Number(a.numOpenError) || 0),
+                      )
+                      .map((f) => {
+                        const job = jobByFlow.get(f._id);
+                        const status =
+                          job?.status ||
+                          (f.disabled
+                            ? "Paused"
+                            : f.numOpenError > 0
+                              ? "Needs attention"
+                              : "Idle");
+                        return (
+                          <tr key={f._id}>
+                            <td>
+                              <a
+                                href="https://integrator.io/"
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                {f.name || f._id}
+                                <ArrowUpRight size={11} />
+                              </a>
+                              {job && (
+                                <small>
+                                  {Number(job.numSuccess || 0).toLocaleString()}{" "}
+                                  records succeeded in current run
+                                </small>
+                              )}
+                            </td>
+                            <td>
+                              <span
+                                className={
+                                  "flow-state " +
+                                  (job?.status === "running"
+                                    ? "running"
+                                    : f.numOpenError > 0
+                                      ? "attention"
+                                      : "")
+                                }
+                              >
+                                {status}
+                              </span>
+                            </td>
+                            <td>{flowTime(f.lastExecutedAt)}</td>
+                            <td
+                              className={f.numOpenError > 0 ? "error-text" : ""}
                             >
-                              {f.name || f._id}
-                              <ArrowUpRight size={11} />
-                            </a>
-                            {job && (
-                              <small>
-                                {Number(job.numSuccess || 0).toLocaleString()}{" "}
-                                records succeeded in current run
-                              </small>
-                            )}
-                          </td>
-                          <td>
-                            <span
-                              className={
-                                "flow-state " +
-                                (job?.status === "running"
-                                  ? "running"
-                                  : f.numOpenError > 0
-                                    ? "attention"
-                                    : "")
-                              }
-                            >
-                              {status}
-                            </span>
-                          </td>
-                          <td>{flowTime(f.lastExecutedAt)}</td>
-                          <td
-                            className={f.numOpenError > 0 ? "error-text" : ""}
-                          >
-                            {Number(f.numOpenError || 0).toLocaleString()}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="operations-empty">
-              <Activity size={25} />
-              <p>
-                {feed?.state === "loading"
-                  ? "Reading production flows…"
-                  : "Production flow data is unavailable."}
-              </p>
-            </div>
-          )}
+                              {Number(f.numOpenError || 0).toLocaleString()}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          ) : null}
           {sources?.flows?.status === "success" &&
             (() => {
               try {
@@ -380,10 +388,15 @@ export function Operations() {
                 Showing the first 50 flows. Counts cover this page only.
               </p>
             )}
-          <p className="operations-scope">
-            Production account · current jobs and open errors. Idle means no
-            active job returned; it does not confirm the last sync succeeded.
-          </p>
+          <details className="realm-explainer">
+            <summary>Reading the beacons</summary>
+            <p className="operations-scope">
+              Flames indicate a nonzero count, not health. Stars show returned
+              flows; select one for its name. Errors take priority over
+              running/paused colors. Idle does not confirm a successful sync.
+              Counts cover returned data only.
+            </p>
+          </details>
         </>
       )}
       {tab === "vercel" && (
@@ -417,53 +430,63 @@ export function Operations() {
             <span className="tag">SCOPED</span>
           </div>
           {logs ? (
-            <div className="operations-table-scroll">
-              <table className="operations-table log-table">
-                <thead>
-                  <tr>
-                    <th>Time · CT</th>
-                    <th>Request / event</th>
-                    <th>Result</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {logs.length ? (
-                    logs.map((log, i) => {
-                      const worker = log.$workers;
-                      const path = worker?.event?.path;
-                      const message =
-                        path ||
-                        maskLog(
-                          log.source?.message ||
-                            log.$metadata?.message ||
-                            "Worker event",
-                        );
-                      const status = worker?.event?.response?.status;
-                      return (
-                        <tr key={log.$metadata?.id || i}>
-                          <td>{time(log.timestamp)}</td>
-                          <td>
-                            {maskLog(message)}
-                            <small>{log.$metadata?.requestId || ""}</small>
-                          </td>
-                          <td
-                            className={
-                              Number(status) >= 500 ? "error-text" : ""
-                            }
-                          >
-                            {status || worker?.outcome || "Event"}
+            <>
+              <WorkerRunes logs={logs} />
+              <details className="realm-detail-table">
+                <summary>
+                  Inspect sampled logs <span>Time · request · outcome</span>
+                </summary>
+                <div className="operations-table-scroll">
+                  <table className="operations-table log-table">
+                    <thead>
+                      <tr>
+                        <th>Time · CT</th>
+                        <th>Request / event</th>
+                        <th>Result</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {logs.length ? (
+                        logs.map((log, i) => {
+                          const worker = log.$workers;
+                          const path = worker?.event?.path;
+                          const message =
+                            path ||
+                            maskLog(
+                              log.source?.message ||
+                                log.$metadata?.message ||
+                                "Worker event",
+                            );
+                          const status = worker?.event?.response?.status;
+                          return (
+                            <tr key={log.$metadata?.id || i}>
+                              <td>{time(log.timestamp)}</td>
+                              <td>
+                                {maskLog(message)}
+                                <small>{log.$metadata?.requestId || ""}</small>
+                              </td>
+                              <td
+                                className={
+                                  Number(status) >= 500 ? "error-text" : ""
+                                }
+                              >
+                                {status || worker?.outcome || "Event"}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan={3}>
+                            No events returned in this window.
                           </td>
                         </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td colSpan={3}>No events returned in this window.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            </>
           ) : (
             <div className="operations-empty">
               <Activity size={24} />

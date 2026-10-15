@@ -99,9 +99,16 @@ export function IncidentBriefing() {
     snapshot?.evidence.filter((e) => e.state === "confirmed").length ?? 0;
   return (
     <div className="incident-briefing">
-      <p className="briefing-intro">
-        What needs your attention—and what the evidence actually says.
-      </p>
+      <div
+        className={"council-orb-widget " + (busy ? "orb-awake" : "")}
+        aria-hidden="true"
+      >
+        <div className="council-orbit" />
+        <div className="council-orb">
+          <span>✧</span>
+        </div>
+        <div className="council-base" />
+      </div>
       <div className="briefing-actions">
         <button
           className="outline-button"
@@ -193,10 +200,7 @@ export function IncidentBriefing() {
       ) : (
         <div className="briefing-empty">
           <ShieldCheck size={24} />
-          <p>
-            Collect a fresh snapshot, inspect the facts, then ask Claude for a
-            briefing.
-          </p>
+          <p>Collect → review → consult</p>
         </div>
       )}
       {error && (
@@ -245,16 +249,19 @@ export function IncidentBriefing() {
           </small>
         </div>
       )}
-      <p className="briefing-privacy">
-        Only the displayed counts, timestamps, scope, and caveats go to
-        Anthropic when you click Generate. No raw logs, customer records, or
-        flow names. Briefings stay in this page until reload.
-      </p>
-      <p className="briefing-coverage">
-        Current coverage: Celigo Prod + this dashboard’s Worker. Netlify,
-        GitHub, Jira, Vercel, and other Cloudflare resources are not included
-        yet.
-      </p>
+      <details className="realm-explainer">
+        <summary>Privacy & coverage</summary>
+        <p className="briefing-privacy">
+          Only the displayed counts, timestamps, scope, and caveats go to
+          Anthropic when you click Generate. No raw logs, customer records, or
+          flow names. Briefings stay in this page until reload.
+        </p>
+        <p className="briefing-coverage">
+          Current coverage: Celigo Prod + this dashboard’s Worker. Netlify,
+          GitHub, Jira, Vercel, and other Cloudflare resources are not included
+          yet.
+        </p>
+      </details>
     </div>
   );
 }

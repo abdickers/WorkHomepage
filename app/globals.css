@@ -311,7 +311,8 @@ main {
   border: 1px solid #4c4d36;
   border-radius: 9px;
   overflow: hidden;
-  background: #192820 url("/art/middle-earth-council-display-3840.jpg") center 39% / cover;
+  background: #192820 url("/art/middle-earth-council-display-3840.jpg") center
+    39% / cover;
 }
 .hero-shade {
   position: absolute;
@@ -3502,5 +3503,774 @@ main {
 @media (max-width: 900px) {
   .palantir:has(.incident-briefing) {
     max-height: none;
+  }
+}
+.realm-beacons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 8px 0 14px;
+}
+.realm-beacon {
+  --beacon-color: #d4bc7d;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  padding: 0 8px 12px;
+  background: radial-gradient(ellipse at 50% 32%, #c3aa6914, transparent 70%);
+  border-bottom: 1px solid #b49b5a45;
+}
+.realm-beacon.active {
+  --beacon-color: #91c9ae;
+}
+.realm-beacon.queued {
+  --beacon-color: #91b7d1;
+}
+.realm-beacon.error {
+  --beacon-color: #e99572;
+}
+.realm-beacon svg {
+  width: min(100%, 150px);
+  height: 130px;
+  color: var(--beacon-color);
+  overflow: visible;
+}
+.beacon-aura {
+  fill: currentColor;
+  opacity: 0.025;
+}
+.lit .beacon-aura {
+  opacity: 0.12;
+  filter: blur(10px);
+}
+.beacon-mountains {
+  fill: #a99e7220;
+}
+.beacon-tower {
+  fill: #131d18;
+  stroke: #b19e6e;
+  stroke-width: 1.4;
+}
+.beacon-stones {
+  fill: none;
+  stroke: #b19e6e60;
+}
+.beacon-bowl {
+  fill: #776746;
+  stroke: #d7c187;
+}
+.beacon-flame {
+  fill: currentColor;
+  opacity: 0.12;
+}
+.lit .beacon-flame {
+  opacity: 0.95;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+.beacon-core {
+  fill: #f7e6b2;
+  opacity: 0.1;
+}
+.lit .beacon-core {
+  opacity: 0.9;
+}
+.beacon-ground {
+  fill: none;
+  stroke: #9e8d5c80;
+}
+.realm-beacon > strong {
+  color: var(--beacon-color);
+  font:
+    600 36px/1 "Cormorant Garamond",
+    Georgia,
+    serif;
+  font-variant-numeric: tabular-nums;
+  margin-top: 4px;
+}
+.realm-beacon > span {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.realm-flow-board {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 16px;
+  border: 1px solid #b49b5a35;
+  border-radius: 4px;
+  background: linear-gradient(120deg, #050c09a8, #14241b85);
+  padding: 14px;
+  margin: 4px 0 12px;
+}
+.realm-widget-label {
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  color: var(--gold);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.realm-widget-label b {
+  font: inherit;
+  color: #edbb7d;
+  border: 1px solid #edbb7d80;
+  padding: 1px 5px;
+}
+.constellation-chart {
+  position: relative;
+  width: min(100%, 290px);
+  aspect-ratio: 300/270;
+  margin: 0 auto;
+}
+.constellation-chart > svg {
+  width: 100%;
+  height: 100%;
+}
+.rune-ring {
+  fill: none;
+  stroke: #bda56b70;
+  stroke-width: 1;
+}
+.rune-ring.inner {
+  stroke-dasharray: 2 8;
+  stroke: #bda56b60;
+}
+.compass-ticks {
+  fill: none;
+  stroke: #d2b36e;
+  stroke-width: 1;
+}
+.realm-star {
+  fill: #d2b36e;
+  opacity: 0.7;
+}
+.constellation-spoke {
+  fill: none;
+  stroke: #b7c3ad;
+  stroke-opacity: 0.1;
+  stroke-width: 1;
+}
+.constellation-spoke.error {
+  stroke: #ef9873;
+  stroke-opacity: 0.4;
+}
+.constellation-total {
+  position: absolute;
+  inset: 44% 20% auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.constellation-total strong {
+  font:
+    600 39px/1 "Cormorant Garamond",
+    Georgia,
+    serif;
+  color: #eee1b5;
+}
+.constellation-total span {
+  color: #aab39f;
+  font-size: 10px;
+}
+.flow-star {
+  position: absolute;
+  padding: 6px;
+  width: 25px;
+  height: 25px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: #09120eda;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  color: #9da99b;
+}
+.flow-star > span {
+  width: 7px;
+  height: 7px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+.flow-star.error {
+  color: #e99572;
+}
+.flow-star.active {
+  color: #91c9ae;
+}
+.flow-star.paused {
+  color: #d4bc7d;
+}
+.flow-star.chosen,
+.flow-star:hover {
+  border-color: currentColor;
+  box-shadow: 0 0 13px #d5b16c30;
+}
+.flow-star.error > span,
+.flow-star.active > span {
+  box-shadow: 0 0 12px currentColor;
+}
+.realm-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  font-size: 9px;
+}
+.realm-legend > span::before {
+  content: "◆";
+  margin-right: 4px;
+}
+.realm-legend .error,
+.event-rune-strip .error,
+.rune-counters .error {
+  color: #e99572;
+}
+.realm-legend .active,
+.event-rune-strip .active,
+.rune-counters .active {
+  color: #91c9ae;
+}
+.realm-legend .paused,
+.event-rune-strip .paused,
+.rune-counters .paused {
+  color: #d4bc7d;
+}
+.realm-legend .idle,
+.event-rune-strip .idle {
+  color: #9da99b;
+}
+.constellation-selection {
+  margin-top: 9px;
+  min-height: 32px;
+  font-size: 10px;
+  text-align: center;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.error-ledger {
+  border-left: 1px solid #b49b5a30;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.error-ledger .realm-widget-label {
+  margin-bottom: 12px;
+}
+.error-sword svg {
+  width: 100%;
+  height: 55px;
+  fill: #c5b27d20;
+  stroke: #c5b27d80;
+  stroke-width: 1;
+}
+.error-distribution {
+  display: grid;
+  gap: 15px;
+}
+.error-bar-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+.error-bar-label > span {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.error-bar-label strong {
+  color: #e99572;
+  font-variant-numeric: tabular-nums;
+}
+.error-bar-track {
+  height: 7px;
+  background: #a3844d25;
+  border: 1px solid #d2b36e25;
+  border-radius: 0 5px 5px 0;
+}
+.error-bar-track > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #944c38, #e99572);
+  box-shadow: 0 0 10px #df88532a;
+}
+.error-ledger > small,
+.error-distribution > small {
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 18px;
+}
+.realm-no-errors {
+  display: grid;
+  justify-items: center;
+  padding: 15px 0;
+  color: var(--muted);
+}
+.realm-no-errors > span {
+  font-size: 48px;
+  color: var(--gold);
+}
+.realm-no-errors > strong {
+  font-size: 11px;
+  font-weight: 400;
+}
+.realm-detail-table {
+  margin: 10px 0;
+}
+.realm-detail-table > summary {
+  padding: 10px 0;
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 12px;
+}
+.realm-detail-table > summary > span {
+  float: right;
+  color: var(--muted);
+  font-size: 10px;
+}
+.realm-detail-table .operations-table-scroll {
+  max-height: 260px;
+}
+.realm-explainer {
+  margin: 10px 0;
+  font-size: 10px;
+  color: var(--muted);
+}
+.realm-explainer > summary {
+  cursor: pointer;
+  color: var(--gold);
+}
+.realm-stale .beacon-aura {
+  opacity: 0;
+}
+.realm-stale .beacon-flame,
+.realm-stale .flow-star {
+  filter: saturate(0.3);
+}
+.worker-runes {
+  padding: 12px 0;
+}
+.rune-counters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.rune-counters > div {
+  display: grid;
+  justify-items: center;
+  padding: 16px 0;
+  border: 1px solid #b49b5a35;
+  background: radial-gradient(ellipse, #b49b5a12, transparent);
+}
+.rune-counters span {
+  font-size: 38px;
+  text-shadow: 0 0 15px currentColor;
+}
+.rune-counters strong {
+  font:
+    600 38px/1 "Cormorant Garamond",
+    Georgia,
+    serif;
+}
+.rune-counters small {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.event-rune-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 20px 0;
+}
+.event-rune-strip > span {
+  font-size: 20px;
+}
+.worker-runes > small {
+  color: var(--muted);
+  font-size: 10px;
+}
+.quest-seal-widget,
+.day-dial-widget {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 6px 0 12px;
+}
+.quest-seal-widget > svg,
+.day-dial-widget > svg {
+  width: 112px;
+  height: 112px;
+  flex: 0 0 auto;
+}
+.quest-seal-widget > div,
+.day-dial-widget > div {
+  display: grid;
+  gap: 5px;
+}
+.quest-seal-widget strong {
+  font:
+    600 25px/1.2 "Cormorant Garamond",
+    Georgia,
+    serif;
+  color: var(--gold-light);
+}
+.quest-seal-widget small {
+  font-size: 10px;
+  color: var(--muted);
+}
+.quest-track {
+  fill: none;
+  stroke: #a58e5330;
+  stroke-width: 4;
+}
+.quest-progress {
+  fill: none;
+  stroke: #dbc486;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.quest-seal-widget text,
+.day-dial-widget text {
+  fill: #dfcf9d;
+  font:
+    13px Georgia,
+    serif;
+}
+.clock-hour,
+.clock-minute {
+  fill: none;
+  stroke: #d2b36e;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.clock-minute {
+  stroke-width: 1;
+}
+.day-dial-widget strong {
+  font:
+    600 34px/1.1 "Cormorant Garamond",
+    Georgia,
+    serif;
+  color: var(--gold-light);
+}
+.day-dial-widget strong > small {
+  display: block;
+  margin-top: 5px;
+  font:
+    11px "DM Sans",
+    sans-serif;
+  color: var(--muted);
+}
+.council-orb-widget {
+  height: 135px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 8px 0;
+}
+.council-orb {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  background: radial-gradient(
+    circle at 32% 25%,
+    #ddf3eab3,
+    #5b9a9770 15%,
+    #153e43 42%,
+    #071519 72%
+  );
+  border: 1px solid #a9c2ae80;
+  box-shadow:
+    inset -9px -12px 19px #0009,
+    0 0 30px #76b4ad22;
+}
+.council-orb > span {
+  font-size: 38px;
+  color: #d9e7c4;
+  text-shadow: 0 0 15px #a9e1dd;
+}
+.council-orbit {
+  position: absolute;
+  width: 130px;
+  height: 118px;
+  border: 1px solid #c2a86f60;
+  border-radius: 50%;
+  transform: rotate(-22deg);
+}
+.council-base {
+  position: absolute;
+  bottom: 6px;
+  width: 100px;
+  height: 9px;
+  border-radius: 50%;
+  background: linear-gradient(#b3a16c, #4a432e);
+  box-shadow: 0 5px 0 #292b20;
+}
+.orb-awake .council-orb {
+  box-shadow:
+    inset -9px -12px 19px #0009,
+    0 0 40px #76b4ad80;
+}
+.briefing-empty {
+  padding: 8px 0;
+}
+.briefing-empty > svg {
+  display: none;
+}
+.light .realm-flow-board {
+  background: #ecdfc7;
+}
+.light .beacon-tower {
+  fill: #e4dac0;
+}
+.light .flow-star {
+  background: #f5ecd8;
+}
+.light .constellation-total strong {
+  color: #514426;
+}
+@media (min-width: 1800px) {
+  .hero {
+    min-height: clamp(350px, 17vw, 700px);
+    display: flex;
+    align-items: center;
+    background-position: center 46%;
+  }
+  .hero-copy {
+    max-width: 47%;
+    padding: 38px 42px 60px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(40px, 1.9vw, 76px);
+    line-height: 0.98;
+  }
+  .hero-copy h1 br {
+    display: block;
+  }
+  .hero-copy h1 em {
+    margin-left: 0;
+    font-size: 0.83em;
+    letter-spacing: 3px;
+  }
+  .hero-shade {
+    background:
+      linear-gradient(90deg, #07130be8, #07130b55 38%, transparent 68%),
+      linear-gradient(0deg, #06100bd9, transparent 45%);
+  }
+  .hero-stamp {
+    display: flex;
+  }
+  .realm-beacon svg {
+    height: 118px;
+  }
+  .constellation-chart {
+    max-width: 250px;
+  }
+  .panel.operations {
+    align-self: start;
+  }
+  .operations > .realm-explainer {
+    margin-bottom: 8px;
+  }
+}
+@media (min-width: 3000px) {
+  .realm-beacon svg {
+    height: 150px;
+    width: 170px;
+  }
+  .realm-beacon > strong {
+    font-size: 46px;
+  }
+  .realm-beacon > span {
+    font-size: 13px;
+  }
+  .realm-flow-board {
+    padding: 20px;
+  }
+  .constellation-chart {
+    max-width: 280px;
+  }
+  .realm-widget-label {
+    font-size: 11px;
+  }
+  .error-bar-label {
+    font-size: 14px;
+  }
+  .realm-legend {
+    font-size: 11px;
+  }
+  .quest-seal-widget > svg,
+  .day-dial-widget > svg {
+    width: 135px;
+    height: 135px;
+  }
+  .quest-seal-widget strong {
+    font-size: 31px;
+  }
+  .council-orb-widget {
+    height: 170px;
+  }
+  .council-orb {
+    width: 125px;
+    height: 125px;
+  }
+  .council-orbit {
+    width: 165px;
+    height: 150px;
+  }
+  .council-base {
+    bottom: 8px;
+    width: 125px;
+  }
+  .palantir:has(.incident-briefing) {
+    max-height: 850px;
+  }
+}
+@media (max-width: 650px) {
+  .realm-flow-board {
+    grid-template-columns: 1fr;
+  }
+  .error-ledger {
+    border-left: 0;
+    border-top: 1px solid #b49b5a30;
+    padding: 15px 0 0;
+  }
+  .realm-beacons {
+    gap: 2px;
+  }
+  .realm-beacon svg {
+    height: 88px;
+  }
+  .realm-beacon > strong {
+    font-size: 28px;
+  }
+  .realm-beacon > span {
+    font-size: 9px;
+  }
+  .realm-detail-table > summary > span {
+    display: none;
+  }
+  .quest-seal-widget > svg,
+  .day-dial-widget > svg {
+    width: 95px;
+    height: 95px;
+  }
+}
+/* Keep the visual watch and daily essentials together below the taller landscape. */
+@media (min-width: 1800px) {
+  .priorities .task-list {
+    min-height: 0;
+    max-height: 180px;
+    overflow-y: auto;
+  }
+  .priorities .task {
+    min-height: 46px;
+  }
+  .priorities .task > span {
+    font-size: 14px;
+  }
+  .quest-seal-widget > svg,
+  .day-dial-widget > svg {
+    width: 100px;
+    height: 100px;
+  }
+  .quest-seal-widget,
+  .day-dial-widget {
+    padding-block: 2px 8px;
+  }
+  .quest-seal-widget strong {
+    font-size: 27px;
+  }
+  .agenda .agenda-empty {
+    min-height: 0;
+    padding: 12px 0;
+  }
+  .agenda .agenda-empty > svg,
+  .agenda .agenda-empty > p {
+    display: none;
+  }
+  .agenda .agenda-empty > strong {
+    font-size: 12px;
+  }
+  .agenda .events {
+    max-height: 130px;
+    overflow-y: auto;
+  }
+  .agenda .event {
+    padding-block: 9px;
+    min-height: 44px;
+  }
+  .agenda .event small {
+    display: none;
+  }
+  .agenda .event strong {
+    font-size: 13px;
+  }
+  .agenda .outline-button {
+    min-height: 34px;
+  }
+  .priorities .panel-heading,
+  .agenda .panel-heading {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+  .realm-beacons {
+    padding-bottom: 9px;
+  }
+  .realm-beacon svg {
+    height: 116px;
+  }
+  .constellation-chart {
+    max-width: 245px;
+  }
+  .constellation-selection {
+    min-height: 22px;
+  }
+  .realm-flow-board {
+    padding: 15px;
+  }
+  .realm-beacon > strong {
+    font-size: 40px;
+  }
+  .operations .panel-foot {
+    margin-top: 8px;
+  }
+  .realm-detail-table {
+    margin: 4px 0;
+  }
+  .realm-explainer {
+    margin: 7px 0;
+  }
+}
+.landscape-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #e5d29f;
+}
+.flow-star.unknown {
+  border-color: #a0a49380;
+  border-style: dashed;
+  color: #a0a493;
+}
+.flow-star.unknown > span {
+  background: transparent;
+  border: 1px solid currentColor;
+}
+@media (max-width: 650px) {
+  .landscape-link {
+    display: none;
   }
 }
