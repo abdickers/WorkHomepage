@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { BrandLogo } from "@/components/dashboard/brand-logo";
 import { Operations } from "@/components/dashboard/operations";
+import { DailyCouncil } from "@/components/dashboard/daily-council";
 import { Palantir } from "@/components/dashboard/palantir";
 import { QuestSeal, DayDial } from "@/components/dashboard/realm-widgets";
 type Task = {
@@ -762,6 +763,7 @@ export default function Dashboard() {
               )}
             </div>
           </div>
+          {view === "overview" && <DailyCouncil />}
           <div className="dashboard-grid">
             {section("priorities") && (
               <section className="panel priorities">

@@ -1,5 +1,5 @@
 {
-  "d1": null,
+  "d1": "DB",
   "r2": null,
   "project_id": "appgprj_6acfe13398b881918807c030709a2664",
   "plugins": [
@@ -20,6 +20,24 @@
       "connector_ids": [
         "connector_20205bf7d4e99a89d7154bb849718324"
       ]
+    },
+    {
+      "id": "plugin_connector_1p_95d39881713c8191931482a62d6edff9",
+      "connector_ids": [
+        "connector_2128aebfecb84f64a069897515042a44"
+      ]
+    },
+    {
+      "id": "plugin_asdk_app_69a1d78e929881919bba0dbda1f6436d",
+      "connector_ids": [
+        "asdk_app_69a1d78e929881919bba0dbda1f6436d"
+      ]
+    },
+    {
+      "id": "plugin_asdk_app_6a83901dde988191b3f3cefdcc19acfa",
+      "connector_ids": [
+        "asdk_app_6a83901dde988191b3f3cefdcc19acfa"
+      ]
     }
   ],
   "connectors": [
@@ -33,6 +51,18 @@
     },
     {
       "id": "connector_20205bf7d4e99a89d7154bb849718324",
+      "action_selection_mode": "read_only"
+    },
+    {
+      "id": "connector_2128aebfecb84f64a069897515042a44",
+      "action_selection_mode": "read_only"
+    },
+    {
+      "id": "asdk_app_69a1d78e929881919bba0dbda1f6436d",
+      "action_selection_mode": "read_only"
+    },
+    {
+      "id": "asdk_app_6a83901dde988191b3f3cefdcc19acfa",
       "action_selection_mode": "read_only"
     }
   ]

@@ -12,6 +12,7 @@ import {
 import { BrandLogo } from "./brand-logo";
 import { maskLog, providerData, records } from "@/lib/provider-data.mjs";
 import { Beacon, FlowConstellation, WorkerRunes } from "./realm-widgets";
+import { celigoFlowUrl } from "@/lib/daily-data.mjs";
 type Feed = {
   state: "idle" | "loading" | "success" | "error" | "auth";
   data: any;
@@ -334,7 +335,7 @@ export function Operations() {
                           <tr key={f._id}>
                             <td>
                               <a
-                                href="https://integrator.io/"
+                                href={celigoFlowUrl(f) || "https://integrator.io/flows"}
                                 target="_blank"
                                 rel="noreferrer"
                               >

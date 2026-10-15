@@ -42,7 +42,7 @@ export async function POST(
     const [flows, jobs] = await Promise.all([
       client.invoke(CELIGO, "list_flows", {
         limit: 50,
-        include: "name,disabled,_integrationId,schedule,lastExecutedAt",
+        include: "name,disabled,_integrationId,_flowGroupingId,schedule,lastExecutedAt",
         includeErrorCounts: true,
         sort_by: "lastExecutedAt",
       }),

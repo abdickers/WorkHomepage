@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { celigoFlowUrl } from "@/lib/daily-data.mjs";
 
 /** Original vector artwork. Counts are observations; flame color is never a health score. */
 export function Beacon({
@@ -50,6 +51,8 @@ export function Beacon({
 
 type RealmFlow = {
   _id: string;
+  _integrationId?: string;
+  _flowGroupingId?: string;
   name?: string;
   disabled?: boolean;
   numOpenError?: number;
@@ -164,6 +167,16 @@ export function FlowConstellation({
               ? "Select a star to inspect its flow"
               : "Awaiting a confirmed read"}
         </p>
+        {chosen && celigoFlowUrl(chosen) && (
+          <a
+            className="realm-flow-link"
+            href={celigoFlowUrl(chosen)!}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open this flow in Celigo ↗
+          </a>
+        )}
       </div>
       <div className="error-ledger">
         <div className="realm-widget-label">Where the shadows gather</div>
@@ -179,7 +192,18 @@ export function FlowConstellation({
               {troubled.slice(0, 3).map((f) => (
                 <div key={f._id}>
                   <div className="error-bar-label">
-                    <span title={f.name}>{f.name || f._id}</span>
+                    {celigoFlowUrl(f) ? (
+                      <a
+                        href={celigoFlowUrl(f)!}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Open this flow in Celigo"
+                      >
+                        {f.name || f._id} ↗
+                      </a>
+                    ) : (
+                      <span title={f.name}>{f.name || f._id}</span>
+                    )}
                     <strong>{Number(f.numOpenError).toLocaleString()}</strong>
                   </div>
                   <div className="error-bar-track">
