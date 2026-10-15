@@ -3317,4 +3317,190 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
   }
 }
-.connection-details{white-space:pre-wrap;overflow-wrap:anywhere;max-height:250px;overflow:auto;font-size:10px;color:var(--muted);background:var(--input);padding:10px;border:1px solid var(--line)}
+.connection-details {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 250px;
+  overflow: auto;
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--input);
+  padding: 10px;
+  border: 1px solid var(--line);
+}
+/* Evidence first, inference on demand. Keep the existing Council panel footprint. */
+.incident-briefing {
+  text-align: left;
+}
+.briefing-intro {
+  margin: 12px 0;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.briefing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.briefing-actions button {
+  font-size: 12px;
+  padding: 8px 10px;
+  gap: 6px;
+}
+.briefing-actions button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.briefing-snapshot {
+  color: #aba994;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+.briefing-evidence {
+  max-height: 210px;
+  overflow-y: auto;
+  border-block: 1px solid #a3915440;
+}
+.briefing-evidence details {
+  padding: 8px 0;
+  border-bottom: 1px solid #a3915420;
+}
+.briefing-evidence summary {
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.briefing-evidence summary > span:last-child {
+  float: right;
+  font-size: 10px;
+  color: #aaa994;
+}
+.briefing-evidence p,
+.briefing-evidence a {
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 6px 0;
+  color: #bbb9a6;
+}
+.briefing-evidence a {
+  display: inline-flex;
+  align-items: center;
+  color: #dfcc8c;
+}
+.briefing-evidence dl {
+  margin: 8px 0;
+  font-size: 11px;
+}
+.briefing-evidence dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.briefing-evidence dt {
+  text-transform: capitalize;
+  color: #aaa994;
+}
+.briefing-evidence dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.confirmed-text {
+  color: #a4bd8a;
+}
+.briefing-empty {
+  padding: 20px 8px;
+  text-align: center;
+  color: #aeac96;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.briefing-empty svg {
+  color: #c6b474;
+  margin: 0 auto 7px;
+}
+.briefing-result {
+  margin-top: 14px;
+  padding: 12px;
+  background: #060d0b94;
+  border: 1px solid #a3915460;
+  border-radius: 5px;
+}
+.briefing-result-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  color: #dfcc8c;
+}
+.briefing-result-heading span {
+  font-size: 10px;
+  color: #aaa994;
+}
+.briefing-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #e0dfce;
+}
+.briefing-result small {
+  color: #aaa994;
+  font-size: 10px;
+}
+.briefing-source-links {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.briefing-source-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #dfcc8c;
+  font-size: 10px;
+}
+.briefing-privacy,
+.briefing-coverage {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #aaa994;
+  margin: 10px 0;
+}
+.chatgpt-companion {
+  border-top: 1px solid #a3915440;
+  margin-top: 12px;
+  padding-top: 10px;
+}
+.chatgpt-companion > summary {
+  font-size: 12px;
+  color: #dfcc8c;
+  cursor: pointer;
+}
+.chatgpt-companion .orb-scene {
+  display: none;
+}
+.chatgpt-companion h4 {
+  font-size: 16px;
+}
+.palantir:has(.incident-briefing) {
+  overflow-y: auto;
+  max-height: 610px;
+}
+@media (min-width: 3000px) {
+  .palantir:has(.incident-briefing) {
+    max-height: 680px;
+  }
+  .briefing-text {
+    max-height: 310px;
+  }
+}
+@media (max-width: 900px) {
+  .palantir:has(.incident-briefing) {
+    max-height: none;
+  }
+}

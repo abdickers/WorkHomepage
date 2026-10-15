@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import { ArrowUpRight, Copy, Check, MessageSquare, Send } from "lucide-react";
 import { BrandLogo } from "./brand-logo";
+import { IncidentBriefing } from "./incident-briefing";
 export function Palantir() {
   const [prompt, setPrompt] = useState("");
   const [copied, setCopied] = useState(false);
@@ -50,66 +51,70 @@ export function Palantir() {
       <div className="panel-heading">
         <div>
           <MessageSquare size={18} />
-          <h3>The Palantír</h3>
+          <h3>The Council</h3>
         </div>
-        <span className="tag">JOSIE · CHATGPT</span>
+        <span className="tag">CLAUDE · ON DEMAND</span>
       </div>
-      <div className="orb-scene" aria-hidden="true">
-        <div className="palantir-orb">
-          <span>✧</span>
+      <IncidentBriefing />
+      <details className="chatgpt-companion">
+        <summary>The Palantír · Open ChatGPT companion</summary>
+        <div className="orb-scene" aria-hidden="true">
+          <div className="palantir-orb">
+            <span>✧</span>
+          </div>
+          <div className="orb-plinth" />
         </div>
-        <div className="orb-plinth" />
-      </div>
-      <h4>A little counsel. A clearer path.</h4>
-      <p className="palantir-description">
-        Bring a question, untangle a problem, or turn a rough thought into a
-        plan.
-      </p>
-      <div className="prompt-presets">
-        {[
-          "Help me prioritize my day.",
-          "Help me troubleshoot a Celigo sync failure.",
-          "Help me write a clear message.",
-        ].map((p, i) => (
-          <button key={p} onClick={() => setPrompt(p)}>
-            {["Plan my day", "Investigate a sync", "Find the words"][i]}
-          </button>
-        ))}
-      </div>
-      <textarea
-        aria-label="Message for ChatGPT"
-        value={prompt}
-        maxLength={8000}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder="What’s on your mind, Adam?"
-      />
-      <div className="palantir-actions">
-        <button
-          className="icon-btn"
-          aria-label="Copy ChatGPT prompt"
-          disabled={!prompt.trim()}
-          onClick={copy}
-        >
-          {copied ? <Check size={16} /> : <Copy size={16} />}
-        </button>
-        <button className="gold-button" onClick={open}>
-          <BrandLogo name="ChatGPT" />
-          Open ChatGPT
-          <ArrowUpRight size={15} />
-        </button>
-      </div>
-      {blocked && (
-        <p className="connection-message">
-          If your browser blocked the window,{" "}
-          <a href="https://chatgpt.com/" target="_blank" rel="noreferrer">
-            open ChatGPT here
-          </a>{" "}
-          and paste your prompt.
+        <h4>A little counsel. A clearer path.</h4>
+        <p className="palantir-description">
+          Bring a question, untangle a problem, or turn a rough thought into a
+          plan.
         </p>
-      )}
-      <div className="panel-foot">
-        <span>Companion window · your existing ChatGPT login</span>
-      </div>
+        <div className="prompt-presets">
+          {[
+            "Help me prioritize my day.",
+            "Help me troubleshoot a Celigo sync failure.",
+            "Help me write a clear message.",
+          ].map((p, i) => (
+            <button key={p} onClick={() => setPrompt(p)}>
+              {["Plan my day", "Investigate a sync", "Find the words"][i]}
+            </button>
+          ))}
+        </div>
+        <textarea
+          aria-label="Message for ChatGPT"
+          value={prompt}
+          maxLength={8000}
+          onChange={(e) => setPrompt(e.target.value)}
+          placeholder="What’s on your mind, Adam?"
+        />
+        <div className="palantir-actions">
+          <button
+            className="icon-btn"
+            aria-label="Copy ChatGPT prompt"
+            disabled={!prompt.trim()}
+            onClick={copy}
+          >
+            {copied ? <Check size={16} /> : <Copy size={16} />}
+          </button>
+          <button className="gold-button" onClick={open}>
+            <BrandLogo name="ChatGPT" />
+            Open ChatGPT
+            <ArrowUpRight size={15} />
+          </button>
+        </div>
+        {blocked && (
+          <p className="connection-message">
+            If your browser blocked the window,{" "}
+            <a href="https://chatgpt.com/" target="_blank" rel="noreferrer">
+              open ChatGPT here
+            </a>{" "}
+            and paste your prompt.
+          </p>
+        )}
+        <div className="panel-foot">
+          <span>Companion window · your existing ChatGPT login</span>
+        </div>
+      </details>
     </section>
   );
 }
