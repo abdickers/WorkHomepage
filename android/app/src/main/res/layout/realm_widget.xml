@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/widget_frame" android:padding="12dp">
+    <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/realm_landscape" android:scaleType="centerCrop" android:alpha="0.32" android:contentDescription=""/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="8dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="✦  THE POCKET PALANTÍR" android:textColor="#E7D39B" android:textSize="11sp" android:letterSpacing="0.12"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="horizontal">
+            <TextView android:id="@+id/widget_personal" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:background="@drawable/widget_button" android:gravity="center" android:text="PERSONAL" android:textSize="12sp" android:textColor="#E7D39B" android:contentDescription="Switch widget to Personal"/>
+            <TextView android:id="@+id/widget_work" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:layout_marginStart="8dp" android:background="@drawable/widget_button" android:gravity="center" android:text="WORK" android:textSize="12sp" android:textColor="#E7D39B" android:contentDescription="Switch widget to Work"/>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/widget_open" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:contentDescription="Open the selected command center">
+            <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_palantir" android:contentDescription=""/>
+            <TextView android:id="@+id/widget_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:text="The Shire" android:fontFamily="serif" android:textSize="24sp" android:textColor="#F1DEAA"/>
+            <TextView android:id="@+id/widget_subtitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:gravity="center" android:text="Personal command center" android:textSize="12sp" android:textColor="#D2D7C3"/>
+        </LinearLayout>
+        <TextView android:id="@+id/widget_launch" android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center" android:background="@drawable/widget_button" android:text="OPEN COMMAND CENTER  ↗" android:textSize="12sp" android:textColor="#F1DEAA"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:text="Launch panel · open the app for live information" android:textSize="10sp" android:textColor="#B9C0A9"/>
+    </LinearLayout>
+</FrameLayout>
