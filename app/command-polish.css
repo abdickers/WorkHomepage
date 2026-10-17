@@ -15,20 +15,27 @@
   background: linear-gradient(#eeeadef5,#eeeadefa), var(--realm-art) center top / cover fixed;
 }
 
-/* Opaque surfaces and one quiet outline. Richer art belongs to production. */
+/* Opaque surfaces inside the supplied Elven, Dwarven and Hobbit frames. */
 .app[data-command-realm="work"] .realm-framed {
-  padding: 24px; border: 1px solid var(--line); border-radius: 8px;
+  padding: 36px 30px 30px; border: 0; border-radius: 0;
   background: var(--panel); box-shadow: 0 8px 24px #0002;
   min-width: 0; margin: 0; align-self: start;
 }
-.app[data-command-realm="work"] .realm-framed:not(.operations) > .realm-frame { display: none; }
+.app[data-command-realm="work"] .realm-framed > .realm-frame { display: block; }
+.app[data-command-realm="work"] :is(.realm-elven-art,.realm-dwarven-art) {
+  border-width: 44px; border-image-width: 44px;
+  /* Only the quiet rails flex; short repeated tiles exposed joins on tall cards. */
+  border-image-repeat: stretch;
+}
+.app[data-command-realm="work"] .realm-oak { --oak-unit: .17px; padding: 44px 36px 34px; }
+.app[data-command-realm="work"] .realm-oak-art :is(.oak-top,.oak-bottom,.oak-left,.oak-right) {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
 .app[data-command-realm="work"] .realm-framed::before,
 .app[data-command-realm="work"] .realm-framed::after {
-  content: ""; display: block; position: absolute; width: 12px; height: 12px;
-  border: 0; border-color: var(--gold); pointer-events: none; opacity: .5;
+  display: none;
 }
-.app[data-command-realm="work"] .realm-framed::before { top: 7px; left: 7px; border-top: 1px solid; border-left: 1px solid; }
-.app[data-command-realm="work"] .realm-framed::after { bottom: 7px; right: 7px; border-bottom: 1px solid; border-right: 1px solid; }
 .app[data-command-realm="work"] .operations { padding: 32px; }
 .app[data-command-realm="work"] .operations > .realm-frame { opacity: .68; border-width: 36px; border-image-width: 36px; }
 .app[data-command-realm="work"] .operations::before,
@@ -301,7 +308,9 @@
   .app[data-command-realm="work"] .side-link { padding: 10px 0; }
 }
 @media (max-width: 730px) {
-  .app[data-command-realm="work"] .realm-framed { padding: 18px; }
+  .app[data-command-realm="work"] .realm-framed { padding: 30px 24px 26px; }
+  .app[data-command-realm="work"] :is(.realm-elven-art,.realm-dwarven-art) { border-width: 36px; border-image-width: 36px; }
+  .app[data-command-realm="work"] .realm-oak { --oak-unit: .15px; padding: 38px 30px 30px; }
   .app[data-command-realm="work"] .operations { padding: 24px; }
   .app[data-command-realm="work"] .operations > .realm-frame { border-width: 28px; border-image-width: 28px; }
   .app[data-command-realm="work"] :is(.dashboard-day,.dashboard-support,.realm-flow-board) { grid-template-columns: minmax(0,1fr); }
