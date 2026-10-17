@@ -1,5 +1,6 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
+import { StudyArt } from "@/components/dashboard/study-art";
 import { useEffect, useRef, useState } from "react";
 import {
   LayoutDashboard,
@@ -1022,7 +1023,7 @@ export default function Dashboard() {
                     <NotebookPen size={17} />
                     <h3>Quick capture</h3>
                   </div>
-                  <span className="capture-glyph">✧</span>
+                  <StudyArt name="quill-inkwell" className="capture-quill-art" />
                 </div>
                 <form onSubmit={addCapture}>
                   <textarea

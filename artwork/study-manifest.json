@@ -1,0 +1,121 @@
+[
+  {
+    "name": "quest-medallion",
+    "original": "public/art/study/originals/quest-medallion.png",
+    "sha256": "9defd94b4db42a76e608d478e2edf316234182ef9af4377238344a30a1e53664",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGBA",
+    "delivery": "public/art/study/quest-medallion.webp",
+    "delivery_size": [
+      256,
+      256
+    ],
+    "crop": null,
+    "alpha_preserved": true
+  },
+  {
+    "name": "elven-sundial",
+    "original": "public/art/study/originals/elven-sundial.png",
+    "sha256": "2abd9386c4864afcc232a8a41dc7ad1ab3e9e783c5d94cc179235f359bdf6dfc",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGBA",
+    "delivery": "public/art/study/elven-sundial.webp",
+    "delivery_size": [
+      256,
+      256
+    ],
+    "crop": null,
+    "alpha_preserved": true
+  },
+  {
+    "name": "palantir",
+    "original": "public/art/study/originals/palantir.png",
+    "sha256": "df99517417fd6d0128b3b9d592e5e1684c27ef7994c8d25d832f1f6c2670329a",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGBA",
+    "delivery": "public/art/study/palantir.webp",
+    "delivery_size": [
+      384,
+      384
+    ],
+    "crop": null,
+    "alpha_preserved": true
+  },
+  {
+    "name": "quill-inkwell",
+    "original": "public/art/study/originals/quill-inkwell.png",
+    "sha256": "7b7eb5f9e719b8eaea494006f14e8b605e8b9824a1547fe1e8a2f490fbf0f46f",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGBA",
+    "delivery": "public/art/study/quill-inkwell.webp",
+    "delivery_size": [
+      192,
+      192
+    ],
+    "crop": null,
+    "alpha_preserved": true
+  },
+  {
+    "name": "elven-compass",
+    "original": "public/art/study/originals/elven-compass.png",
+    "sha256": "eb8d7d4b19c2cc266e0b32aa22f8ca0b0a7f14685ab918470852d4cfb2b3dc9b",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGBA",
+    "delivery": "public/art/study/elven-compass.webp",
+    "delivery_size": [
+      256,
+      256
+    ],
+    "crop": null,
+    "alpha_preserved": true
+  },
+  {
+    "name": "ranger-sword",
+    "original": "public/art/study/originals/ranger-sword.png",
+    "sha256": "65a6c4d120f44e73b3d97ea46b73fc17117eb44922c2864dcdff5f32f955c991",
+    "source_size": [
+      2172,
+      724
+    ],
+    "source_mode": "RGBA",
+    "delivery": "public/art/study/ranger-sword.webp",
+    "delivery_size": [
+      900,
+      300
+    ],
+    "crop": null,
+    "alpha_preserved": true
+  },
+  {
+    "name": "dark-map-background",
+    "original": "public/art/study/originals/dark-map-background.png",
+    "sha256": "0a156298b5e09e2ed8979d5a85e2e713953d2ab0eca72889bdb9b99c28dd1757",
+    "source_size": [
+      1536,
+      1024
+    ],
+    "source_mode": "RGB",
+    "delivery": "public/art/study/dark-map-background.webp",
+    "delivery_size": [
+      1536,
+      1024
+    ],
+    "crop": null,
+    "alpha_preserved": false
+  }
+]
