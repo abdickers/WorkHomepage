@@ -1,0 +1,144 @@
+/* Shared visual language with the Shire. No feed, account or storage behavior. */
+.app .realm-framed {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  padding: 38px 30px 30px !important;
+  border: 0 !important;
+  border-radius: 0;
+  overflow: visible;
+  align-self: start;
+}
+.app .realm-framed::before, .app .realm-framed::after { display: none; }
+.realm-frame, .realm-frame * { pointer-events: none; }
+.realm-frame { position: absolute; inset: 0; z-index: -1; }
+.realm-elven-art, .realm-dwarven-art {
+  border: 52px solid transparent;
+  border-image: url('/art/frames/elven-panel-frame-nine-slice.webp') 360 / 52px / 0 round;
+}
+.realm-dwarven-art {
+  border-image-source: url('/art/frames/dwarven-vault-frame-nine-slice.webp');
+  border-image-slice: 320;
+}
+.app .realm-framed .panel-heading { flex-wrap: wrap; row-gap: 10px; }
+.app .realm-framed .panel-heading h3 { font-size: clamp(23px, 1.6vw, 30px); line-height: 1.15; }
+.realm-framed .panel-heading > div { min-width: 0; }
+.realm-framed .panel-heading > div > svg { flex-shrink: 0; }
+.realm-framed :where(p, small, strong, summary) { overflow-wrap: anywhere; }
+.app .tools-section.realm-framed { margin-block: 26px; }
+.app .focus-band.realm-framed { margin-bottom: 26px; }
+.app .realm-framed .panel-foot { margin-bottom: 0; padding-bottom: 0; flex-wrap: wrap; }
+.app .realm-framed.palantir { max-height: none; }
+.realm-framed :is(.daily-caption, .daily-footnote, .daily-feed-footer, .operations-scope) { font-size: 12px; line-height: 1.6; }
+.realm-framed .tools-title { flex-wrap: wrap; gap: 12px; }
+.realm-framed .tools-title h3 { font: 600 26px/1.2 "Cormorant Garamond",Georgia,serif; color: var(--gold-light); }
+.app .treasury-metrics > button { box-shadow: none; min-height: 44px; }
+
+/* Reviewed oak slices: fixed ornaments and repeated quiet rails. */
+.realm-oak { --oak-unit: .2px; }
+.app .realm-oak.realm-framed { padding: 44px 36px 34px !important; }
+.realm-oak-art span { position: absolute; background-repeat: no-repeat; background-size: 100% 100%; }
+.realm-oak-art :is(.oak-top-left, .oak-top-right, .oak-bottom-left, .oak-bottom-right) { width: calc(340 * var(--oak-unit)); }
+.realm-oak-art .oak-top-left { top: 0; left: 0; height: calc(470 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-top-left.webp'); }
+.realm-oak-art .oak-top-right { top: 0; right: 0; height: calc(300 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-top-right.webp'); }
+.realm-oak-art .oak-bottom-left { bottom: 0; left: 0; height: calc(250 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-bottom-left.webp'); }
+.realm-oak-art .oak-bottom-right { bottom: 0; right: 0; height: calc(360 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-bottom-right.webp'); }
+.realm-oak-art :is(.oak-top,.oak-bottom) { left: calc(340 * var(--oak-unit)); right: calc(340 * var(--oak-unit)); background-repeat: repeat-x; background-size: calc(200 * var(--oak-unit)) 100%; }
+.realm-oak-art .oak-top { top: 0; height: calc(130 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-top.webp'); }
+.realm-oak-art .oak-bottom { bottom: 0; height: calc(141 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-bottom.webp'); }
+.realm-oak-art :is(.oak-left,.oak-right) { background-repeat: repeat-y; }
+.realm-oak-art .oak-left { top: calc(470 * var(--oak-unit)); bottom: calc(250 * var(--oak-unit)); left: 0; width: calc(170 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-left.webp'); background-size: 100% calc(60 * var(--oak-unit)); }
+.realm-oak-art .oak-right { top: calc(300 * var(--oak-unit)); bottom: calc(360 * var(--oak-unit)); right: 0; width: calc(182 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-right.webp'); background-size: 100% calc(50 * var(--oak-unit)); }
+
+/* The Ravens: dark ink on a flexible sheet, with proportional roller heads. */
+.app .realm-scroll.realm-framed {
+  --scroll-end: 46px;
+  --text: #352616; --muted: #634c32; --gold: #79582e; --gold-light: #4b321b;
+  --input: #f2e3c4; --line: #92734b66;
+  padding: 48px 38px 42px !important;
+  background: none !important;
+  box-shadow: none;
+  color: var(--text);
+}
+.realm-scroll-paper { position: absolute; inset: 26px 12px; display: grid; grid-template-columns: 20px 1fr 20px; }
+.realm-scroll-paper > span { background: url('/art/frames/ravens-paper-center.webp') repeat; }
+.realm-scroll-paper > span:first-child { background: url('/art/frames/ravens-paper-left.webp') left top / 100% auto repeat-y; }
+.realm-scroll-paper > span:last-child { background: url('/art/frames/ravens-paper-right.webp') right top / 100% auto repeat-y; }
+.realm-scroll-cap { position: absolute; inset-inline: 0; height: calc(var(--scroll-end) * 176 / 180); display: grid; grid-template-columns: var(--scroll-end) 1fr var(--scroll-end); }
+.realm-scroll-cap img { width: 100%; height: 100%; }
+.realm-scroll-cap > span { background: url('/art/frames/ravens-roller-center.webp') center / auto 100% repeat-x; }
+.realm-scroll-cap img:first-child { mask-image: linear-gradient(to right,#000 calc(100% - 8px),transparent); }
+.realm-scroll-cap img:last-child { mask-image: linear-gradient(to right,transparent,#000 8px); }
+.cap-top { top: 0; }
+.cap-bottom { bottom: 0; transform: scaleY(-1); }
+.app .realm-scroll :is(h3, .daily-entry strong, .daily-entry small, .daily-entry p, .daily-caption, .daily-empty, .daily-feed-footer, .daily-feed-footer span, .tag, svg) { color: var(--text); }
+.app .realm-scroll .daily-entry { border-color: #96714455; }
+.app .realm-scroll .daily-entry strong { font-weight: 650; }
+.app .realm-scroll .daily-entry:hover { background: #a2783714; }
+.app .realm-scroll .daily-list { scrollbar-color: #886637 #e3cea7; padding-right: 8px; scroll-padding-block: 8px; }
+.app .realm-scroll .daily-tabs b { color: #fff1d7; background: #604323; }
+.app .realm-scroll .daily-error { color: #77341e; background: #f0d2a7; border-color: #a5673f; }
+.app .realm-scroll .daily-error a { color: #5c2d18; text-decoration: underline; }
+.app.light .daily-panel:not(.realm-scroll) {
+  background: linear-gradient(135deg,#f8f3e5,#e9e0cc) !important;
+  color: #283a2f;
+}
+.app.light .daily-panel:not(.realm-scroll) :is(h3, .daily-entry strong, .daily-entry small, .daily-entry p, .daily-caption, .daily-empty, .daily-footnote, .daily-feed-footer, .treasury-metrics strong, .treasury-metrics span, .treasury-metrics small, .invoice-row summary strong, .invoice-row summary small, .invoice-editor p, .invoice-editor > small, .invoice-editor label) { color: #354737; }
+.app.light .daily-panel .invoice-editor > a { color: #755018; }
+
+/* The provided alpha is retained, including colored flame halos and dark stone. */
+.realm-beacon .beacon-art { width: min(100%, 132px); height: 184px; object-fit: contain; display: block; }
+.realm-beacon { padding-inline: 2px; }
+.realm-beacon.active { --beacon-color: #e8bd64; }
+.realm-beacon.queued { --beacon-color: #91d3f4; }
+.realm-beacon.error { --beacon-color: #f4aa77; }
+.realm-beacon.roster { --beacon-color: #d7c49a; }
+.realm-beacon > span { color: var(--text); text-align: center; }
+.light .realm-beacon.active { --beacon-color: #72501b; }
+.light .realm-beacon.queued { --beacon-color: #235a7b; }
+.light .realm-beacon.error { --beacon-color: #964019; }
+.light .realm-beacon.roster { --beacon-color: #65502e; }
+
+/* Consistent forged-gold controls; small icon/check controls keep their shapes. */
+.app :is(.gold-button, .outline-button, .daily-panel button, .task-tabs button, .operations-tabs > button, .capture-options button, .prompt-presets button) {
+  border: 1px solid #a78a51;
+  border-radius: 4px;
+  background: linear-gradient(135deg,#23372a,#101d17);
+  color: #f4e4bd;
+  box-shadow: inset 0 0 0 2px #080f0b, inset 0 0 0 3px #b6954b24, 0 2px 3px #0003;
+  min-height: 40px;
+  line-height: 1.4;
+}
+.app :is(.gold-button, .daily-tabs button[aria-pressed=true], .task-tabs button.selected, .operations-tabs > button.selected) {
+  background: linear-gradient(135deg,#72582b,#46351d);
+  color: #fff1d1;
+}
+.app.light :is(.outline-button, .daily-panel button, .task-tabs button, .operations-tabs > button, .capture-options button, .prompt-presets button),
+.app .realm-scroll button {
+  color: #3c2a17; border-color: #89663a; background: linear-gradient(#f4e5c4,#dfc89b);
+  box-shadow: inset 0 0 0 2px #f6e8cc, 0 2px 3px #442d1922;
+}
+.app .realm-scroll button[aria-pressed=true] { background: linear-gradient(#72532d,#48311b); color: #fff1d1; }
+.app :is(input:not([type=checkbox]):not([type=radio]), textarea, select) { border-color: #a18a5766; border-radius: 4px; }
+.app .realm-framed :is(button,a,input,textarea,select,summary):focus-visible { outline: 3px solid #ffe1a1; outline-offset: 3px; }
+.app .realm-scroll :is(button,a,summary):focus-visible, .app.light .realm-framed :is(button,a,input,textarea,select,summary):focus-visible { outline-color: #8a431e; }
+
+@media (min-width: 2200px) {
+  .app .realm-framed { padding: 44px 38px 34px !important; }
+  .realm-elven-art, .realm-dwarven-art { border-width: 64px; border-image-width: 64px; }
+  .realm-beacon .beacon-art { width: min(100%, 160px); height: 222px; }
+}
+@media (max-width: 1100px) {
+  .realm-beacon .beacon-art { height: 150px; }
+}
+@media (max-width: 650px) {
+  .app .realm-framed { padding: 32px 24px 26px !important; }
+  .realm-elven-art, .realm-dwarven-art { border-width: 42px; border-image-width: 42px; }
+  .app .realm-oak.realm-framed { padding: 40px 30px 30px !important; --oak-unit: .17px; }
+  .app .realm-scroll.realm-framed { --scroll-end: 38px; padding: 42px 30px 38px !important; }
+  .realm-beacons { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px 8px; }
+  .realm-beacon .beacon-art { height: 164px; width: 110px; }
+  .realm-beacon > span { font-size: 12px; }
+  .app .realm-framed .panel-heading h3 { font-size: 25px; }
+  .app .realm-framed .operations-tabs { flex-wrap: wrap; }
+}

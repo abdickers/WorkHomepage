@@ -1,4 +1,5 @@
 "use client";
+import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { useEffect, useRef, useState } from "react";
 import {
   LayoutDashboard,
@@ -768,7 +769,8 @@ export default function Dashboard() {
           {view === "overview" && <DailyCouncil />}
           <div className="dashboard-grid">
             {section("priorities") && (
-              <section className="panel priorities">
+              <section className="panel priorities realm-framed realm-elven">
+                <PanelFrame kind="elven" />
                 <div className="panel-heading">
                   <div>
                     <span className="section-icon">
@@ -892,7 +894,8 @@ export default function Dashboard() {
               </section>
             )}
             {(view === "overview" || view === "systems") && (
-              <section className="panel agenda">
+              <section className="panel agenda realm-framed realm-elven">
+                <PanelFrame kind="elven" />
                 <div className="panel-heading">
                   <div>
                     <CalendarDays size={17} />
@@ -1012,7 +1015,8 @@ export default function Dashboard() {
             {(view === "overview" || view === "systems") && <Operations />}
             {view === "overview" && <Palantir />}
             {(section("notes") || view === "priorities") && (
-              <section className="panel capture">
+              <section className="panel capture realm-framed realm-oak">
+                <PanelFrame kind="oak" />
                 <div className="panel-heading">
                   <div>
                     <NotebookPen size={17} />
@@ -1106,7 +1110,8 @@ export default function Dashboard() {
           </div>
           {view === "overview" && (
             <>
-              <section className="tools-section">
+              <section className="tools-section realm-framed realm-dwarven">
+                <PanelFrame kind="dwarven" />
                 <div className="tools-title">
                   <h3>The Fellowship & daily tools</h3>
                   <button
@@ -1168,7 +1173,8 @@ export default function Dashboard() {
                   ))}
                 </div>
               </section>
-              <section className="focus-band">
+              <section className="focus-band realm-framed realm-oak">
+                <PanelFrame kind="oak" />
                 <div className="focus-intro">
                   <span className="focus-icon">
                     <Mountain size={26} />

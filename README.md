@@ -51,7 +51,13 @@ The key's Drive source is not required at runtime and Drive is not added to the 
 
 ## Saved artwork and logos
 
-The visual operations board uses original inline SVG artwork in `components/dashboard/realm-widgets.tsx`: beacon towers, a selectable flow constellation, error-share bars, sampled Worker-event runes, a quest-progress seal, and a Central-time clock. Counts use the existing live feeds; flames mean nonzero counts, never a health score. Error, running, paused, and idle markers are distinct; idle does not establish successful sync. Detailed flow/log tables remain available under Inspect disclosures. The Council's orb is decorative and brightens only during a request.
+The visual operations board uses supplied transparent beacon artwork and original inline SVG widgets in `components/dashboard/realm-widgets.tsx`: a selectable flow constellation, error-share bars, sampled Worker-event runes, a quest-progress seal, and a Central-time clock. Counts use the existing live feeds; flames mean nonzero job/error counts, never a health score. The returned-flow roster stays unlit. Error, running, paused, and idle markers are distinct; idle does not establish successful sync. Detailed flow/log tables remain available under Inspect disclosures. The Council's orb is decorative and brightens only during a request.
+
+Reusable presentation-only frames in `components/dashboard/panel-frame.tsx` and
+`app/realm-presentation.css` reuse the personal homepage’s approved Elven,
+Dwarven, oak and Ravens scroll assets. Fixed ornaments and flexible rails adapt
+to panel height without stretching artwork. See `artwork/README.md` for source
+provenance, dimensions, delivery derivatives and beacon state mapping.
 
 On 4K displays the landscape header is roughly 650 pixels high, compared with the previous 240-pixel minimum. It reuses the saved 3840-pixel artwork. No new raster asset generation is needed.
 

@@ -1,0 +1,62 @@
+[
+  {
+    "source": "artwork/beacons/beacon-alert-gold.png",
+    "sha256": "cbbc612e102eb49e1a16df2701ef2cc3fe0117592349ff49f734b3909eeae08d",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "source_mode": "RGBA",
+    "delivery": "/art/beacons/beacon-alert-gold.webp",
+    "delivery_size": [
+      320,
+      480
+    ],
+    "alpha_preserved": true
+  },
+  {
+    "source": "artwork/beacons/beacon-error-orange.png",
+    "sha256": "8e9100c22ac7003e3125572313cb37ea3998c63946795b42ba5206a6d2627873",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "source_mode": "RGBA",
+    "delivery": "/art/beacons/beacon-error-orange.webp",
+    "delivery_size": [
+      320,
+      480
+    ],
+    "alpha_preserved": true
+  },
+  {
+    "source": "artwork/beacons/beacon-unlit.png",
+    "sha256": "ec377bc6aa34ad89ad43a0d2a409e2c6973f175a5de44adecb19e4eecf695d95",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "source_mode": "RGBA",
+    "delivery": "/art/beacons/beacon-unlit.webp",
+    "delivery_size": [
+      320,
+      480
+    ],
+    "alpha_preserved": true
+  },
+  {
+    "source": "artwork/beacons/beacon-queued-blue.png",
+    "sha256": "6b49a66ae0d6a3c69afec61dea416c5bc6f2f8d92b0023210e86cb5184cf6881",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "source_mode": "RGBA",
+    "delivery": "/art/beacons/beacon-queued-blue.webp",
+    "delivery_size": [
+      320,
+      480
+    ],
+    "alpha_preserved": true
+  }
+]

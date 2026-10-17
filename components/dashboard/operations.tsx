@@ -1,4 +1,5 @@
 "use client";
+import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { useEffect, useRef, useState } from "react";
 import {
   Activity,
@@ -208,8 +209,9 @@ export function Operations() {
   const sources = feeds.celigo.data?.sources;
   return (
     <section
-      className={"panel operations systems " + (stale ? "realm-stale" : "")}
+      className={"panel operations systems realm-framed realm-dwarven " + (stale ? "realm-stale" : "")}
     >
+      <PanelFrame kind="dwarven" />
       <div className="panel-heading">
         <div>
           <RadioTower size={19} />
