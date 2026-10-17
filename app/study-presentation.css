@@ -1,0 +1,62 @@
+/* Supplied study illustrations. All metrics, charts and actions stay live. */
+.study-art { display: block; object-fit: contain; pointer-events: none; flex-shrink: 0; }
+.app .quest-seal-widget, .app .day-dial-widget { gap: 14px; min-width: 0; }
+.app .quest-seal-widget > div, .app .day-dial-widget > div { min-width: 0; }
+.app .quest-medallion-art { width: 80px; height: 80px; }
+.app .agenda-sundial-art { width: 88px; height: 88px; }
+.app .quest-progress-status { display: flex; align-items: center; gap: 6px; color: var(--text); font-size: 12px; }
+.quest-progress-status > svg { width: 24px; height: 24px; flex: 0 0 24px; }
+.quest-progress-status :is(.quest-track, .quest-progress) { stroke-width: 12; }
+.app.light .quest-progress-status .quest-track { stroke: #7c6d4a55; }
+.app.light .quest-progress-status .quest-progress { stroke: #78602f; }
+.agenda-live-time { font-size: 13px; font-variant-numeric: tabular-nums; color: var(--text); }
+
+.app .constellation-compass-art {
+  position: absolute; left: 50%; top: 18%; transform: translateX(-50%);
+  width: clamp(64px,6vw,80px); height: auto; aspect-ratio: 1; max-width: 35%;
+}
+.app .constellation-total { inset: 54% 18% auto; gap: 3px; }
+.app .constellation-total strong { font-size: 34px; }
+.app .constellation-total span { font-size: 11px; }
+.app .error-sword { display: flex; justify-content: center; margin: 4px 0 12px; }
+.app .error-sword .study-art { width: min(100%,280px); height: auto; aspect-ratio: 3; }
+.app .realm-flow-board { grid-template-columns: minmax(0,1fr) minmax(0,1.15fr); }
+.app .realm-flow-board > div { min-width: 0; }
+.error-bar-label a { min-width: 0; overflow-wrap: anywhere; }
+.app .error-distribution, .app .error-distribution > div, .app .error-bar-label { min-width: 0; }
+.app .error-bar-label > :first-child { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.app .error-bar-label > strong { flex-shrink: 0; }
+
+/* Independent map layer, below the chart and controls; intentionally not tiled. */
+.app :is(.realm-flow-board, .worker-runes) { position: relative; isolation: isolate; }
+.app :is(.realm-flow-board, .worker-runes)::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  border-radius: inherit; background: url('/art/study/dark-map-background.webp') center / cover no-repeat;
+  opacity: .22;
+}
+.app.light :is(.realm-flow-board, .worker-runes)::before { opacity: .07; }
+.app.light .constellation-total span { color: #52604c; }
+.app.light .realm-legend .error, .app.light .error-bar-label strong { color: #914325; }
+.app.light .realm-legend .active { color: #32644d; }
+.app.light .realm-legend .paused { color: #765b24; }
+.app.light .realm-legend .idle { color: #53604f; }
+
+.app .council-orb-widget { height: auto; min-height: 184px; margin: 4px 0 16px; }
+.app .council-palantir-art { width: min(100%,180px); height: auto; aspect-ratio: 1; }
+.app .orb-awake .council-palantir-art { filter: drop-shadow(0 0 12px #70cfdc55); }
+.app .companion-palantir-art { width: min(100%,140px); height: auto; aspect-ratio: 1; margin: 18px auto; }
+.app .palantir :is(.incident-briefing, .briefing-evidence, .briefing-result, .briefing-text, .chatgpt-companion) { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.app .palantir :is(.briefing-actions, .palantir-actions, .prompt-presets) { flex-wrap: wrap; }
+.app .palantir :is(.briefing-actions, .palantir-actions, .prompt-presets) > button { min-width: 0; max-width: 100%; white-space: normal; }
+.app .palantir textarea { min-width: 0; max-width: 100%; }
+.app .capture-quill-art { width: 64px; height: 64px; margin-left: auto; }
+.app .capture .panel-heading { min-height: 68px; }
+
+@media (max-width: 650px) {
+  .app .realm-flow-board { grid-template-columns: minmax(0,1fr); }
+  .app .quest-medallion-art { width: 72px; height: 72px; }
+  .app .agenda-sundial-art { width: 80px; height: 80px; }
+  .app .quest-seal-widget strong { font-size: 24px; }
+  .app .council-palantir-art { width: min(100%,160px); }
+  .app .capture-quill-art { width: 56px; height: 56px; }
+}

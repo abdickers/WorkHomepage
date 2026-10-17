@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { celigoFlowUrl } from "@/lib/daily-data.mjs";
+import { StudyArt } from "./study-art";
 
 const litBeaconArt: Record<string, string> = {
   error: "beacon-error-orange",
@@ -105,10 +106,6 @@ export function FlowConstellation({
               d="M150 12V35M150 235V258M27 135H48M252 135H273"
               className="compass-ticks"
             />
-            <path
-              d="m150 80 9 30 25 6-25 8-9 30-9-30-25-8 25-6Z"
-              className="realm-star"
-            />
             {flows?.slice(0, 50).map((f, i) => {
               const a = (i / flows.length) * Math.PI * 2 - Math.PI / 2;
               return (
@@ -120,6 +117,7 @@ export function FlowConstellation({
               );
             })}
           </svg>
+          <StudyArt name="elven-compass" className="constellation-compass-art" />
           <div className="constellation-total">
             <strong>{flows?.length ?? "—"}</strong>
             <span>flows returned</span>
@@ -174,10 +172,7 @@ export function FlowConstellation({
       <div className="error-ledger">
         <div className="realm-widget-label">Where the shadows gather</div>
         <div className="error-sword" aria-hidden="true">
-          <svg viewBox="0 0 300 65">
-            <path d="M12 32 38 24H244L279 32 244 40H38Z" />
-            <path d="M244 16V48M262 24V40M244 32H289" />
-          </svg>
+          <StudyArt name="ranger-sword" />
         </div>
         {flows ? (
           troubled.length ? (
@@ -319,32 +314,19 @@ export function QuestSeal({ done, total }: { done: number; total: number }) {
   const progress = total ? done / total : 0;
   return (
     <div className="quest-seal-widget">
-      <svg
-        viewBox="0 0 140 140"
-        role="img"
-        aria-label={`${done} of ${total} priorities complete`}
-      >
-        <circle cx="70" cy="70" r="58" className="rune-ring" />
-        <circle cx="70" cy="70" r="50" className="quest-track" />
-        <circle
-          cx="70"
-          cy="70"
-          r="50"
-          className="quest-progress"
-          strokeDasharray={`${progress * 314.16} 314.16`}
-          transform="rotate(-90 70 70)"
-        />
-        <path
-          d="m69 25 7 26 20 5-20 7-7 25-7-25-20-7 20-5Z"
-          className="realm-star"
-        />
-        <text x="70" y="112" textAnchor="middle">
-          {done} / {total}
-        </text>
-      </svg>
+      <StudyArt name="quest-medallion" className="quest-medallion-art" />
       <div>
         <span className="realm-widget-label">The day’s quest</span>
         <strong>{total - done} remaining</strong>
+        <div className="quest-progress-status">
+          <svg viewBox="0 0 140 140" aria-hidden="true">
+            <circle cx="70" cy="70" r="50" className="quest-track" />
+            <circle cx="70" cy="70" r="50" className="quest-progress"
+              strokeDasharray={`${progress * 314.16} 314.16`}
+              transform="rotate(-90 70 70)" />
+          </svg>
+          <span>{done} / {total} complete</span>
+        </div>
         <small>
           {total ? `${Math.round(progress * 100)}% complete` : "A fresh page"}
         </small>
@@ -381,42 +363,12 @@ export function DayDial({
     : 0;
   return (
     <div className="day-dial-widget">
-      <svg
-        viewBox="0 0 150 150"
-        role="img"
-        aria-label={
-          now
-            ? `Central time ${hour}:${String(minute).padStart(2, "0")}`
-            : "Clock loading"
-        }
-      >
-        <circle cx="75" cy="75" r="62" className="rune-ring" />
-        <circle cx="75" cy="75" r="48" className="rune-ring inner" />
-        {Array.from({ length: 12 }, (_, i) => (
-          <path
-            key={i}
-            d="M75 18V25"
-            transform={`rotate(${i * 30} 75 75)`}
-            className="compass-ticks"
-          />
-        ))}
-        <path
-          d="M75 75V40"
-          transform={`rotate(${(hour % 12) * 30 + minute * 0.5} 75 75)`}
-          className="clock-hour"
-        />
-        <path
-          d="M75 75V28"
-          transform={`rotate(${minute * 6} 75 75)`}
-          className="clock-minute"
-        />
-        <circle cx="75" cy="75" r="4" className="realm-star" />
-        <text x="75" y="105" textAnchor="middle">
-          CT
-        </text>
-      </svg>
+      <StudyArt name="elven-sundial" className="agenda-sundial-art" />
       <div>
         <span className="realm-widget-label">The sun’s passage</span>
+        <time className="agenda-live-time" dateTime={now?.toISOString()}>
+          {now ? `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")} CT` : "Clock loading"}
+        </time>
         <strong>
           {loaded ? events : "—"}
           <small>{loaded ? "events today" : "calendar not loaded"}</small>

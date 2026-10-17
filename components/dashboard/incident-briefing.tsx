@@ -1,4 +1,5 @@
 "use client";
+import { StudyArt } from "./study-art";
 import { useState, useEffect, useRef } from "react";
 import { ArrowUpRight, RefreshCw, Sparkles, ShieldCheck } from "lucide-react";
 import type { Evidence } from "@/lib/briefing-data.mjs";
@@ -103,11 +104,7 @@ export function IncidentBriefing() {
         className={"council-orb-widget " + (busy ? "orb-awake" : "")}
         aria-hidden="true"
       >
-        <div className="council-orbit" />
-        <div className="council-orb">
-          <span>✧</span>
-        </div>
-        <div className="council-base" />
+        <StudyArt name="palantir" className="council-palantir-art" />
       </div>
       <div className="briefing-actions">
         <button

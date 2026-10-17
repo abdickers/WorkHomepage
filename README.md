@@ -59,6 +59,12 @@ Dwarven, oak and Ravens scroll assets. Fixed ornaments and flexible rails adapt
 to panel height without stretching artwork. See `artwork/README.md` for source
 provenance, dimensions, delivery derivatives and beacon state mapping.
 
+The council study pack adds supplied medallion, sundial, orb, quill, compass,
+sword and subdued map illustrations through `StudyArt` and
+`app/study-presentation.css`. Live text, quest progress, chart nodes and actions
+remain separate from decorative images. Source files and actual dimensions are
+documented in `artwork/STUDY-ASSETS.md` and `artwork/study-manifest.json`.
+
 On 4K displays the landscape header is roughly 650 pixels high, compared with the previous 240-pixel minimum. It reuses the saved 3840-pixel artwork. No new raster asset generation is needed.
 
 The dashboard owns its dark/light appearance. A server-rendered `darkreader-lock` meta tag requests that Dark Reader leave this Site's colors and imagery intact. Both hero background declarations use the same saved artwork to avoid a transformed legacy rule restoring the old image. Theme choice is saved separately per browser. Wide monitors use the four-column operations layout; narrower panes stack the same panels.

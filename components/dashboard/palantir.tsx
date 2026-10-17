@@ -1,5 +1,6 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
+import { StudyArt } from "./study-art";
 import { useState, useRef } from "react";
 import { ArrowUpRight, Copy, Check, MessageSquare, Send } from "lucide-react";
 import { BrandLogo } from "./brand-logo";
@@ -60,12 +61,7 @@ export function Palantir() {
       <IncidentBriefing />
       <details className="chatgpt-companion">
         <summary>The Palantír · Open ChatGPT companion</summary>
-        <div className="orb-scene" aria-hidden="true">
-          <div className="palantir-orb">
-            <span>✧</span>
-          </div>
-          <div className="orb-plinth" />
-        </div>
+        <StudyArt name="palantir" className="companion-palantir-art" />
         <h4>A little counsel. A clearer path.</h4>
         <p className="realm-account">Use dickersona@76fireworks.com in ChatGPT’s account switcher. Companion windows share your browser login.</p>
         <p className="palantir-description">
