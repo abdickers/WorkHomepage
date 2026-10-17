@@ -1,15 +1,8 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { useEffect, useRef, useState } from "react";
-import {
-  Activity,
-  RefreshCw,
-  ArrowUpRight,
-  RadioTower,
-  AlertTriangle,
-  Check,
-  Clock3,
-} from "lucide-react";
+import { Activity, AlertTriangle } from "lucide-react";
+import { RefreshCw, ArrowUpRight, RadioTower, Check, Clock3 } from "@/components/dashboard/realm-icon";
 import { BrandLogo } from "./brand-logo";
 import { maskLog, providerData, records } from "@/lib/provider-data.mjs";
 import { Beacon, FlowConstellation, WorkerRunes } from "./realm-widgets";

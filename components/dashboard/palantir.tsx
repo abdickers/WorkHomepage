@@ -2,7 +2,9 @@
 import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { StudyArt } from "./study-art";
 import { useState, useRef } from "react";
-import { ArrowUpRight, Copy, Check, MessageSquare, Send } from "lucide-react";
+import { Copy, Send } from "lucide-react";
+import { ArrowUpRight, Check } from "@/components/dashboard/realm-icon";
+import { RealmIcon } from "@/components/dashboard/realm-icon";
 import { BrandLogo } from "./brand-logo";
 import { IncidentBriefing } from "./incident-briefing";
 export function Palantir() {
@@ -53,7 +55,7 @@ export function Palantir() {
       <PanelFrame kind="elven" />
       <div className="panel-heading">
         <div>
-          <MessageSquare size={18} />
+          <RealmIcon name="council" />
           <h3>The Council</h3>
         </div>
         <span className="tag">CLAUDE · ON DEMAND</span>

@@ -1,0 +1,328 @@
+/* Work dashboard polish kit: presentation only, scoped away from the Shire. */
+.app[data-command-realm="work"] {
+  --panel: #102019; --panel-alt: #102019; --input: #0a1712;
+  --text: #f1eddf; --muted: #b4bfb1; --gold: #d9bd77;
+  --gold-light: #eed8a4; --line: #536047; --control: #192e24;
+  --focus: #b9e8d0;
+  background: linear-gradient(#091410f5,#091410fa), var(--realm-art) center top / cover fixed;
+  font-size: 14px; line-height: 1.55;
+}
+.app[data-command-realm="work"].light {
+  --panel: #f8f5eb; --panel-alt: #f8f5eb; --input: #fffcf3;
+  --text: #26372c; --muted: #52624e; --gold: #78602d;
+  --gold-light: #644b22; --line: #a19d82; --control: #e7e8d9;
+  --focus: #286947;
+  background: linear-gradient(#eeeadef5,#eeeadefa), var(--realm-art) center top / cover fixed;
+}
+
+/* Opaque surfaces and one quiet outline. Richer art belongs to production. */
+.app[data-command-realm="work"] .realm-framed {
+  padding: 24px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--panel); box-shadow: 0 8px 24px #0002;
+  min-width: 0; margin: 0; align-self: start;
+}
+.app[data-command-realm="work"] .realm-framed:not(.operations) > .realm-frame { display: none; }
+.app[data-command-realm="work"] .realm-framed::before,
+.app[data-command-realm="work"] .realm-framed::after {
+  content: ""; display: block; position: absolute; width: 12px; height: 12px;
+  border: 0; border-color: var(--gold); pointer-events: none; opacity: .5;
+}
+.app[data-command-realm="work"] .realm-framed::before { top: 7px; left: 7px; border-top: 1px solid; border-left: 1px solid; }
+.app[data-command-realm="work"] .realm-framed::after { bottom: 7px; right: 7px; border-bottom: 1px solid; border-right: 1px solid; }
+.app[data-command-realm="work"] .operations { padding: 32px; }
+.app[data-command-realm="work"] .operations > .realm-frame { opacity: .68; border-width: 36px; border-image-width: 36px; }
+.app[data-command-realm="work"] .operations::before,
+.app[data-command-realm="work"] .operations::after { display: none; }
+.app[data-command-realm="work"] :is(.panel-heading,.tools-title) {
+  gap: 16px; margin: 0 0 20px; padding: 0 0 16px;
+  border-bottom: 1px solid var(--line); flex-wrap: wrap;
+}
+.app[data-command-realm="work"] .panel-heading > div { gap: 8px; min-width: 0; }
+.app[data-command-realm="work"] .panel-heading > a { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.app[data-command-realm="work"] .panel small { font-size: 12px; line-height: 1.5; }
+.app[data-command-realm="work"] :is(.panel-heading h3,.tools-title h3,.focus-intro h3) {
+  font: 500 clamp(24px,1.7vw,28px)/1.2 "Cormorant Garamond",Georgia,serif;
+  color: var(--gold-light); text-wrap: balance;
+}
+.app[data-command-realm="work"] .tag { font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+.app[data-command-realm="work"] :is(.panel-foot,.daily-feed-footer) {
+  font-size: 12px; line-height: 1.5; color: var(--muted);
+  font-family: "DM Sans",Arial,sans-serif; font-style: normal;
+  margin-top: 16px; padding-top: 16px; min-height: 0;
+  display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center;
+}
+.app[data-command-realm="work"] .panel-foot > span:last-child { margin-left: 0; }
+.app[data-command-realm="work"] :is(.daily-caption,.daily-footnote,.operations-scope,.briefing-snapshot,.briefing-privacy,.briefing-coverage,.realm-account,.realm-widget-label) {
+  font-size: 12px; line-height: 1.6; color: var(--muted);
+}
+.app[data-command-realm="work"] :is(.daily-caption,.daily-footnote) { margin-block: 16px; }
+
+/* Independent columns follow the same DOM/keyboard order when stacked. */
+.app[data-command-realm="work"] :is(.dashboard-grid,.daily-council) { gap: 24px; margin-bottom: 32px; align-items: start; }
+.app[data-command-realm="work"] .dashboard-grid {
+  display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.4fr);
+  grid-template-areas: "day systems" "support support";
+}
+.app[data-command-realm="work"] .dashboard-stack { display: grid; gap: 24px; min-width: 0; align-content: start; align-items: start; }
+.app[data-command-realm="work"] .dashboard-stack:empty { display: none; }
+.app[data-command-realm="work"] .dashboard-day { grid-area: day; }
+.app[data-command-realm="work"] .dashboard-support { grid-area: support; grid-template-columns: repeat(2,minmax(0,1fr)); }
+.app[data-command-realm="work"] .dashboard-stack > * { grid-area: auto; }
+.app[data-command-realm="work"] .operations { grid-area: systems; }
+.app[data-command-realm="work"] :is(.dashboard-view-priorities,.dashboard-view-notes) {
+  grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-areas: "day support";
+}
+.app[data-command-realm="work"] :is(.dashboard-view-priorities,.dashboard-view-notes) .dashboard-support { grid-template-columns: minmax(0,1fr); }
+.app[data-command-realm="work"] .dashboard-view-notes { grid-template-columns: minmax(0,1fr); grid-template-areas: "support"; }
+.app[data-command-realm="work"] .daily-council { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.app[data-command-realm="work"] .treasury { grid-column: 1 / -1; }
+.app[data-command-realm="work"] .tools-section { margin-block: 0 32px; }
+.app[data-command-realm="work"] .focus-band { margin-bottom: 32px; }
+
+/* One control system, retaining native HTML and each existing action. */
+.app[data-command-realm="work"] :is(.gold-button,.outline-button,.daily-panel button,.task-tabs button,.operations-tabs > button,.capture-options button,.prompt-presets button) {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; height: auto; max-width: 100%; padding: 10px 16px;
+  border: 1px solid var(--line); border-radius: 6px; box-shadow: none;
+  background: var(--control); color: var(--text);
+  font: 600 14px/1.3 "DM Sans",Arial,sans-serif;
+  white-space: normal; text-align: center;
+}
+.app[data-command-realm="work"] :is(.gold-button,.outline-button,.daily-panel button,.task-tabs button,.operations-tabs > button,.capture-options button,.prompt-presets button):hover:not(:disabled) {
+  background: color-mix(in srgb,var(--control) 85%,var(--gold)); border-color: var(--gold);
+}
+.app[data-command-realm="work"] button.gold-button {
+  background: #d1b575; color: #172117; border-color: #d1b575;
+}
+.app[data-command-realm="work"] button.gold-button:hover:not(:disabled) { background: #e0c58a; color: #172117; }
+.app[data-command-realm="work"] :is(.text-action,.icon-btn,.remove,.priority-toggle,.check-button) {
+  min-height: 44px; min-width: 44px; display: inline-flex;
+  align-items: center; justify-content: center; gap: 8px; line-height: 1.3;
+  flex-shrink: 0; font-size: 14px;
+}
+.app[data-command-realm="work"] .text-action { padding: 10px 12px; }
+.app[data-command-realm="work"] .summary-action { min-height: 44px; padding: 10px 12px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+.app[data-command-realm="work"] .icon-btn { width: 44px; height: 44px; padding: 10px; }
+.app[data-command-realm="work"] button:disabled { opacity: .48; cursor: not-allowed; }
+.app[data-command-realm="work"] :is(button,a,input,textarea,select,summary):focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.app[data-command-realm="work"] :is(button,a) > svg { flex-shrink: 0; }
+.app[data-command-realm="work"] :is(.gold-button,.outline-button,.daily-panel button,.text-action,.icon-btn,.task-tabs button,.capture-options button,.prompt-presets button) > svg { width: 20px; height: 20px; }
+.app[data-command-realm="work"] :is(.daily-tabs,.task-tabs,.operations-tabs,.briefing-actions,.palantir-actions,.prompt-presets,.treasury-scan,.invoice-actions,.backup-actions) {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; max-width: 100%;
+}
+.app[data-command-realm="work"] :is(.daily-tabs,.task-tabs,.operations-tabs) {
+  padding: 4px; background: var(--input); border: 1px solid var(--line); border-radius: 8px;
+  margin: 16px 0;
+}
+.app[data-command-realm="work"] :is(.daily-tabs,.task-tabs,.operations-tabs) > button {
+  background: transparent; border-color: transparent; margin: 0; padding: 10px 12px;
+}
+.app[data-command-realm="work"] :is(.daily-tabs button[aria-pressed="true"],.task-tabs button.selected,.operations-tabs > button.selected,.flag-button[aria-pressed="true"]) {
+  background: color-mix(in srgb,var(--control) 88%,var(--gold)); color: var(--gold-light); border-color: transparent;
+}
+.app[data-command-realm="work"] :is(.daily-tabs b,.task-tabs button > span,.nav-count,.error-count) {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 20px;
+  background: var(--input); color: var(--text); font-size: 12px; line-height: 1.5;
+  font-variant-numeric: tabular-nums; flex-shrink: 0; margin: 0;
+}
+.app[data-command-realm="work"] .operations-tabs .refresh-operation { margin-left: auto; padding: 10px; }
+.app[data-command-realm="work"] :is(input:not([type="checkbox"]):not([type="radio"]),textarea,select) {
+  min-width: 0; min-height: 44px; max-width: 100%; padding: 10px 12px;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--input); color: var(--text); font-size: 14px; line-height: 1.5;
+}
+.app[data-command-realm="work"] :is(input,textarea)::placeholder { color: var(--muted); opacity: 1; }
+.app[data-command-realm="work"] textarea { min-height: 112px; resize: vertical; }
+.app[data-command-realm="work"] :is(.daily-watch,.auto-refresh) { min-height: 44px; gap: 10px; font-size: 12px; }
+.app[data-command-realm="work"] input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--gold); }
+
+/* Readable lists, without clipping titles or flattening financial meanings. */
+.app[data-command-realm="work"] .daily-list { max-height: 360px; padding: 0 6px 0 0; scroll-padding-block: 4px; }
+.app[data-command-realm="work"] .daily-entry { padding: 16px 4px; gap: 12px; border-color: var(--line); }
+.app[data-command-realm="work"] .daily-entry strong { font-size: 15px; line-height: 1.45; color: var(--text); font-weight: 600; }
+.app[data-command-realm="work"] :is(.daily-entry small,.event small,.event time,.note small) { font-size: 12px; line-height: 1.5; color: var(--muted); }
+.app[data-command-realm="work"] .daily-entry small { margin-bottom: 6px; }
+.app[data-command-realm="work"] .daily-entry p { font-size: 14px; color: var(--muted); margin-top: 8px; }
+.app[data-command-realm="work"] :is(.daily-empty,.empty p,.connection-message,.feed-error,.briefing-empty,.palantir-description) { font-size: 14px; line-height: 1.55; }
+.app[data-command-realm="work"] .daily-empty { padding: 24px 8px; }
+.app[data-command-realm="work"] .daily-error { color: #f8c6ac; background: #2a211c; border-color: #8b6449; padding: 12px; font-size: 14px; }
+.app[data-command-realm="work"].light .daily-error { color: #743b22; background: #f7e6d7; }
+.app[data-command-realm="work"] .task-list { min-height: 0; }
+.app[data-command-realm="work"] .task { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px 44px; gap: 4px; padding: 12px 0; }
+.app[data-command-realm="work"] .task > span { font-size: 14px; line-height: 1.45; min-width: 0; }
+.app[data-command-realm="work"] .check-button { position: relative; border: 0; background: none; }
+.app[data-command-realm="work"] .check-button::before { content: ""; position: absolute; width: 18px; height: 18px; border: 1px solid var(--gold); border-radius: 4px; }
+.app[data-command-realm="work"] .task-done .check-button { background: none; }
+.app[data-command-realm="work"] .task .remove { margin: 0; }
+.app[data-command-realm="work"] :is(.priority-toggle,.remove) { opacity: .75; }
+.app[data-command-realm="work"] .agenda-date { font-size: 14px; gap: 12px; flex-wrap: wrap; margin: 0 0 16px; }
+.app[data-command-realm="work"] :is(.agenda-date strong,.agenda-date > span,.event strong,.note p) { font-size: 14px; line-height: 1.45; }
+.app[data-command-realm="work"] .event { padding-block: 16px; gap: 12px; }
+.app[data-command-realm="work"] .event > span { min-width: 0; }
+.app[data-command-realm="work"] .agenda-empty { min-height: 0; padding: 16px 0; }
+.app[data-command-realm="work"] .agenda-empty strong { font-size: 15px; }
+.app[data-command-realm="work"] .events { max-height: 320px; }
+.app[data-command-realm="work"] .capture-label { display: block; margin-bottom: 8px; font-size: 14px; }
+.app[data-command-realm="work"] .capture-type-label { display: grid; gap: 8px; min-width: 0; flex: 1 1 180px; font-size: 12px; }
+.app[data-command-realm="work"] .capture select { width: 100%; max-width: 100%; }
+.app[data-command-realm="work"] .capture-options { gap: 8px; flex-wrap: wrap; align-items: end; margin-top: 16px; }
+.app[data-command-realm="work"] .capture-options > button { flex: 1 1 auto; }
+.app[data-command-realm="work"] .capture .panel-heading { min-height: 0; }
+.app[data-command-realm="work"] .notes-header { font-size: 12px; margin-top: 24px; padding-top: 16px; letter-spacing: .06em; gap: 8px; }
+.app[data-command-realm="work"] .notes-list { max-height: 260px; }
+.app[data-command-realm="work"] .note { padding-block: 16px; gap: 8px; }
+.app[data-command-realm="work"] .note > div { min-width: 0; }
+
+/* New accents retain their full artwork and alpha, never over live content. */
+.polish-art { object-fit: contain; display: block; pointer-events: none; flex-shrink: 0; }
+.app[data-command-realm="work"] .ravens-heading-art { width: 56px; height: 56px; }
+.app[data-command-realm="work"] .treasury-coffer-art { width: 72px; height: 72px; }
+.app[data-command-realm="work"] :is(.quest-medallion-art,.agenda-sundial-art) { width: 72px; height: 72px; }
+.app[data-command-realm="work"] .capture-quill-art { width: 48px; height: 48px; }
+.app[data-command-realm="work"] .focus-hourglass-art { width: 56px; height: 56px; }
+.app[data-command-realm="work"] .council-orb-widget { min-height: 0; margin: 0 0 16px; }
+.app[data-command-realm="work"] :is(.council-palantir-art,.companion-palantir-art) { width: 140px; }
+.app[data-command-realm="work"] .realm-beacon .beacon-art { height: 150px; width: 100px; }
+.app[data-command-realm="work"] .realm-beacon > span { font-size: 12px; }
+.app[data-command-realm="work"] .realm-beacon strong { font-size: 30px; }
+.app[data-command-realm="work"] .realm-beacons { gap: 16px 8px; margin-block: 16px 24px; }
+.app[data-command-realm="work"] .realm-flow-board { gap: 16px; margin: 0; padding: 16px; }
+.app[data-command-realm="work"] .constellation-total span { font-size: 12px; }
+.app[data-command-realm="work"] :is(.realm-legend,.constellation-selection,.error-bar-label,.error-ledger > small,.error-distribution > small) { font-size: 12px; line-height: 1.5; }
+.app[data-command-realm="work"] .flow-star { width: 44px; height: 44px; }
+.app[data-command-realm="work"] .error-ledger { padding-left: 16px; min-width: 0; }
+.app[data-command-realm="work"] .operations-empty { min-height: 0; padding: 32px 16px; gap: 16px; }
+.app[data-command-realm="work"] .operations-empty p { font-size: 14px; max-width: 50ch; }
+.app[data-command-realm="work"] :is(.operations-empty h4,.palantir h4) { font-size: 26px; line-height: 1.2; }
+.app[data-command-realm="work"] .rune-counters { gap: 12px; }
+.app[data-command-realm="work"] .rune-counters small { font-size: 12px; }
+.app[data-command-realm="work"] .operations-table { font-size: 14px; }
+.app[data-command-realm="work"] :is(.operations-table th,.operations-table small,.flow-state) { font-size: 12px; }
+.app[data-command-realm="work"] .briefing-actions > button { flex: 1 1 180px; }
+.app[data-command-realm="work"] :is(.briefing-evidence summary,.briefing-evidence p,.briefing-evidence a,.briefing-text,.briefing-evidence dt,.briefing-evidence dd) { font-size: 14px; line-height: 1.55; }
+.app[data-command-realm="work"] :is(.briefing-evidence summary,.briefing-result-heading,.cloudflare-scope) { gap: 12px; flex-wrap: wrap; }
+.app[data-command-realm="work"] :is(.briefing-evidence,.briefing-result,.chatgpt-companion) { margin-top: 16px; }
+.app[data-command-realm="work"] :is(.realm-explainer summary,.chatgpt-companion summary,.realm-detail-table summary) { padding-block: 12px; min-height: 44px; font-size: 14px; }
+
+/* Money and editors remain content-driven, including unusually large amounts. */
+.app[data-command-realm="work"] .treasury-overview { float: none; margin: 0 0 16px; gap: 24px; flex-wrap: wrap; }
+.app[data-command-realm="work"] .treasury-ring { width: 186px; height: 186px; }
+.app[data-command-realm="work"] .treasury-ring strong { font-size: 20px; line-height: 1.3; margin: 0; overflow-wrap: anywhere; text-align: center; max-width: 150px; font-variant-numeric: tabular-nums; }
+.app[data-command-realm="work"] .treasury-ring small { font-size: 12px; }
+.app[data-command-realm="work"] .treasury-metrics { flex: 1 1 220px; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.app[data-command-realm="work"] .treasury-metrics :is(div,button) { min-width: 0; }
+.app[data-command-realm="work"] .treasury-metrics > button { padding: 12px; border: 1px solid var(--line); background: var(--input); text-align: left; display: block; }
+.app[data-command-realm="work"] .treasury-metrics > div { padding: 12px 0; }
+.app[data-command-realm="work"] .treasury-metrics strong { font-size: clamp(22px,1.7vw,28px); color: var(--gold-light); overflow-wrap: anywhere; }
+.app[data-command-realm="work"] .treasury-metrics small { font-size: 12px; color: var(--muted); }
+.app[data-command-realm="work"] .treasury .panel-heading input { max-width: 180px; font-size: 14px; color-scheme: dark; }
+.app[data-command-realm="work"].light .treasury .panel-heading input { color-scheme: light; }
+.app[data-command-realm="work"] .treasury-scan button[aria-label] { min-width: 44px; }
+.app[data-command-realm="work"] .invoice-list { padding: 4px; max-height: 360px; }
+.app[data-command-realm="work"] .invoice-row summary { padding-block: 16px; font-size: 14px; }
+.app[data-command-realm="work"] .invoice-row summary strong { color: var(--text); line-height: 1.45; }
+.app[data-command-realm="work"] .invoice-row summary small { font-size: 12px; color: var(--muted); }
+.app[data-command-realm="work"] .invoice-row summary > span:last-child { overflow-wrap: anywhere; }
+.app[data-command-realm="work"] .invoice-editor { padding: 8px 8px 24px; font-size: 14px; }
+.app[data-command-realm="work"] .invoice-editor :is(p,label,small) { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.app[data-command-realm="work"] .invoice-editor label { display: grid; gap: 8px; margin-top: 16px; }
+.app[data-command-realm="work"] .invoice-editor input { margin: 0; font-size: 14px; }
+.app[data-command-realm="work"] .invoice-fields { grid-template-columns: minmax(0,1fr) minmax(85px,.6fr) minmax(0,1fr); gap: 12px; }
+.app[data-command-realm="work"] .invoice-actions { margin-top: 16px; }
+
+/* Tool brands remain familiar, with room for complete names. */
+.app[data-command-realm="work"] .tool-groups { grid-template-columns: minmax(0,2fr) minmax(0,1.2fr) minmax(0,1fr); gap: 24px; }
+.app[data-command-realm="work"] .tool-group .tool-grid { grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); gap: 12px; }
+.app[data-command-realm="work"] .tool-group { grid-column: auto; }
+.app[data-command-realm="work"] .tool {
+  min-height: 104px; padding: 12px 8px; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 8px;
+  border: 1px solid var(--line); border-radius: 6px; background: var(--input);
+}
+.app[data-command-realm="work"] .tool > span:nth-child(2) { font-size: 13px; line-height: 1.3; overflow-wrap: normal; word-break: normal; white-space: normal; }
+.app[data-command-realm="work"] .tool > svg { top: 6px; right: 6px; width: 14px; height: 14px; }
+.app[data-command-realm="work"] .tool-logo { min-height: 32px; }
+.app[data-command-realm="work"] .tool-group h4 { font-size: 12px; line-height: 1.5; margin-bottom: 12px; color: var(--muted); }
+.app[data-command-realm="work"] .focus-band { gap: 24px; flex-wrap: wrap; }
+.app[data-command-realm="work"] .focus-intro { gap: 16px; min-width: 0; }
+.app[data-command-realm="work"] .focus-intro p { font-size: 14px; line-height: 1.55; margin-top: 8px; }
+.app[data-command-realm="work"] .focus-icon { display: block; width: 56px; height: 56px; border: 0; background: none; }
+.app[data-command-realm="work"] .timer-controls { gap: 8px; flex-wrap: wrap; }
+.app[data-command-realm="work"] .timer { font-size: 32px; line-height: 1.2; font-variant-numeric: tabular-nums; margin-right: 8px; }
+
+/* Keep the existing landscape and identity; only normalize its density. */
+.app[data-command-realm="work"] .hero { min-height: 260px; }
+.app[data-command-realm="work"] .hero-copy { padding: 32px 32px 64px; }
+.app[data-command-realm="work"] .hero-copy h1 { font-size: clamp(36px,3vw,58px); line-height: 1.08; }
+.app[data-command-realm="work"] .hero-copy p { font-size: 14px; line-height: 1.55; }
+.app[data-command-realm="work"] .hero .gold-button { min-height: 44px; padding: 10px 16px; font-size: 14px; }
+.app[data-command-realm="work"] .nav-item { min-height: 44px; gap: 12px; font-size: 14px; padding: 10px 12px; }
+.app[data-command-realm="work"] .side-link { min-height: 44px; padding: 10px 12px; gap: 12px; font-size: 12px; }
+.app[data-command-realm="work"] .side-link > span { overflow-wrap: normal; word-break: normal; }
+.app[data-command-realm="work"] .realm-switch a { min-height: 44px; display: inline-flex; align-items: center; padding: 10px 12px; }
+.app[data-command-realm="work"] .fellowship-nav { overflow: auto; min-height: 0; }
+.app[data-command-realm="work"] .sidebar-bottom { padding-top: 16px; }
+.app[data-command-realm="work"] .dashboard-toolbar { gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.app[data-command-realm="work"] .dashboard-toolbar p { font-size: 14px; line-height: 1.55; }
+.app[data-command-realm="work"] :is(.summary-strip > div > div > span,.summary-strip strong small,.hero-bottom,.top-date) { font-size: 12px; }
+.app[data-command-realm="work"] .search-box { min-width: 0; max-width: 100%; min-height: 44px; }
+.app[data-command-realm="work"] .search-box input:not([type="checkbox"]):not([type="radio"]) { border: 0; background: transparent; padding: 8px; }
+.app[data-command-realm="work"] .chatgpt-companion summary { color: var(--gold-light); }
+
+@media (min-width: 1280px) {
+  .app[data-command-realm="work"] .dashboard-grid { grid-template-columns: minmax(0,.95fr) minmax(0,1.7fr) minmax(0,1fr); grid-template-areas: "day systems support"; }
+  .app[data-command-realm="work"] .dashboard-support { grid-template-columns: minmax(0,1fr); }
+  .app[data-command-realm="work"] .daily-council { grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1.2fr); }
+  .app[data-command-realm="work"] .treasury { grid-column: auto; }
+  .app[data-command-realm="work"] .treasury-ring { width: 166px; height: 166px; }
+  .app[data-command-realm="work"] .treasury-metrics { grid-template-columns: minmax(0,1fr); flex-basis: 140px; gap: 8px; }
+  .app[data-command-realm="work"] :is(.dashboard-view-priorities,.dashboard-view-notes) { grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-areas: "day support"; }
+  .app[data-command-realm="work"] .dashboard-view-notes { grid-template-columns: minmax(0,1fr); grid-template-areas: "support"; }
+}
+@media (max-width: 1199px) {
+  .app[data-command-realm="work"] .dashboard-grid { grid-template-columns: minmax(0,1fr); grid-template-areas: "day" "systems" "support"; }
+  .app[data-command-realm="work"] .dashboard-day { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .app[data-command-realm="work"] :is(.dashboard-view-priorities,.dashboard-view-notes) { grid-template-areas: "day" "support"; }
+  .app[data-command-realm="work"] .tool-groups { grid-template-columns: minmax(0,1fr); }
+  .app[data-command-realm="work"] .realm-flow-board { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (min-width: 1200px) {
+  .app[data-command-realm="work"] .dashboard-grid.dashboard-view-systems { grid-template-columns: minmax(0,.8fr) minmax(0,2fr); grid-template-areas: "day systems"; }
+}
+@media (max-width: 850px) {
+  .app[data-command-realm="work"] .daily-council { grid-template-columns: minmax(0,1fr); }
+  .app[data-command-realm="work"] .treasury { grid-column: auto; }
+  .app[data-command-realm="work"] .treasury-metrics { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+@media (max-width: 900px) {
+  .app[data-command-realm="work"] .nav-item { font-size: 0; padding: 10px; gap: 0; }
+  .app[data-command-realm="work"] .nav-count { min-width: 18px; font-size: 10px; padding: 0 4px; right: 0; top: 0; }
+  .app[data-command-realm="work"] .side-link { padding: 10px 0; }
+}
+@media (max-width: 730px) {
+  .app[data-command-realm="work"] .realm-framed { padding: 18px; }
+  .app[data-command-realm="work"] .operations { padding: 24px; }
+  .app[data-command-realm="work"] .operations > .realm-frame { border-width: 28px; border-image-width: 28px; }
+  .app[data-command-realm="work"] :is(.dashboard-day,.dashboard-support,.realm-flow-board) { grid-template-columns: minmax(0,1fr); }
+  .app[data-command-realm="work"] .error-ledger { border-left: 0; border-top: 1px solid var(--line); padding: 16px 0 0; }
+  .app[data-command-realm="work"] .realm-beacons { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .app[data-command-realm="work"] .hero-copy { padding: 24px 20px 72px; }
+  .app[data-command-realm="work"] .hero-copy h1 { font-size: 36px; }
+  .app[data-command-realm="work"] .treasury-metrics { grid-template-columns: minmax(0,1fr); }
+  .app[data-command-realm="work"] .treasury-overview { justify-content: center; }
+  .app[data-command-realm="work"] .treasury-ring { width: 180px; height: 180px; }
+  .app[data-command-realm="work"] .invoice-fields { grid-template-columns: minmax(0,1fr); }
+  .app[data-command-realm="work"] .invoice-row summary { grid-template-columns: 24px minmax(0,1fr); }
+  .app[data-command-realm="work"] .invoice-row summary > span:last-child { grid-column: 2; text-align: left; }
+  .app[data-command-realm="work"] .capture-type-label { flex-basis: 100%; }
+  .app[data-command-realm="work"] .task { grid-template-columns: 44px minmax(0,1fr) 44px; }
+  .app[data-command-realm="work"] .task .remove { grid-column: 3; }
+  .app[data-command-realm="work"] .task > span { grid-row: span 2; }
+  .app[data-command-realm="work"] .task .check-button { grid-row: span 2; align-self: start; }
+  .app[data-command-realm="work"] .focus-intro { align-items: start; }
+  .app[data-command-realm="work"] .focus-intro > div { min-width: 0; }
+  .app[data-command-realm="work"] .focus-hourglass-art { width: 48px; height: 48px; }
+  .app[data-command-realm="work"] .focus-icon { width: 48px; height: 48px; flex-shrink: 0; }
+  .app[data-command-realm="work"] .daily-watch { justify-content: start; }
+}

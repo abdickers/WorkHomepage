@@ -1,7 +1,8 @@
 "use client";
 import { StudyArt } from "./study-art";
 import { useState, useEffect, useRef } from "react";
-import { ArrowUpRight, RefreshCw, Sparkles, ShieldCheck } from "lucide-react";
+import { Sparkles, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, RefreshCw } from "@/components/dashboard/realm-icon";
 import type { Evidence } from "@/lib/briefing-data.mjs";
 
 type Snapshot = {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./realm-presentation.css";
 import "./study-presentation.css";
+import "./command-polish.css";
 export const metadata: Metadata = {
   title: "The Command Center · Adam",
   description:

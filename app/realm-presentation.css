@@ -3,8 +3,8 @@
   position: relative;
   isolation: isolate;
   min-width: 0;
-  padding: 38px 30px 30px !important;
-  border: 0 !important;
+  padding: 38px 30px 30px;
+  border: 0;
   border-radius: 0;
   overflow: visible;
   align-self: start;
@@ -36,7 +36,7 @@
 
 /* Reviewed oak slices: fixed ornaments and repeated quiet rails. */
 .realm-oak { --oak-unit: .2px; }
-.app .realm-oak.realm-framed { padding: 44px 36px 34px !important; }
+.app .realm-oak.realm-framed { padding: 44px 36px 34px; }
 .realm-oak-art span { position: absolute; background-repeat: no-repeat; background-size: 100% 100%; }
 .realm-oak-art :is(.oak-top-left, .oak-top-right, .oak-bottom-left, .oak-bottom-right) { width: calc(340 * var(--oak-unit)); }
 .realm-oak-art .oak-top-left { top: 0; left: 0; height: calc(470 * var(--oak-unit)); background-image: url('/art/frames/hobbit-oak-top-left.webp'); }
@@ -55,8 +55,8 @@
   --scroll-end: 46px;
   --text: #352616; --muted: #634c32; --gold: #79582e; --gold-light: #4b321b;
   --input: #f2e3c4; --line: #92734b66;
-  padding: 48px 38px 42px !important;
-  background: none !important;
+  padding: 48px 38px 42px;
+  background: none;
   box-shadow: none;
   color: var(--text);
 }
@@ -80,7 +80,7 @@
 .app .realm-scroll .daily-error { color: #77341e; background: #f0d2a7; border-color: #a5673f; }
 .app .realm-scroll .daily-error a { color: #5c2d18; text-decoration: underline; }
 .app.light .daily-panel:not(.realm-scroll) {
-  background: linear-gradient(135deg,#f8f3e5,#e9e0cc) !important;
+  background: linear-gradient(135deg,#f8f3e5,#e9e0cc);
   color: #283a2f;
 }
 .app.light .daily-panel:not(.realm-scroll) :is(h3, .daily-entry strong, .daily-entry small, .daily-entry p, .daily-caption, .daily-empty, .daily-footnote, .daily-feed-footer, .treasury-metrics strong, .treasury-metrics span, .treasury-metrics small, .invoice-row summary strong, .invoice-row summary small, .invoice-editor p, .invoice-editor > small, .invoice-editor label) { color: #354737; }
@@ -124,7 +124,7 @@
 .app .realm-scroll :is(button,a,summary):focus-visible, .app.light .realm-framed :is(button,a,input,textarea,select,summary):focus-visible { outline-color: #8a431e; }
 
 @media (min-width: 2200px) {
-  .app .realm-framed { padding: 44px 38px 34px !important; }
+  .app .realm-framed { padding: 44px 38px 34px; }
   .realm-elven-art, .realm-dwarven-art { border-width: 64px; border-image-width: 64px; }
   .realm-beacon .beacon-art { width: min(100%, 160px); height: 222px; }
 }
@@ -132,10 +132,10 @@
   .realm-beacon .beacon-art { height: 150px; }
 }
 @media (max-width: 650px) {
-  .app .realm-framed { padding: 32px 24px 26px !important; }
+  .app .realm-framed { padding: 32px 24px 26px; }
   .realm-elven-art, .realm-dwarven-art { border-width: 42px; border-image-width: 42px; }
-  .app .realm-oak.realm-framed { padding: 40px 30px 30px !important; --oak-unit: .17px; }
-  .app .realm-scroll.realm-framed { --scroll-end: 38px; padding: 42px 30px 38px !important; }
+  .app .realm-oak.realm-framed { padding: 40px 30px 30px; --oak-unit: .17px; }
+  .app .realm-scroll.realm-framed { --scroll-end: 38px; padding: 42px 30px 38px; }
   .realm-beacons { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px 8px; }
   .realm-beacon .beacon-art { height: 164px; width: 110px; }
   .realm-beacon > span { font-size: 12px; }
