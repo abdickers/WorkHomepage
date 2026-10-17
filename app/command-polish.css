@@ -22,8 +22,16 @@
   min-width: 0; margin: 0; align-self: start;
 }
 .app[data-command-realm="work"] .realm-framed > .realm-frame { display: block; }
-.app[data-command-realm="work"] :is(.realm-elven-art,.realm-dwarven-art) { border-width: 44px; border-image-width: 44px; }
+.app[data-command-realm="work"] :is(.realm-elven-art,.realm-dwarven-art) {
+  border-width: 44px; border-image-width: 44px;
+  /* Only the quiet rails flex; short repeated tiles exposed joins on tall cards. */
+  border-image-repeat: stretch;
+}
 .app[data-command-realm="work"] .realm-oak { --oak-unit: .17px; padding: 44px 36px 34px; }
+.app[data-command-realm="work"] .realm-oak-art :is(.oak-top,.oak-bottom,.oak-left,.oak-right) {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
 .app[data-command-realm="work"] .realm-framed::before,
 .app[data-command-realm="work"] .realm-framed::after {
   display: none;

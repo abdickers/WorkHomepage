@@ -29,3 +29,10 @@ frames on all ten main dashboard sections, retaining the dark Ravens surface
 and polished controls. Reviewed at 390, 768, 1440, and 1920px with no page
 overflow; keyboard focus remains clear of the ornaments. TypeScript and all
 19 existing tests passed. This follow-up changes presentation only.
+
+Side-rail correction: changed the quiet Elven/Dwarven rails and oak edge strips
+to continuous flexible runs, removing short-tile joins while retaining the
+fixed corner ornaments and original artwork. The owner confirmed the visible
+issue was fixed in preview. Rechecked all ten frames at 390, 768, 1440, and
+1920px: no horizontal page overflow and visible buttons remain at least 44px
+tall. No functional code changed in this correction.
