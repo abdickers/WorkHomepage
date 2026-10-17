@@ -1,17 +1,10 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
+import { PolishArt } from "@/components/dashboard/polish-art";
 import { accountLink, WORK_EMAIL } from "@/lib/account-links.mjs";
 import { useEffect, useRef, useState } from "react";
-import {
-  Bird,
-  Swords,
-  Coins,
-  RefreshCw,
-  ArrowUpRight,
-  Mail,
-  MessageSquare,
-  ShieldAlert,
-} from "lucide-react";
+import { MessageSquare } from "lucide-react";
+import { Bird, Swords, Coins, RefreshCw, ArrowUpRight, Mail, ShieldAlert } from "@/components/dashboard/realm-icon";
 import { chicagoDay, treasuryTotals } from "@/lib/daily-data.mjs";
 type Entry = {
   id: string;
@@ -187,11 +180,10 @@ function Ravens({ watch }: { watch: boolean }) {
   const current = tab === "inbox" ? mail : slack;
   const feed = current.data?.feeds?.[tab];
   return (
-    <section className="panel daily-panel ravens realm-framed realm-scroll">
-      <PanelFrame kind="scroll" />
+    <section className="panel daily-panel ravens realm-framed realm-quiet">
       <div className="panel-heading">
         <div>
-          <Bird size={21} />
+          <PolishArt name="raven" className="ravens-heading-art" />
           <h3>The ravens</h3>
         </div>
         <span className="tag">MESSAGES</span>
@@ -501,7 +493,7 @@ function Treasury() {
           className={`treasury-ring ${totals.remaining < 0 ? "over-budget" : ""}`}
           style={{ "--budget-used": `${used}%` } as React.CSSProperties}
         >
-          <Coins size={25} />
+          <PolishArt name="treasury" className="treasury-coffer-art" />
           <strong>{loaded ? money(totals.committed) : "—"}</strong>
           <small>of $5,000 / month</small>
         </div>

@@ -1,0 +1,59 @@
+[
+  {
+    "source": "artwork/polish/originals/raven.png",
+    "sha256": "86f48ee2811aa656603c4f0a74e02da7e1dcf78ea97c649072230db6e60f2685",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "crop": null,
+    "derivative": "public/art/polish/raven.webp",
+    "derivative_size": [
+      256,
+      256
+    ]
+  },
+  {
+    "source": "artwork/polish/originals/treasury.png",
+    "sha256": "8174ce1011402c9e953073b60c21548b3afee4d9e44f8105a2df13cc31338496",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "crop": null,
+    "derivative": "public/art/polish/treasury.webp",
+    "derivative_size": [
+      256,
+      256
+    ]
+  },
+  {
+    "source": "artwork/polish/originals/hourglass.png",
+    "sha256": "08ec022a3d72f610002bc7a9989996fd34a54b797ec728fd5dd084349838982a",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "crop": null,
+    "derivative": "public/art/polish/hourglass.webp",
+    "derivative_size": [
+      256,
+      256
+    ]
+  }
+]

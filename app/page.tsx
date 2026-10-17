@@ -1,36 +1,10 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { StudyArt } from "@/components/dashboard/study-art";
+import { PolishArt } from "@/components/dashboard/polish-art";
 import { useEffect, useRef, useState } from "react";
-import {
-  LayoutDashboard,
-  ListChecks,
-  NotebookPen,
-  RadioTower,
-  Settings,
-  Search,
-  ArrowUpRight,
-  Plus,
-  ArrowRight,
-  Clock3,
-  CalendarDays,
-  ChevronRight,
-  Check,
-  X,
-  Flame,
-  Link2,
-  Play,
-  Pause,
-  RotateCcw,
-  Download,
-  Upload,
-  Sun,
-  Moon,
-  Command,
-  RefreshCw,
-  Shield,
-  Mountain,
-} from "lucide-react";
+import { Link2, RotateCcw, Download, Upload, Sun, Moon, Command, Mountain } from "lucide-react";
+import { LayoutDashboard, ListChecks, NotebookPen, RadioTower, Settings, Search, ArrowUpRight, Plus, ArrowRight, Clock3, CalendarDays, ChevronRight, Check, X, Flame, Play, Pause, RefreshCw, Shield } from "@/components/dashboard/realm-icon";
 import { BrandLogo } from "@/components/dashboard/brand-logo";
 import { Operations } from "@/components/dashboard/operations";
 import { DailyCouncil } from "@/components/dashboard/daily-council";
@@ -768,7 +742,8 @@ export default function Dashboard() {
             </div>
           </div>
           {view === "overview" && <DailyCouncil />}
-          <div className="dashboard-grid">
+          <div className={`dashboard-grid dashboard-view-${view}`}>
+            <div className="dashboard-stack dashboard-day">
             {section("priorities") && (
               <section className="panel priorities realm-framed realm-elven">
                 <PanelFrame kind="elven" />
@@ -795,6 +770,7 @@ export default function Dashboard() {
                     <button
                       key={id}
                       className={filter === id ? "selected" : ""}
+                      aria-pressed={filter === id}
                       onClick={() => setFilter(String(id))}
                     >
                       {label}
@@ -1013,7 +989,9 @@ export default function Dashboard() {
                 </div>
               </section>
             )}
+            </div>
             {(view === "overview" || view === "systems") && <Operations />}
+            <div className="dashboard-stack dashboard-support">
             {view === "overview" && <Palantir />}
             {(section("notes") || view === "priorities") && (
               <section className="panel capture realm-framed realm-oak">
@@ -1026,7 +1004,9 @@ export default function Dashboard() {
                   <StudyArt name="quill-inkwell" className="capture-quill-art" />
                 </div>
                 <form onSubmit={addCapture}>
+                  <label className="capture-label" htmlFor="quick-capture">Your field note</label>
                   <textarea
+                    id="quick-capture"
                     ref={captureRef}
                     value={capture}
                     onChange={(e) => setCapture(e.target.value)}
@@ -1036,6 +1016,8 @@ export default function Dashboard() {
                     required
                   />
                   <div className="capture-options">
+                    <label className="capture-type-label">
+                    <span>Capture type</span>
                     <select
                       value={kind}
                       onChange={(e) => setKind(e.target.value)}
@@ -1045,6 +1027,7 @@ export default function Dashboard() {
                       <option value="waiting">Waiting on someone</option>
                       <option value="note">Field note</option>
                     </select>
+                    </label>
                     {kind !== "note" && (
                       <button
                         type="button"
@@ -1108,6 +1091,7 @@ export default function Dashboard() {
                 </div>
               </section>
             )}
+            </div>
           </div>
           {view === "overview" && (
             <>
@@ -1178,7 +1162,7 @@ export default function Dashboard() {
                 <PanelFrame kind="oak" />
                 <div className="focus-intro">
                   <span className="focus-icon">
-                    <Mountain size={26} />
+                    <PolishArt name="hourglass" className="focus-hourglass-art" />
                   </span>
                   <div>
                     <h3>A little room to focus.</h3>
