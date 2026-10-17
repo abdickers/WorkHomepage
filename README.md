@@ -76,7 +76,7 @@ Local software logo copies and their source URLs are documented in `public/logos
 
 ### Twin dashboard account routing
 
-Personal now uses https://abdickers.github.io/HomePage/ (`abdickers@gmail.com`). Work uses `dickersona@76fireworks.com`. Both share the same `realm-theme.css` and `account-links.mjs` contents, while layouts and data remain appropriate to each realm. Google links pin the realm account and remove stale numeric selectors. Only exact generic work-service defaults are upgraded to the verified tenant/login URLs; customized paths survive. ChatGPT uses its own visible account switcher and shared browser session, with the expected email shown in the companion panel.
+The Shire navigation opens the private personal dashboard at https://sage-cabin-nest.nest-service.workers.dev/HomePage/ (`abdickers@gmail.com`); the former public GitHub Pages site is offline. Work uses `dickersona@76fireworks.com`. Both retain the shared `realm-theme.css` visual language and account-routing helpers, while layouts and data remain appropriate to each realm. Google links pin the realm account and remove stale numeric selectors. Only exact generic work-service defaults are upgraded to the verified tenant/login URLs; customized paths survive. ChatGPT uses its own visible account switcher and shared browser session, with the expected email shown in the companion panel.
 
 Calendar, inbox and invoice scans check their Google connector profile before reading content. A wrong or unverified connector identity stops the read. Owner-only deployment access, read-only connector permissions and invoice recipient rules are preserved.
 
