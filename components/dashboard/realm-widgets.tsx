@@ -2,7 +2,13 @@
 import { useState } from "react";
 import { celigoFlowUrl } from "@/lib/daily-data.mjs";
 
-/** Original vector artwork. Counts are observations; flame color is never a health score. */
+const litBeaconArt: Record<string, string> = {
+  error: "beacon-error-orange",
+  queued: "beacon-queued-blue",
+  active: "beacon-alert-gold",
+};
+
+/** Supplied beacon artwork. Counts remain observations, never a health score. */
 export function Beacon({
   value,
   label,
@@ -13,36 +19,23 @@ export function Beacon({
   tone: string;
 }) {
   const lit = value !== null && value > 0;
+  const artwork = lit && tone !== "roster"
+    ? (litBeaconArt[tone] ?? "beacon-alert-gold")
+    : "beacon-unlit";
   return (
     <div
       className={`realm-beacon ${tone} ${lit ? "lit" : "unlit"}`}
       aria-label={`${label}: ${value ?? "unknown"}`}
     >
-      <svg viewBox="0 0 150 150" aria-hidden="true">
-        <ellipse className="beacon-aura" cx="75" cy="51" rx="42" ry="40" />
-        <path
-          className="beacon-mountains"
-          d="M0 137 25 103 43 120 62 90 96 122 124 93 150 137Z"
-        />
-        <path
-          className="beacon-tower"
-          d="M48 139 54 90H50V78H59V87H69V78H79V87H89V78H99V90H95L102 139Z"
-        />
-        <path
-          className="beacon-stones"
-          d="M53 119H98M54 104H96M73 104V119M65 119V139M88 119V139M76 91V104"
-        />
-        <path className="beacon-bowl" d="M48 74H103L94 84H57Z" />
-        <path
-          className="beacon-flame"
-          d="M76 19C85 34 64 39 80 50 87 42 91 35 91 35 114 65 88 75 76 73 50 75 45 56 59 38 57 56 67 58 67 47 65 34 77 30 76 19Z"
-        />
-        <path
-          className="beacon-core"
-          d="M76 45C90 57 86 69 75 70 63 68 65 59 76 45Z"
-        />
-        <path className="beacon-ground" d="M27 141H123M38 146H112" />
-      </svg>
+      <img
+        className="beacon-art"
+        src={`/art/beacons/${artwork}.webp`}
+        alt=""
+        aria-hidden="true"
+        width="320"
+        height="480"
+        decoding="async"
+      />
       <strong>{value === null ? "—" : value.toLocaleString()}</strong>
       <span>{label}</span>
     </div>

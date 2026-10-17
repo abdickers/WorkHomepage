@@ -1,4 +1,5 @@
 "use client";
+import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { useState, useRef } from "react";
 import { ArrowUpRight, Copy, Check, MessageSquare, Send } from "lucide-react";
 import { BrandLogo } from "./brand-logo";
@@ -47,7 +48,8 @@ export function Palantir() {
     }
   }
   return (
-    <section className="panel palantir">
+    <section className="panel palantir realm-framed realm-elven">
+      <PanelFrame kind="elven" />
       <div className="panel-heading">
         <div>
           <MessageSquare size={18} />

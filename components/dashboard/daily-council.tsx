@@ -1,4 +1,5 @@
 "use client";
+import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { accountLink, WORK_EMAIL } from "@/lib/account-links.mjs";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -186,7 +187,8 @@ function Ravens({ watch }: { watch: boolean }) {
   const current = tab === "inbox" ? mail : slack;
   const feed = current.data?.feeds?.[tab];
   return (
-    <section className="panel daily-panel ravens">
+    <section className="panel daily-panel ravens realm-framed realm-scroll">
+      <PanelFrame kind="scroll" />
       <div className="panel-heading">
         <div>
           <Bird size={21} />
@@ -236,7 +238,8 @@ function Quests({ watch }: { watch: boolean }) {
   const source = useDaily("jira", watch);
   const [tab, setTab] = useState("assigned");
   return (
-    <section className="panel daily-panel quests">
+    <section className="panel daily-panel quests realm-framed realm-elven">
+      <PanelFrame kind="elven" />
       <div className="panel-heading">
         <div>
           <Swords size={21} />
@@ -475,7 +478,8 @@ function Treasury() {
           : r.dueDate?.startsWith(month) && r.status !== "excluded",
   );
   return (
-    <section className="panel daily-panel treasury">
+    <section className="panel daily-panel treasury realm-framed realm-dwarven">
+      <PanelFrame kind="dwarven" />
       <div className="panel-heading">
         <div>
           <Coins size={21} />
