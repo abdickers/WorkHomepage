@@ -180,7 +180,8 @@ function Ravens({ watch }: { watch: boolean }) {
   const current = tab === "inbox" ? mail : slack;
   const feed = current.data?.feeds?.[tab];
   return (
-    <section className="panel daily-panel ravens realm-framed realm-quiet">
+    <section className="panel daily-panel ravens realm-framed realm-elven">
+      <PanelFrame kind="elven" />
       <div className="panel-heading">
         <div>
           <PolishArt name="raven" className="ravens-heading-art" />

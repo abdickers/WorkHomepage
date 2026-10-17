@@ -23,3 +23,9 @@
 - Live provider authentication/data retrieval was not repeated for this visual
   update. The ordinary local app truthfully displayed its sign-in-required
   states. No new connected-app access was granted.
+
+Border restoration follow-up: restored the supplied Elven, Dwarven, and Hobbit
+frames on all ten main dashboard sections, retaining the dark Ravens surface
+and polished controls. Reviewed at 390, 768, 1440, and 1920px with no page
+overflow; keyboard focus remains clear of the ornaments. TypeScript and all
+19 existing tests passed. This follow-up changes presentation only.
