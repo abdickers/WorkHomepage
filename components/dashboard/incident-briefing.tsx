@@ -1,5 +1,5 @@
 "use client";
-import { StudyArt } from "./study-art";
+import { GondorArt } from "./gondor-art";
 import { connectionEnabled, useConnectionEnabled } from "./connection-preferences";
 import { useState, useEffect, useRef } from "react";
 import { Sparkles, ShieldCheck } from "lucide-react";
@@ -109,7 +109,7 @@ export function IncidentBriefing() {
         className={"council-orb-widget " + (busy ? "orb-awake" : "")}
         aria-hidden="true"
       >
-        <StudyArt name="palantir" className="council-palantir-art" />
+        <GondorArt name="council" size={144} className="council-palantir-art" />
       </div>
       <div className="briefing-actions">
         <button

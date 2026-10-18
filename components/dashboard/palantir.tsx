@@ -1,10 +1,9 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
-import { StudyArt } from "./study-art";
+import { GondorArt } from "./gondor-art";
 import { useState, useRef } from "react";
 import { Copy, Send } from "lucide-react";
 import { ArrowUpRight, Check } from "@/components/dashboard/realm-icon";
-import { RealmIcon } from "@/components/dashboard/realm-icon";
 import { BrandLogo } from "./brand-logo";
 import { IncidentBriefing } from "./incident-briefing";
 export function Palantir() {
@@ -55,7 +54,7 @@ export function Palantir() {
       <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
-          <RealmIcon name="council" />
+          <GondorArt name="council" />
           <h3>The Council</h3>
         </div>
         <span className="tag">CLAUDE · ON DEMAND</span>
@@ -63,7 +62,7 @@ export function Palantir() {
       <IncidentBriefing />
       <details className="chatgpt-companion">
         <summary>The Palantír · Open ChatGPT companion</summary>
-        <StudyArt name="palantir" className="companion-palantir-art" />
+        <GondorArt name="council" size={144} className="companion-palantir-art" />
         <h4>A little counsel. A clearer path.</h4>
         <p className="realm-account">Use dickersona@76fireworks.com in ChatGPT’s account switcher. Companion windows share your browser login.</p>
         <p className="palantir-description">

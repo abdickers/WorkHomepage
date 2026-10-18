@@ -2,10 +2,11 @@
 import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { connectionEnabled, useConnectionEnabled } from "./connection-preferences";
 import { PolishArt } from "@/components/dashboard/polish-art";
+import { GondorArt, type GondorArtName } from "@/components/dashboard/gondor-art";
 import { accountLink, WORK_EMAIL } from "@/lib/account-links.mjs";
 import { useEffect, useRef, useState } from "react";
 import { MessageSquare } from "lucide-react";
-import { Bird, Swords, Coins, RefreshCw, ArrowUpRight, Mail, ShieldAlert } from "@/components/dashboard/realm-icon";
+import { Bird, RefreshCw, ArrowUpRight, Mail, ShieldAlert } from "@/components/dashboard/realm-icon";
 import { chicagoDay, treasuryTotals } from "@/lib/daily-data.mjs";
 type Entry = {
   id: string;
@@ -38,7 +39,7 @@ function LoadState({ feed }: { feed: Feed | undefined }) {
     </p>
   );
 }
-function FeedLinks({ feed }: { feed: Feed | undefined }) {
+function FeedLinks({ feed, art }: { feed: Feed | undefined; art: GondorArtName }) {
   return (
     <>
       <LoadState feed={feed} />
@@ -54,10 +55,10 @@ function FeedLinks({ feed }: { feed: Feed | undefined }) {
                 key={item.id}
               >
                 <span
-                  className={`quest-rune ${item.text === "Highest" || item.text === "High" ? "urgent" : ""}`}
+                  className={`feed-illustration ${item.text === "Highest" || item.text === "High" ? "urgent" : ""}`}
                   aria-hidden="true"
                 >
-                  ◆
+                  <GondorArt name={art} size={32} />
                 </span>
                 <span>
                   <small>{item.meta}</small>
@@ -227,7 +228,7 @@ function Ravens({ watch }: { watch: boolean }) {
           }
         />
       )}
-      <FeedLinks feed={feed} />
+      <FeedLinks feed={feed} art="notes" />
       <FeedFooter {...current} />
     </section>
   );
@@ -240,7 +241,7 @@ function Quests({ watch }: { watch: boolean }) {
       <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
-          <Swords size={21} />
+          <GondorArt name="quest" />
           <h3>The quest board</h3>
         </div>
         <a
@@ -280,7 +281,7 @@ function Quests({ watch }: { watch: boolean }) {
           }
         />
       )}
-      <FeedLinks feed={source.data?.feeds?.[tab]} />
+      <FeedLinks feed={source.data?.feeds?.[tab]} art="quest" />
       <FeedFooter {...source} />
     </section>
   );
@@ -318,7 +319,7 @@ function InvoiceEditor({
     <details className="invoice-row">
       <summary>
         <span className={`invoice-coin ${row.status}`} aria-hidden="true">
-          ◈
+          <GondorArt name="treasury" size={32} />
         </span>
         <span>
           <strong>{row.vendor}</strong>
@@ -482,7 +483,7 @@ function Treasury() {
       <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
-          <Coins size={21} />
+          <GondorArt name="treasury" />
           <h3>The treasury of Gondor</h3>
         </div>
         <input
@@ -501,7 +502,7 @@ function Treasury() {
           className={`treasury-ring ${totals.remaining < 0 ? "over-budget" : ""}`}
           style={{ "--budget-used": `${used}%` } as React.CSSProperties}
         >
-          <PolishArt name="treasury" className="treasury-coffer-art" />
+          <GondorArt name="treasury" size={104} className="treasury-coffer-art" />
           <strong>{loaded ? money(totals.committed) : "—"}</strong>
           <small>of $5,000 / month</small>
         </div>

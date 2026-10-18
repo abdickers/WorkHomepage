@@ -1,14 +1,13 @@
 "use client";
 import { PanelFrame, GondorPageRail } from "@/components/dashboard/panel-frame";
 import { RoyalSettings } from "@/components/dashboard/royal-settings";
-import { GondorCrest } from "@/components/dashboard/gondor-crest";
+import { GondorArt } from "@/components/dashboard/gondor-art";
 import { connectionEnabled, readConnectionPreferences, saveConnectionPreferences, useConnectionEnabled } from "@/components/dashboard/connection-preferences";
 import { cleanConnectionPreferences } from "@/lib/connection-registry.mjs";
-import { StudyArt } from "@/components/dashboard/study-art";
 import { PolishArt } from "@/components/dashboard/polish-art";
 import { useEffect, useRef, useState } from "react";
 import { RotateCcw, Sun, Moon, Command, Mountain } from "lucide-react";
-import { LayoutDashboard, ListChecks, NotebookPen, RadioTower, Settings, Search, ArrowUpRight, Plus, ArrowRight, Clock3, CalendarDays, ChevronRight, Check, X, Flame, Play, Pause, RefreshCw, Shield } from "@/components/dashboard/realm-icon";
+import { Settings, Search, ArrowUpRight, Plus, ArrowRight, CalendarDays, ChevronRight, Check, X, Flame, Play, Pause, RefreshCw, Shield } from "@/components/dashboard/realm-icon";
 import { BrandLogo } from "@/components/dashboard/brand-logo";
 import { Operations } from "@/components/dashboard/operations";
 import { DailyCouncil } from "@/components/dashboard/daily-council";
@@ -466,12 +465,15 @@ export default function Dashboard() {
       );
     }
   }
+  const scenePath = light
+    ? "/art/royal-gondor/white-city-daylight-1920.webp"
+    : "/art/royal-gondor/royal-court-twilight-1600.webp";
   const section = (name: string) => view === "overview" || view === name;
   return (
-    <div className={light ? "app light" : "app"} data-command-realm="work" style={{"--realm-art": "url(/art/royal-gondor/white-city-daylight-1920.webp)"} as React.CSSProperties}>
+    <div className={light ? "app light" : "app"} data-command-realm="work" style={{"--realm-art": `url("${scenePath}")`} as React.CSSProperties}>
       <aside className="sidebar" inert={settings}>
-        <a className="brand" href="#" onClick={() => setView("overview")}>
-          <GondorCrest className="brand-crest" />
+        <a className="brand" href="#" aria-label="Gondor Command overview" onClick={() => setView("overview")}>
+          <GondorArt name="shield" size={46} className="brand-crest" />
           <span>
             THE WHITE CITY
             <br />
@@ -481,18 +483,20 @@ export default function Dashboard() {
         <nav className="realm-switch" aria-label="Command center"><a href={PERSONAL_URL}>The Shire</a><a href={WORK_URL} aria-current="page">Work</a></nav>
         <div className="side-label">YOUR DAILY COUNCIL</div>
         <nav aria-label="Main navigation">
-          {[
-            ["overview", "Overview", LayoutDashboard],
-            ["priorities", "My priorities", ListChecks],
-            ["notes", "Field notes", NotebookPen],
-            ["systems", "The beacons", RadioTower],
-          ].map(([id, label, Icon]: any) => (
+          {([
+            ["overview", "Overview", "overview"],
+            ["priorities", "My priorities", "quest"],
+            ["notes", "Field notes", "notes"],
+            ["systems", "The beacons", "beacon"],
+          ] as const).map(([id, label, art]) => (
             <button
               key={id}
               className={view === id ? "nav-item active" : "nav-item"}
+              aria-label={label}
+              aria-current={view === id ? "page" : undefined}
               onClick={() => setView(id)}
             >
-              <Icon size={18} />
+              <GondorArt name={art} size={36} />
               {label}
               {id === "priorities" && (
                 <span className="nav-count">{open.length}</span>
@@ -532,8 +536,8 @@ export default function Dashboard() {
               Even Mordor had a queue.
             </p>
           </div>
-          <button className="nav-item" onClick={() => setSettings(true)}>
-            <Settings size={18} />
+          <button className="nav-item" aria-label="The Royal Registry" onClick={() => setSettings(true)}>
+            <GondorArt name="shield" size={36} />
             The Royal Registry
           </button>
           <div className="profile">
@@ -605,12 +609,7 @@ export default function Dashboard() {
               </button>
             </div>
             <div className="hero-stamp">
-              <span className="stamp-ring">✧</span>
-              <span>
-                THE WHITE CITY
-                <br />
-                STANDS READY
-              </span>
+              <GondorArt name="shield" size={144} alt="The White City stands ready" />
             </div>
             <div className="hero-bottom">
               <span>
@@ -618,7 +617,7 @@ export default function Dashboard() {
               </span>
               <a
                 className="landscape-link"
-                href="/art/royal-gondor/white-city-daylight-1920.webp"
+                href={scenePath}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -637,7 +636,7 @@ export default function Dashboard() {
           <div className="summary-strip">
             <div>
               <span className="stat-icon">
-                <ListChecks size={20} />
+                <GondorArt name="quest" size={36} />
               </span>
               <div>
                 <strong>
@@ -652,7 +651,7 @@ export default function Dashboard() {
             </div>
             <div>
               <span className="stat-icon">
-                <Clock3 size={20} />
+                <PolishArt name="hourglass" className="summary-hourglass" />
               </span>
               <div>
                 <strong>
@@ -664,7 +663,7 @@ export default function Dashboard() {
             </div>
             <div>
               <span className="stat-icon">
-                <Check size={20} />
+                <GondorArt name="shield" size={36} />
               </span>
               <div>
                 <strong>
@@ -681,13 +680,14 @@ export default function Dashboard() {
                 setTimeout(() => captureRef.current?.focus(), 80);
               }}
             >
-              <Plus size={17} />
+              <GondorArt name="notes" size={28} />
               Quick capture
             </button>
           </div>
           <div className="dashboard-toolbar">
             <div>
               <h2>
+                <GondorArt name={view === "overview" ? "overview" : view === "priorities" ? "quest" : view === "notes" ? "notes" : "beacon"} size={36} />
                 {view === "overview"
                   ? "The day, at a glance"
                   : view === "priorities"
@@ -734,7 +734,7 @@ export default function Dashboard() {
                 <div className="panel-heading">
                   <div>
                     <span className="section-icon">
-                      <ListChecks size={17} />
+                      <GondorArt name="quest" />
                     </span>
                     <h3>My priorities</h3>
                   </div>
@@ -859,7 +859,7 @@ export default function Dashboard() {
                 <PanelFrame kind="gondor" />
                 <div className="panel-heading">
                   <div>
-                    <CalendarDays size={17} />
+                    <GondorArt name="calendar" />
                     <h3>Today’s agenda</h3>
                   </div>
                   <a
@@ -984,10 +984,9 @@ export default function Dashboard() {
                 <PanelFrame kind="gondor" />
                 <div className="panel-heading">
                   <div>
-                    <NotebookPen size={17} />
+                    <GondorArt name="notes" />
                     <h3>Quick capture</h3>
                   </div>
-                  <StudyArt name="quill-inkwell" className="capture-quill-art" />
                 </div>
                 <form onSubmit={addCapture}>
                   <label className="capture-label" htmlFor="quick-capture">Your field note</label>
@@ -1084,7 +1083,7 @@ export default function Dashboard() {
               <section className="tools-section realm-framed realm-gondor">
                 <PanelFrame kind="gondor" />
                 <div className="tools-title">
-                  <h3>The Fellowship & daily tools</h3>
+                  <h3><GondorArt name="overview" />The Fellowship & daily tools</h3>
                   <button
                     className="text-action"
                     onClick={() => setSettings(true)}

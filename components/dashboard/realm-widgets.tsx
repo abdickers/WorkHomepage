@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { celigoFlowUrl } from "@/lib/daily-data.mjs";
 import { StudyArt } from "./study-art";
+import { GondorArt } from "./gondor-art";
 import { GuardianIcon } from "./guardian-icon";
 
 const litBeaconArt: Record<string, string> = {
@@ -317,7 +318,7 @@ export function QuestSeal({ done, total }: { done: number; total: number }) {
   const progress = total ? done / total : 0;
   return (
     <div className="quest-seal-widget">
-      <StudyArt name="quest-medallion" className="quest-medallion-art" />
+      <GondorArt name="shield" size={160} className="quest-medallion-art" />
       <div>
         <span className="realm-widget-label">The day’s quest</span>
         <strong>{total - done} remaining</strong>
@@ -366,7 +367,7 @@ export function DayDial({
     : 0;
   return (
     <div className="day-dial-widget">
-      <StudyArt name="elven-sundial" className="agenda-sundial-art" />
+      <GondorArt name="calendar" size={160} className="agenda-sundial-art" />
       <div>
         <span className="realm-widget-label">The sun’s passage</span>
         <time className="agenda-live-time" dateTime={now?.toISOString()}>

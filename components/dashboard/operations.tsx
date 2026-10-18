@@ -1,10 +1,11 @@
 "use client";
+import { GondorArt } from "@/components/dashboard/gondor-art";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { GuardianIcon } from "./guardian-icon";
 import { connectionEnabled, useConnectionEnabled } from "./connection-preferences";
 import { useEffect, useRef, useState } from "react";
 import { AlertTriangle } from "lucide-react";
-import { RefreshCw, ArrowUpRight, RadioTower, Check, Clock3 } from "@/components/dashboard/realm-icon";
+import { RefreshCw, ArrowUpRight, Check, Clock3 } from "@/components/dashboard/realm-icon";
 import { BrandLogo } from "./brand-logo";
 import { maskLog, providerData, records } from "@/lib/provider-data.mjs";
 import { Beacon, FlowConstellation, WorkerRunes } from "./realm-widgets";
@@ -212,7 +213,7 @@ export function Operations() {
       <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
-          <RadioTower size={19} />
+          <GondorArt name="beacon" />
           <h3>The Beacons of Production</h3>
         </div>
         <label className="auto-refresh">
