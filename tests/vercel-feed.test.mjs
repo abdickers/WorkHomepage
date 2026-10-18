@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {projectVercelResult,VERCEL_TEAM_URL,VERCEL_READ_LIMIT} from '../lib/vercel-feed.mts';
+import {projectVercelResult,projectVercelProfile,VERCEL_TEAM_URL,VERCEL_READ_LIMIT} from '../lib/vercel-feed.mts';
+import {readProjectCenter} from '../lib/vercel-project-center.mts';
 import {records,providerData} from '../lib/provider-data.mts';
 const success = (data) => ({status:'success',result:{content:[{type:'text',text:JSON.stringify({result:data})}],structuredContent:null}});
 
@@ -11,6 +12,37 @@ test('Vercel project projection bounds reads and excludes environment values and
  assert.equal(providerData(outcome.result).hasMore,true);
  assert.ok(!JSON.stringify(outcome).includes('private-value'));
  assert.ok(!JSON.stringify(outcome).includes('private-repo'));
+});
+
+test('nested Vercel deployment envelope is read without fabricating an empty feed',()=>{
+ const r=projectVercelResult(success({deployments:{pagination:{next:123},deployments:[{id:'dpl_nested',name:'s76h_catalyst',state:'READY',created:1792167340436}]}}),'deployments');
+ assert.equal(r.status,'success'); assert.equal(records(r.result)[0].id,'dpl_nested'); assert.equal(providerData(r.result).hasMore,true);
+ assert.notEqual(projectVercelResult(success({deployments:{error:'failed'}}),'deployments').status,'success');
+});
+
+test('project dossier allows only display metadata and validated domains',()=>{
+ const r=projectVercelProfile(success({id:'prj_c',name:'s76h_catalyst',framework:'nextjs',nodeVersion:'24.x',updatedAt:1792167340436,
+ domains:['catalyst.example.com',{name:'catalyst.vercel.app'},'evil.example/path?token=secret','javascript:alert(1)','user:password@example.com'],env:[{value:'private-secret'}],link:{repo:'private-repo'}}));
+ assert.equal(r.status,'success'); const d=providerData(r.result); assert.deepEqual(d.domains,['catalyst.example.com','catalyst.vercel.app']);
+ assert.equal(d.framework,'nextjs'); assert.ok(!JSON.stringify(r).includes('private-secret')); assert.ok(!JSON.stringify(r).includes('private-repo'));
+ assert.notEqual(projectVercelProfile(success({name:'missing-id'})).status,'success');
+});
+
+test('project watch isolates missing projects and fetches production independently of busy previews',async()=>{
+ const calls=[];
+ const client={invoke:async(connector,action,args)=>{
+  calls.push({connector,action,args});
+  if(action==='get_project')return success({id:'prj_c',name:'s76h_catalyst',domains:[]});
+  return success({deployments:{deployments:Array.from({length:12},(_,i)=>({id:`dpl_${i}`,name:'s76h_catalyst',state:'READY',target:args.target||null,created:1792167340436-i}))}});
+ }};
+ const result=await readProjectCenter(client,projectVercelResult(success({projects:[{id:'prj_c',name:'s76h_catalyst'},{id:'other',name:'unrelated-project'}]}),'projects'));
+ assert.equal(result.length,3); assert.notEqual(result[0].profile.status,'success');assert.match(result[0].profile.message,/not visible/);
+ assert.equal(result[2].key,'s76_catalyst');assert.equal(providerData(result[2].profile.result).name,'s76h_catalyst');
+ assert.equal(records(result[2].deployments.result).length,8); assert.equal(records(result[2].production.result).length,1);
+ assert.equal(calls.length,3);assert.ok(calls.every(c=>c.args.slug==='spirit-of-76-fireworks'&&(c.args.projectId||c.args.idOrName)==='prj_c'));
+ assert.ok(calls.some(c=>c.args.target==='production'&&c.args.limit===1));
+ const unavailable=await readProjectCenter(client,{status:'reauthentication_required',message:'Sign in'});
+ assert.ok(unavailable.every(w=>w.profile.status==='reauthentication_required'));assert.equal(calls.length,3);
 });
 test('Vercel denied, malformed and MCP error results cannot become healthy empty feeds',()=>{
  for(const input of [{status:'tool_error',message:'Forbidden',retryAfterMs:120000},success({error:{code:'forbidden'},projects:[]}),success({other:[]}),{status:'success',result:{isError:true,structuredContent:{projects:[]}}},success({projects:[{name:'no-id'}]})]){

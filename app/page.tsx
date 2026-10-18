@@ -488,6 +488,7 @@ export default function Dashboard() {
             ["priorities", "My priorities", "quest"],
             ["notes", "Field notes", "notes"],
             ["systems", "The beacons", "beacon"],
+            ["projects", "Project information", "shield"],
           ] as const).map(([id, label, art]) => (
             <button
               key={id}
@@ -563,6 +564,7 @@ export default function Dashboard() {
                     priorities: "My priorities",
                     notes: "Field notes",
                     systems: "The beacons",
+                    projects: "Project information",
                   } as any
                 )[view]
               }
@@ -687,18 +689,20 @@ export default function Dashboard() {
           <div className="dashboard-toolbar">
             <div>
               <h2>
-                <GondorArt name={view === "overview" ? "overview" : view === "priorities" ? "quest" : view === "notes" ? "notes" : "beacon"} size={36} />
+                <GondorArt name={view === "overview" ? "overview" : view === "priorities" ? "quest" : view === "notes" ? "notes" : view === "projects" ? "shield" : "beacon"} size={36} />
                 {view === "overview"
                   ? "The day, at a glance"
                   : view === "priorities"
                     ? "Give the important things room"
                     : view === "notes"
                       ? "A place for the loose threads"
+                      : view === "projects" ? "Intelligence from the Citadel"
                       : "Keep an eye on the beacons"}
               </h2>
               <p>
                 {view === "overview"
                   ? "Less noise. More getting things done."
+                  : view === "projects" ? "Project details and deployment activity from Vercel."
                   : view === "systems"
                     ? "Connection states, without the guesswork."
                     : "Saved on this browser. Export a backup anytime."}
@@ -976,7 +980,7 @@ export default function Dashboard() {
               </section>
             )}
             </div>
-            {(view === "overview" || view === "systems") && <Operations />}
+            {(view === "overview" || view === "systems" || view === "projects") && <Operations projectView={view === "projects"}/>}
             <div className="dashboard-stack dashboard-support">
             {view === "overview" && <Palantir />}
             {(section("notes") || view === "priorities") && (

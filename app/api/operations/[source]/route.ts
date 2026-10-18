@@ -2,6 +2,7 @@ import { getChatGPTUser, chatGPTSignInPath } from "@/app/chatgpt-auth";
 import { connectorsForRequest } from "@/lib/connectors";
 import { connectorResponse } from "@/lib/connector-errors.mjs";
 import { projectVercelResult, VERCEL_TEAM, VERCEL_READ_LIMIT } from "@/lib/vercel-feed.mjs";
+import { readProjectCenter } from "@/lib/vercel-project-center.mjs";
 const CELIGO = "asdk_app_6ac7b2189d148191805ef2c78f3fbb3c";
 const SITES = "connector_20205bf7d4e99a89d7154bb849718324";
 const SITE_ID = "appgprj_6acfe13398b881918807c030709a2664";
@@ -72,12 +73,15 @@ export async function POST(
     );
   if (source === "vercel") {
     const [projects, deployments] = await Promise.all([
-      client.invoke(VERCEL, "list_projects", { slug: VERCEL_TEAM, limit: String(VERCEL_READ_LIMIT) }),
+      client.invoke(VERCEL, "list_projects", { slug: VERCEL_TEAM, limit: "100" }),
       client.invoke(VERCEL, "list_deployments", { slug: VERCEL_TEAM, limit: VERCEL_READ_LIMIT }),
     ]);
+    // Discovery is bounded separately from the team deployment summary.
+    const projectList = projectVercelResult(projects, "projects", 100);
+    const watched = await readProjectCenter(client, projectList);
     return Response.json({
       status: "success", team: VERCEL_TEAM,
-      sources: { projects: projectVercelResult(projects, "projects"), deployments: projectVercelResult(deployments, "deployments") },
+      sources: { projects: projectList, deployments: projectVercelResult(deployments, "deployments") }, watched,
       fetchedAt: new Date().toISOString(), chatGPTSignInPath: chatGPTSignInPath("/"),
     }, { headers });
   }

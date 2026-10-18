@@ -2,14 +2,16 @@ import { ArrowUpRight } from "./realm-icon";
 import { Beacon } from "./realm-widgets";
 import { BrandLogo } from "./brand-logo";
 import { GuardianIcon } from "./guardian-icon";
-import { VERCEL_TEAM, VERCEL_TEAM_URL, type VercelDeployment, type VercelProject } from "@/lib/vercel-feed.mjs";
+import { ProjectCenter } from "./project-center";
+import { VERCEL_TEAM, VERCEL_TEAM_URL, type VercelDeployment, type VercelProject, type WatchedProject } from "@/lib/vercel-feed.mjs";
 
 function deploymentTime(value: number | null) {
   return value == null ? "—" : new Date(value).toLocaleString("en-US", {
     timeZone: "America/Chicago", month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
   });
 }
-export function VercelWatch({ projects, deployments, loading }: {
+export function VercelWatch({ projects, deployments, watched, loading }: {
+  watched?: WatchedProject[];
   projects: VercelProject[] | null; deployments: VercelDeployment[] | null; loading: boolean;
 }) {
   const unknownState = deployments?.some((d) => d.state === "UNKNOWN");
@@ -20,13 +22,14 @@ export function VercelWatch({ projects, deployments, loading }: {
       <div><strong>{VERCEL_TEAM}</strong><small>Latest 20 team deployments · production and previews</small></div>
       <a href={VERCEL_TEAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Open Spirit of 76 Fireworks in Vercel"><ArrowUpRight size={16}/></a>
     </div>
+    <ProjectCenter watched={watched} loading={loading}/>
     <div className="realm-beacons">
       <Beacon label="Building" tone="active" value={count("BUILDING", "INITIALIZING")} />
       <Beacon label="Queued" tone="queued" value={count("QUEUED")} />
       <Beacon label="Build errors" tone="error" value={count("ERROR")} />
       <Beacon label="Ready" tone="roster" value={count("READY")} />
     </div>
-    {deployments ? <div className="operations-table-scroll vercel-deployments">
+    {deployments ? <details className="realm-detail-table"><summary>Team deployment feed <span>Latest {deployments.length} returned</span></summary><div className="operations-table-scroll vercel-deployments">
       <table className="operations-table"><caption>Recent deployments · created time in Central time</caption>
         <thead><tr><th>Project</th><th>State</th><th>Environment</th><th>Created · CT</th></tr></thead>
         <tbody>{deployments.length ? deployments.map((d) => <tr key={d.id}>
@@ -35,7 +38,7 @@ export function VercelWatch({ projects, deployments, loading }: {
           <td>{d.target}</td><td>{deploymentTime(d.createdAt)}</td>
         </tr>) : <tr><td colSpan={4}>No team deployments returned.</td></tr>}</tbody>
       </table>
-    </div> : <div className="operations-empty"><GuardianIcon unavailable/><p>{loading ? "Reading team deployments…" : "Team deployment access has not been confirmed."}</p></div>}
+    </div></details> : <div className="operations-empty"><GuardianIcon unavailable/><p>{loading ? "Reading team deployments…" : "Team deployment access has not been confirmed."}</p></div>}
     {projects && <details className="realm-detail-table"><summary>Inspect {projects.length} projects returned</summary>
       <div className="vercel-projects">{projects.length ? projects.map((p)=><a key={p.id} href={p.href} target="_blank" rel="noopener noreferrer">{p.name}<ArrowUpRight size={13}/></a>) : <p>No projects returned.</p>}</div>
     </details>}

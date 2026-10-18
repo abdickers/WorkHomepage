@@ -68,7 +68,7 @@ function failure(result: any) {
     ? result.message || "Source unavailable."
     : null;
 }
-export function Operations() {
+export function Operations({ projectView = false }: { projectView?: boolean }) {
   const celigoEnabled = useConnectionEnabled("celigo"), cloudflareEnabled = useConnectionEnabled("cloudflare"), vercelEnabled = useConnectionEnabled("vercel");
   const [tab, setTab] = useState("celigo");
   const [auto, setAuto] = useState(true);
@@ -80,6 +80,7 @@ export function Operations() {
   const current = useRef(feeds);
   const inflight = useRef(new Set<string>());
   const [now, setNow] = useState(Date.now());
+  useEffect(() => { if (projectView) setTab("vercel"); }, [projectView]);
   useEffect(() => {
     current.current = feeds;
   }, [feeds]);
@@ -212,7 +213,8 @@ export function Operations() {
     (paused || feed.state === "error" || now - Date.parse(feed.fetchedAt) > 130000);
   const sources = feeds.celigo.data?.sources;
   const vercelSources = feeds.vercel.data?.sources;
-  const vercelPartial = vercelSources && Object.values(vercelSources).some((s: any) => s?.status !== "success");
+  const watchedPartial = feeds.vercel.data?.watched?.some((w: any) => [w.profile, w.deployments, w.production].some((s: any) => s?.status !== "success"));
+  const vercelPartial = vercelSources && (Object.values(vercelSources).some((s: any) => s?.status !== "success") || watchedPartial);
   return (
     <section
       className={"panel operations systems realm-framed realm-gondor " + (stale ? "realm-stale" : "")}
@@ -221,7 +223,7 @@ export function Operations() {
       <div className="panel-heading">
         <div>
           <GondorArt name="beacon" />
-          <h3>The Beacons of Production</h3>
+          <h3>{projectView ? "The Citadel · Project watch" : "The Beacons of Production"}</h3>
         </div>
         <label className="auto-refresh">
           <input
@@ -412,8 +414,8 @@ export function Operations() {
       )}
       {tab === "vercel" && (
         <>
-          <VercelWatch projects={rows(vercelSources?.projects)} deployments={rows(vercelSources?.deployments)} loading={feed?.state === "loading"} />
-          {vercelPartial && <p className="connection-message warning">Partial result: {failure(vercelSources?.deployments) || failure(vercelSources?.projects)}</p>}
+          <VercelWatch watched={feeds.vercel.data?.watched} projects={rows(vercelSources?.projects)} deployments={rows(vercelSources?.deployments)} loading={feed?.state === "loading"} />
+          {vercelPartial && <p className="connection-message warning">Partial result: {failure(vercelSources?.deployments) || failure(vercelSources?.projects) || "Some watched projects or deployment details are unavailable. Select each project to review its access."}</p>}
         </>
       )}
       {tab === "cloudflare" && (
