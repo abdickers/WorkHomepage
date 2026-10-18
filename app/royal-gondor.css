@@ -26,6 +26,9 @@
 .app[data-command-realm="work"] .topbar { color:var(--text); border-color:var(--line); background:linear-gradient(90deg,#101a24a1,transparent); }
 .app[data-command-realm="work"].light .topbar { background:linear-gradient(90deg,#f0f5f7b0,transparent); }
 .app[data-command-realm="work"] :is(.avatar,.user-avatar) { background:#304454; color:#eff5fa; border-color:#829bb1; }
+.app[data-command-realm="work"].light .sidebar .brand-logo.mono-logo { filter:brightness(0) invert(1); }
+.app[data-command-realm="work"] :is(.daily-watch,.auto-refresh) { color:var(--muted); }
+.app[data-command-realm="work"] .realm-gondor :is(.panel-heading svg,.daily-tabs button svg) { color:var(--gold); }
 .app[data-command-realm="work"] :is(.overview-intro h2,.section-intro h2) { color:var(--gold-light); }
 .app[data-command-realm="work"] .realm-gondor {
   --surface-paint:linear-gradient(145deg,#202e3b,#17232e 72%);
@@ -60,6 +63,7 @@
 .app[data-command-realm="work"] .quest-track { stroke:#718a9b42; }
 .app[data-command-realm="work"] .treasury-ring { border-color:#7892a64d; background:radial-gradient(ellipse,#2f46585c,transparent 70%); }
 .app[data-command-realm="work"] .treasury-ring svg { filter:saturate(.18); }
+.app[data-command-realm="work"].light .treasury-ring :is(strong,small,span) { color:var(--text); }
 .app[data-command-realm="work"] :is(.study-art,.polish-art) { filter:saturate(.2); }
 .app[data-command-realm="work"] .constellation-compass-art { filter:grayscale(.85) brightness(1.35); }
 .app[data-command-realm="work"] .realm-gondor :is(.rune-ring,.compass-ticks) { stroke:#adc1d466; }
@@ -134,7 +138,7 @@
 .registry-probe small { display:block; margin-top:5px; font-size:10px; color:#97aec3; }
 .registry-footnote { color:#9aafc2; font-size:12px; line-height:1.65; margin-top:20px; }
 .registry-footer { display:flex; flex-direction:row; align-items:center; justify-content:space-between; flex-wrap:nowrap; gap:12px; padding:16px 28px; background:#101b28; border-top:1px solid #91a9bf55; text-align:left; font:normal 12px/1.5 "DM Sans",Arial,sans-serif; }
-.registry-footer>span { display:flex; align-items:center; gap:8px; color:#a9becf; font:normal 11px/1.5 "DM Sans",Arial,sans-serif; }
+.royal-registry .registry-footer>span { display:flex; align-items:center; gap:8px; color:#a9becf; font:normal 11px/1.5 "DM Sans",Arial,sans-serif; }
 .registry-shortcuts { display:grid; gap:14px; }
 .registry-shortcuts label { display:grid; grid-template-columns:150px minmax(0,1fr); gap:16px; align-items:center; padding:12px 0; border-bottom:1px solid #91a9bf30; }
 .registry-shortcuts label>span { display:flex; align-items:center; gap:12px; font-size:13px; }
