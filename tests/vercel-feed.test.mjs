@@ -28,7 +28,7 @@ test('project dossier allows only display metadata and validated domains',()=>{
  assert.notEqual(projectVercelProfile(success({name:'missing-id'})).status,'success');
 });
 
-test('project watch isolates missing projects and fetches production independently of busy previews',async()=>{
+test('Catalyst watch ignores unrelated projects and fetches production independently of busy previews',async()=>{
  const calls=[];
  const client={invoke:async(connector,action,args)=>{
   calls.push({connector,action,args});
@@ -36,13 +36,14 @@ test('project watch isolates missing projects and fetches production independent
   return success({deployments:{deployments:Array.from({length:12},(_,i)=>({id:`dpl_${i}`,name:'s76h_catalyst',state:'READY',target:args.target||null,created:1792167340436-i}))}});
  }};
  const result=await readProjectCenter(client,projectVercelResult(success({projects:[{id:'prj_c',name:'s76h_catalyst'},{id:'other',name:'unrelated-project'}]}),'projects'));
- assert.equal(result.length,3); assert.notEqual(result[0].profile.status,'success');assert.match(result[0].profile.message,/not visible/);
- assert.equal(result[2].key,'s76_catalyst');assert.equal(providerData(result[2].profile.result).name,'s76h_catalyst');
- assert.equal(records(result[2].deployments.result).length,8); assert.equal(records(result[2].production.result).length,1);
+ assert.equal(result.length,1); assert.equal(result[0].key,'s76_catalyst');assert.equal(providerData(result[0].profile.result).name,'s76h_catalyst');
+ assert.equal(records(result[0].deployments.result).length,8); assert.equal(records(result[0].production.result).length,1);
  assert.equal(calls.length,3);assert.ok(calls.every(c=>c.args.slug==='spirit-of-76-fireworks'&&(c.args.projectId||c.args.idOrName)==='prj_c'));
  assert.ok(calls.some(c=>c.args.target==='production'&&c.args.limit===1));
  const unavailable=await readProjectCenter(client,{status:'reauthentication_required',message:'Sign in'});
  assert.ok(unavailable.every(w=>w.profile.status==='reauthentication_required'));assert.equal(calls.length,3);
+ const missing=await readProjectCenter(client,projectVercelResult(success({projects:[{id:'other',name:'bc-proline'}]}),'projects'));
+ assert.equal(missing.length,1);assert.notEqual(missing[0].profile.status,'success');assert.match(missing[0].profile.message,/not visible/);assert.equal(calls.length,3);
 });
 test('Vercel denied, malformed and MCP error results cannot become healthy empty feeds',()=>{
  for(const input of [{status:'tool_error',message:'Forbidden',retryAfterMs:120000},success({error:{code:'forbidden'},projects:[]}),success({other:[]}),{status:'success',result:{isError:true,structuredContent:{projects:[]}}},success({projects:[{name:'no-id'}]})]){

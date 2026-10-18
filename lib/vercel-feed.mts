@@ -7,8 +7,6 @@ export const VERCEL_READ_LIMIT = 20;
 export type VercelProject = { id: string; name: string; href: string };
 export type VercelDeployment = VercelProject & { state: string; target: string; createdAt: number | null };
 export const WATCHED_PROJECTS = [
-  { key: "bc-proline", label: "bc-proline", names: ["bc-proline"] },
-  { key: "76mcp-api-gateway", label: "76mcp-api-gateway", names: ["76mcp-api-gateway"] },
   { key: "s76_catalyst", label: "s76h_catalyst", names: ["s76h_catalyst", "s76_catalyst"] },
 ] as const;
 export type VercelProfile = VercelProject & {

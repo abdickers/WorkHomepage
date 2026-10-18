@@ -3,7 +3,7 @@ import { providerData, records } from "./provider-data.mts";
 import { WATCHED_PROJECTS, VERCEL_TEAM, projectVercelResult, projectVercelProfile, type VercelProject, type WatchedProject } from "./vercel-feed.mts";
 const VERCEL = "connector_690a90ec05c881918afb6a55dc9bbaa1";
 
-/** Fixed three-project watch. Visitor consent selects the account; browser inputs cannot change scope. */
+/** Fixed Catalyst watch. Visitor consent selects the account; browser inputs cannot change scope. */
 export async function readProjectCenter(client: Pick<ConnectorBinding, "invoke">, projectResult: ConnectorResult): Promise<WatchedProject[]> {
   let projects: VercelProject[] | null = null;
   if (projectResult.status === "success") {
