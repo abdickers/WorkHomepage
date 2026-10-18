@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { celigoFlowUrl } from "@/lib/daily-data.mjs";
 import { StudyArt } from "./study-art";
+import { GuardianIcon } from "./guardian-icon";
 
 const litBeaconArt: Record<string, string> = {
   error: "beacon-error-orange",
@@ -117,10 +118,12 @@ export function FlowConstellation({
               );
             })}
           </svg>
-          <StudyArt name="elven-compass" className="constellation-compass-art" />
-          <div className="constellation-total">
-            <strong>{flows?.length ?? "—"}</strong>
-            <span>flows returned</span>
+          <div className="constellation-center">
+            <StudyArt name="elven-compass" className="constellation-compass-art" />
+            <div className="constellation-total">
+              <strong>{flows?.length ?? "—"}</strong>
+              <span>flows returned</span>
+            </div>
           </div>
           {flows?.slice(0, 50).map((f, i) => {
             const a = (i / flows.length) * Math.PI * 2 - Math.PI / 2;
@@ -229,7 +232,7 @@ export function FlowConstellation({
   );
 }
 
-export function WorkerRunes({ logs }: { logs: any[] }) {
+export function WorkerRunes({ logs, stale = false }: { logs: any[]; stale?: boolean }) {
   const groups = [
     {
       label: "2xx",
@@ -266,7 +269,7 @@ export function WorkerRunes({ logs }: { logs: any[] }) {
       <div className="rune-counters">
         {groups.map((g) => (
           <div key={g.label} className={g.tone}>
-            <span aria-hidden="true">{g.value ? "◆" : "◇"}</span>
+            <GuardianIcon alert={g.tone !== "active" && g.value > 0} unavailable={stale} />
             <strong>{g.value}</strong>
             <small>{g.label}</small>
           </div>

@@ -1,0 +1,344 @@
+{
+  "coordinates": "[left, top, right, bottom), native source pixels",
+  "sources": [
+    {
+      "path": "gondor-header-frame.png",
+      "size": [
+        2172,
+        724
+      ],
+      "alphaBounds": [
+        9,
+        0,
+        2160,
+        698
+      ],
+      "sha256": "150bb620c76042dc9b64e4b528b11aded40ef9f16222d65b5f28d40cd00932fa"
+    },
+    {
+      "path": "gondor-left-rail.png",
+      "size": [
+        724,
+        2172
+      ],
+      "alphaBounds": [
+        218,
+        0,
+        644,
+        2138
+      ],
+      "sha256": "e1fcccfdd2350086c2e8dbf73768a5df362b6884c6394fa73ee2ddd6603e1f38"
+    },
+    {
+      "path": "guardian-lit.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "alphaBounds": [
+        33,
+        12,
+        1234,
+        1254
+      ],
+      "sha256": "4f2156ff39a9a43c9cbade87b4602e0808fa1e95f7404bbe6fad31ecb7b80e17"
+    },
+    {
+      "path": "guardian-neutral.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "alphaBounds": [
+        0,
+        12,
+        1242,
+        1254
+      ],
+      "sha256": "416faf380678b7cd9f9d9180e6d23f9ca139029f396bee70db8f0ab21a879692"
+    },
+    {
+      "path": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "size": [
+        1080,
+        1080
+      ],
+      "alphaBounds": [
+        0,
+        12,
+        1072,
+        1080
+      ],
+      "sha256": "3ef34a6ac740952a9e3d9b92f6f5b7d67be48c9fd720d9a7c571c95914d247e5"
+    }
+  ],
+  "delivery": [
+    {
+      "path": "header-top-left.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        9,
+        90,
+        154,
+        235
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-top-right.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        2017,
+        90,
+        2162,
+        235
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-bottom-left.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        9,
+        530,
+        154,
+        675
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-bottom-right.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        2017,
+        530,
+        2162,
+        675
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-top.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        400,
+        90,
+        800,
+        140
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-bottom.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        400,
+        625,
+        800,
+        675
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-left.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        9,
+        400,
+        79,
+        500
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-right.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        2092,
+        400,
+        2162,
+        500
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-tree.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        970,
+        0,
+        1202,
+        160
+      ],
+      "lossless": true
+    },
+    {
+      "path": "header-diamond.webp",
+      "source": "gondor-header-frame.png",
+      "bounds": [
+        1028,
+        610,
+        1144,
+        698
+      ],
+      "lossless": true
+    },
+    {
+      "path": "page-rail-top.webp",
+      "source": "gondor-left-rail.png",
+      "bounds": [
+        256,
+        0,
+        466,
+        420
+      ],
+      "lossless": true
+    },
+    {
+      "path": "page-rail-shaft.webp",
+      "source": "gondor-left-rail.png",
+      "bounds": [
+        310,
+        420,
+        414,
+        800
+      ],
+      "lossless": true
+    },
+    {
+      "path": "page-rail-bottom.webp",
+      "source": "gondor-left-rail.png",
+      "bounds": [
+        295,
+        1880,
+        430,
+        2140
+      ],
+      "lossless": true
+    },
+    {
+      "path": "guardian-lit-128.webp",
+      "source": "guardian-lit.png",
+      "size": [
+        128,
+        128
+      ],
+      "uncropped": true
+    },
+    {
+      "path": "guardian-lit-256.webp",
+      "source": "guardian-lit.png",
+      "size": [
+        256,
+        256
+      ],
+      "uncropped": true
+    },
+    {
+      "path": "guardian-neutral-128.webp",
+      "source": "guardian-neutral.png",
+      "size": [
+        128,
+        128
+      ],
+      "uncropped": true
+    },
+    {
+      "path": "guardian-neutral-256.webp",
+      "source": "guardian-neutral.png",
+      "size": [
+        256,
+        256
+      ],
+      "uncropped": true
+    },
+    {
+      "path": "public/art/frames/elven-tl.webp",
+      "source": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "bounds": [
+        0,
+        0,
+        360,
+        360
+      ],
+      "lossless": true
+    },
+    {
+      "path": "public/art/frames/elven-top.webp",
+      "source": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "bounds": [
+        360,
+        0,
+        720,
+        360
+      ],
+      "lossless": true
+    },
+    {
+      "path": "public/art/frames/elven-tr.webp",
+      "source": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "bounds": [
+        720,
+        0,
+        1080,
+        360
+      ],
+      "lossless": true
+    },
+    {
+      "path": "public/art/frames/elven-left.webp",
+      "source": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "bounds": [
+        0,
+        360,
+        360,
+        720
+      ],
+      "lossless": true
+    },
+    {
+      "path": "public/art/frames/elven-right.webp",
+      "source": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "bounds": [
+        720,
+        360,
+        1080,
+        720
+      ],
+      "lossless": true
+    },
+    {
+      "path": "public/art/frames/elven-bl.webp",
+      "source": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "bounds": [
+        0,
+        720,
+        360,
+        1080
+      ],
+      "lossless": true
+    },
+    {
+      "path": "public/art/frames/elven-bottom.webp",
+      "source": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "bounds": [
+        360,
+        720,
+        720,
+        1080
+      ],
+      "lossless": true
+    },
+    {
+      "path": "public/art/frames/elven-br.webp",
+      "source": "public/art/frames/elven-panel-frame-nine-slice.webp",
+      "bounds": [
+        720,
+        720,
+        1080,
+        1080
+      ],
+      "lossless": true
+    }
+  ]
+}

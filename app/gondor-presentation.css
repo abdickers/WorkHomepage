@@ -1,0 +1,128 @@
+/* Work dashboard only: artwork surrounds independent inset surfaces. */
+.app[data-command-realm="work"] .realm-framed {
+  --frame-size: 44px;
+  --surface-inset: calc(var(--frame-size) * .22) calc(var(--frame-size) * .19) calc(var(--frame-size) * .23);
+  --surface-radius: 12px;
+  --surface-paint: var(--panel);
+  background: none; box-shadow: none; overflow: visible;
+}
+.app[data-command-realm="work"] .realm-dwarven {
+  --surface-inset: calc(var(--frame-size) * .39) calc(var(--frame-size) * .35) calc(var(--frame-size) * .49);
+}
+.app[data-command-realm="work"] .realm-oak {
+  --surface-inset: calc(116 * var(--oak-unit)) calc(157 * var(--oak-unit)) calc(120 * var(--oak-unit)) calc(140 * var(--oak-unit));
+  --surface-radius: calc(50 * var(--oak-unit));
+}
+.realm-panel-surface { position: absolute; z-index: -2; inset: var(--surface-inset); border-radius: var(--surface-radius); background: var(--surface-paint); pointer-events: none; }
+.app[data-command-realm="work"] .realm-elven-art { border: 0; border-image: none; }
+.realm-elven-art>span { position: absolute; display: block; background-repeat: no-repeat; background-size: 100% 100%; }
+.realm-elven-art :is(.elven-tl,.elven-tr,.elven-bl,.elven-br) { width: var(--frame-size); height: var(--frame-size); }
+.elven-tl { left: 0; top: 0; background-image: url('/art/frames/elven-tl.webp'); }
+.elven-tr { right: 0; top: 0; background-image: url('/art/frames/elven-tr.webp'); }
+.elven-bl { left: 0; bottom: 0; background-image: url('/art/frames/elven-bl.webp'); }
+.elven-br { right: 0; bottom: 0; background-image: url('/art/frames/elven-br.webp'); }
+.realm-elven-art :is(.elven-top,.elven-bottom) { left: var(--frame-size); right: var(--frame-size); height: var(--frame-size); }
+.elven-top { top: 0; background-image: url('/art/frames/elven-top.webp'); }
+.elven-bottom { bottom: 0; background-image: url('/art/frames/elven-bottom.webp'); }
+.realm-elven-art :is(.elven-left,.elven-right) { top: var(--frame-size); bottom: var(--frame-size); width: var(--frame-size); }
+.elven-left { left: 0; background-image: url('/art/frames/elven-left.webp'); }
+.elven-right { right: 0; background-image: url('/art/frames/elven-right.webp'); }
+
+/* White Tree, masonry and silver steel. Other frame families retain their colors. */
+.app[data-command-realm="work"] .realm-gondor {
+  --gondor-corner: 36px;
+  --gondor-rail: calc(var(--gondor-corner) * 50 / 145);
+  --gondor-side: calc(var(--gondor-corner) * 70 / 145);
+  --surface-inset: 32px 8px 8px; --surface-radius: 20px;
+  --surface-paint: radial-gradient(ellipse at 60% 0,#6b83882b,transparent 65%),#162226;
+  --panel: #162226; --panel-alt: #1b2a2f; --input: #101c21;
+  --text: #edf0eb; --muted: #b9c7c8; --gold: #bacbce; --gold-light: #e3ebea;
+  --line: #73888d75; --control: #293f48; --focus: #e5f3f4;
+  padding: 60px 30px 32px;
+}
+.app[data-command-realm="work"].light .realm-gondor {
+  --surface-paint: linear-gradient(145deg,#edf0ec,#d8e1df);
+  --panel: #edf0ec; --panel-alt: #e4eae7; --input: #f5f7f4;
+  --text: #263b43; --muted: #4f656c; --gold: #405e6b; --gold-light: #243e49;
+  --line: #6e899680; --control: #d6e1e5; --focus: #254e66;
+}
+.app[data-command-realm="work"] .realm-gondor > .realm-gondor-art { inset: 24px 0 0; border: 0; opacity: 1; }
+.realm-gondor-art > span { position: absolute; display: block; background-repeat: no-repeat; background-size: 100% 100%; }
+.realm-gondor-art :is(.gondor-tl,.gondor-tr,.gondor-bl,.gondor-br) { width: var(--gondor-corner); height: var(--gondor-corner); }
+.gondor-tl { top: 0; left: 0; background-image: url('/art/gondor/header-top-left.webp'); }
+.gondor-tr { top: 0; right: 0; background-image: url('/art/gondor/header-top-right.webp'); }
+.gondor-bl { bottom: 0; left: 0; background-image: url('/art/gondor/header-bottom-left.webp'); }
+.gondor-br { bottom: 0; right: 0; background-image: url('/art/gondor/header-bottom-right.webp'); }
+.realm-gondor-art :is(.gondor-top,.gondor-bottom) { left: var(--gondor-corner); right: var(--gondor-corner); height: var(--gondor-rail); }
+.gondor-top { top: 0; background-image: url('/art/gondor/header-top.webp'); }
+.gondor-bottom { bottom: 0; background-image: url('/art/gondor/header-bottom.webp'); }
+.realm-gondor-art :is(.gondor-left,.gondor-right) { top: var(--gondor-corner); bottom: var(--gondor-corner); width: var(--gondor-side); }
+.gondor-left { left: 0; background-image: url('/art/gondor/header-left.webp'); }
+.gondor-right { right: 0; background-image: url('/art/gondor/header-right.webp'); }
+.realm-gondor-art .gondor-tree { width: 87px; height: 60px; left: calc(50% - 43.5px); top: -33.75px; background-image: url('/art/gondor/header-tree.webp'); }
+.realm-gondor-art .gondor-diamond { width: 30px; height: 22.76px; left: calc(50% - 15px); bottom: -5.95px; background-image: url('/art/gondor/header-diamond.webp'); }
+.app[data-command-realm="work"] .realm-gondor :is(.gold-button,.outline-button,.operations-tabs>button,.text-action,.tool) { color: var(--text); border-color: var(--line); background: linear-gradient(145deg,var(--control),var(--input)); }
+.app[data-command-realm="work"] .realm-gondor :is(.gold-button,.outline-button,.operations-tabs>button,.text-action,.tool):hover:not(:disabled) { border-color: var(--gold); background: var(--control); }
+.app[data-command-realm="work"] .realm-gondor .operations-tabs>button.selected { background: var(--control); border-color: var(--gold); color: var(--gold-light); }
+.app[data-command-realm="work"] .realm-gondor :is(.panel-heading h3,.tools-title h3) { color: var(--gold-light); }
+.app[data-command-realm="work"] .realm-gondor :is(button,a,input,textarea,select,summary):focus-visible { outline-color: var(--focus); }
+
+/* The constellation shares its parent's steel palette and one centered caption. */
+.app[data-command-realm="work"] .realm-gondor .realm-flow-board { background: linear-gradient(145deg,var(--panel-alt),var(--input)); border-color: var(--line); }
+.app[data-command-realm="work"] .realm-gondor .realm-flow-board::before { filter: grayscale(1); opacity: .12; }
+.app[data-command-realm="work"] .constellation-chart>svg { position: absolute; inset: 0; display: block; }
+.app[data-command-realm="work"] .constellation-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 70%; display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: none; }
+.app[data-command-realm="work"] .constellation-center .constellation-compass-art { position: static; transform: none; width: clamp(54px,5vw,72px); max-width: 46%; }
+.app[data-command-realm="work"] .constellation-center .constellation-total { position: static; gap: 3px; }
+.app[data-command-realm="work"] .realm-gondor .constellation-total strong { color: var(--text); }
+.app[data-command-realm="work"] .realm-gondor .constellation-total span { color: var(--muted); }
+.app[data-command-realm="work"] .realm-gondor :is(.rune-ring,.compass-ticks) { stroke: var(--line); }
+
+/* Landscape and shade end inside the silver frame; no focus-bearing content is clipped. */
+.app[data-command-realm="work"] .hero.realm-gondor { --surface-inset: 35px 8px 8px; --surface-paint: linear-gradient(90deg,#101b22ed,#17212972 70%),url('/art/middle-earth-council-display-3840.jpg') center 39% / cover; min-height: 300px; padding: 0; margin-bottom: 8px; }
+.app[data-command-realm="work"] .hero.realm-gondor .hero-shade { display: none; }
+.app[data-command-realm="work"] .hero.realm-gondor .hero-copy { max-width: 90%; padding: 68px 34px 78px; }
+.app[data-command-realm="work"] .hero.realm-gondor h1 { color: #eff2ee; }
+.app[data-command-realm="work"] .hero.realm-gondor .hero-bottom { inset: auto 24px 20px; width: auto; background: #0d1a2280; border-color: #91abb74d; color: #d4dfe0; }
+.app[data-command-realm="work"] .hero.realm-gondor .hero-stamp { top: 70px; right: 36px; color: #cfddde; }
+
+/* Replaces the original sidebar rule at exactly the same boundary. */
+.app[data-command-realm="work"] { --work-rail-x: 190px; }
+.app[data-command-realm="work"] .sidebar { border-right: 0; }
+.gondor-page-rail { position: fixed; top: 14px; bottom: 14px; left: var(--work-rail-x); transform: translateX(-50%); width: 34px; z-index: 21; pointer-events: none; }
+.gondor-page-rail > span { display: block; position: absolute; background-repeat: no-repeat; background-size: 100% 100%; }
+.gondor-rail-top { top: 0; width: 34px; height: 68px; background-image: url('/art/gondor/page-rail-top.webp'); }
+.gondor-rail-shaft { top: 67px; bottom: 41px; width: 16.84px; left: 8.58px; background-image: url('/art/gondor/page-rail-shaft.webp'); }
+.gondor-rail-bottom { bottom: 0; width: 21.86px; height: 42.1px; left: 6.07px; background-image: url('/art/gondor/page-rail-bottom.webp'); }
+
+/* Summary guardians only; compact sampled-event diamonds remain unchanged. */
+.provider-metric__guardian { display: block; width: 104px; height: 104px; max-width: 112px; object-fit: contain; margin: 0 auto 10px; pointer-events: none; flex: 0 0 auto; }
+.provider-metric__guardian[data-unavailable="true"] { opacity: .5; }
+.app[data-command-realm="work"] .operations { container-type: inline-size; }
+.app[data-command-realm="work"] .rune-counters { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px 10px; }
+.app[data-command-realm="work"] .rune-counters > div { min-width: 0; padding: 12px 0; border: 0; border-bottom: 1px solid var(--line); background: none; }
+.app[data-command-realm="work"] .rune-counters small { margin-top: 8px; }
+.app[data-command-realm="work"] .rune-counters > .active strong { color: #a6d2b0; }
+.app[data-command-realm="work"] .rune-counters > .paused strong { color: #e4c581; }
+.app[data-command-realm="work"] .rune-counters > .error strong { color: #efaa98; }
+.app[data-command-realm="work"].light .rune-counters > .active strong { color: #286342; }
+.app[data-command-realm="work"].light .rune-counters > .paused strong { color: #79551d; }
+.app[data-command-realm="work"].light .rune-counters > .error strong { color: #a33e31; }
+@container (min-width: 520px) { .app[data-command-realm="work"] .rune-counters { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+@media(min-width:2200px) { .app[data-command-realm="work"] { --work-rail-x: 235px; } }
+@media(max-width:900px) { .app[data-command-realm="work"] { --work-rail-x: 75px; } }
+@media(max-width:730px) {
+  .app[data-command-realm="work"] .realm-framed { --frame-size: 36px; }
+  .app[data-command-realm="work"] .realm-gondor { --gondor-corner: 30px; --surface-inset: 28px 7px 7px; padding: 54px 24px 30px; }
+  .realm-gondor-art .gondor-tree { width: 63.8px; height: 44px; left: calc(50% - 31.9px); top: -24.75px; }
+  .realm-gondor-art .gondor-diamond { width: 24px; height: 18.2px; left: calc(50% - 12px); bottom: -4.76px; }
+  .app[data-command-realm="work"] .hero.realm-gondor .hero-copy { max-width: 100%; padding: 60px 24px 94px; }
+  .app[data-command-realm="work"] .hero.realm-gondor .hero-bottom { position: relative; inset: auto; margin: -72px 24px 24px; height: auto; min-height: 48px; padding: 8px; flex-wrap: wrap; gap: 6px; }
+  .app[data-command-realm="work"] .hero.realm-gondor .hero-bottom>span { min-width: 0; }
+  .gondor-page-rail { width: 22px; }
+  .gondor-rail-top { width: 22px; height: 44px; }
+  .gondor-rail-shaft { width: 10.9px; left: 5.55px; top: 43px; bottom: 26px; }
+  .gondor-rail-bottom { width: 14.14px; height: 27.24px; left: 3.93px; }
+}
+@media(max-width:480px) { .provider-metric__guardian { width: 80px; height: 80px; } }
+@media(max-width:430px) { .app[data-command-realm="work"] { --work-rail-x: 58px; } }

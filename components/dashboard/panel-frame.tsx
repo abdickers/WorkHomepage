@@ -1,10 +1,17 @@
 /** Decorative art only. All headings, controls and data stay in the parent panel. */
-export function PanelFrame({ kind = "elven" }: { kind?: "elven" | "dwarven" | "oak" | "scroll" }) {
+export function PanelFrame({ kind = "elven" }: { kind?: "elven" | "dwarven" | "oak" | "scroll" | "gondor" }) {
+  const surface = <span className="realm-panel-surface" aria-hidden="true" />;
+  if (kind === "gondor") {
+    return <>{surface}<div className="realm-frame realm-gondor-art" aria-hidden="true">
+      {["top", "bottom", "left", "right", "tl", "tr", "bl", "br", "tree", "diamond"].map(part =>
+        <span key={part} className={`gondor-${part}`} />)}
+    </div></>;
+  }
   if (kind === "oak") {
-    return <div className="realm-frame realm-oak-art" aria-hidden="true">
+    return <>{surface}<div className="realm-frame realm-oak-art" aria-hidden="true">
       {["top", "bottom", "left", "right", "top-left", "top-right", "bottom-left", "bottom-right"].map(part =>
         <span key={part} className={`oak-${part}`} />)}
-    </div>;
+    </div></>;
   }
   if (kind === "scroll") {
     return <div className="realm-frame realm-scroll-art" aria-hidden="true">
@@ -16,5 +23,18 @@ export function PanelFrame({ kind = "elven" }: { kind?: "elven" | "dwarven" | "o
       </div>)}
     </div>;
   }
-  return <div className={`realm-frame realm-${kind}-art`} aria-hidden="true" />;
+  if (kind === "elven") {
+    return <>{surface}<div className="realm-frame realm-elven-art" aria-hidden="true">
+      {["top", "bottom", "left", "right", "tl", "tr", "bl", "br"].map(part =>
+        <span key={part} className={`elven-${part}`} />)}
+    </div></>;
+  }
+  return <>{surface}<div className={`realm-frame realm-${kind}-art`} aria-hidden="true" /></>;
+}
+
+/** Replaces the sidebar's former straight rule; caps never stretch. */
+export function GondorPageRail() {
+  return <div className="gondor-page-rail" aria-hidden="true">
+    <span className="gondor-rail-top" /><span className="gondor-rail-shaft" /><span className="gondor-rail-bottom" />
+  </div>;
 }

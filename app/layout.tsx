@@ -3,6 +3,7 @@ import "./globals.css";
 import "./realm-presentation.css";
 import "./study-presentation.css";
 import "./command-polish.css";
+import "./gondor-presentation.css";
 export const metadata: Metadata = {
   title: "The Command Center · Adam",
   description:

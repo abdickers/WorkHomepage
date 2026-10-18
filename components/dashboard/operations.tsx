@@ -1,7 +1,8 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
+import { GuardianIcon } from "./guardian-icon";
 import { useEffect, useRef, useState } from "react";
-import { Activity, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { RefreshCw, ArrowUpRight, RadioTower, Check, Clock3 } from "@/components/dashboard/realm-icon";
 import { BrandLogo } from "./brand-logo";
 import { maskLog, providerData, records } from "@/lib/provider-data.mjs";
@@ -202,9 +203,9 @@ export function Operations() {
   const sources = feeds.celigo.data?.sources;
   return (
     <section
-      className={"panel operations systems realm-framed realm-dwarven " + (stale ? "realm-stale" : "")}
+      className={"panel operations systems realm-framed realm-gondor " + (stale ? "realm-stale" : "")}
     >
-      <PanelFrame kind="dwarven" />
+      <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
           <RadioTower size={19} />
@@ -397,7 +398,7 @@ export function Operations() {
       )}
       {tab === "vercel" && (
         <div className="operations-empty">
-          <BrandLogo name="Vercel" />
+          <GuardianIcon unavailable />
           <h4>Choose the watchtower.</h4>
           <p>
             The connected account returned no projects or teams. Project
@@ -427,7 +428,7 @@ export function Operations() {
           </div>
           {logs ? (
             <>
-              <WorkerRunes logs={logs} />
+              <WorkerRunes logs={logs} stale={!!stale} />
               <details className="realm-detail-table">
                 <summary>
                   Inspect sampled logs <span>Time · request · outcome</span>
@@ -485,7 +486,7 @@ export function Operations() {
             </>
           ) : (
             <div className="operations-empty">
-              <Activity size={24} />
+              <GuardianIcon unavailable />
               <p>
                 {feed?.state === "loading"
                   ? "Reading Worker logs…"

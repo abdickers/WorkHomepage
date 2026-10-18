@@ -1,5 +1,5 @@
 "use client";
-import { PanelFrame } from "@/components/dashboard/panel-frame";
+import { PanelFrame, GondorPageRail } from "@/components/dashboard/panel-frame";
 import { StudyArt } from "@/components/dashboard/study-art";
 import { PolishArt } from "@/components/dashboard/polish-art";
 import { useEffect, useRef, useState } from "react";
@@ -564,6 +564,7 @@ export default function Dashboard() {
           </div>
         </div>
       </aside>
+      <GondorPageRail />
       <main>
         <header className="topbar">
           <div className="breadcrumb">
@@ -594,7 +595,8 @@ export default function Dashboard() {
           </div>
         </header>
         <div className="content">
-          <section className="hero">
+          <section className="hero realm-framed realm-gondor">
+            <PanelFrame kind="gondor" />
             <div className="hero-shade" />
             <div className="hero-copy">
               <div className="eyebrow">
@@ -1095,8 +1097,8 @@ export default function Dashboard() {
           </div>
           {view === "overview" && (
             <>
-              <section className="tools-section realm-framed realm-dwarven">
-                <PanelFrame kind="dwarven" />
+              <section className="tools-section realm-framed realm-gondor">
+                <PanelFrame kind="gondor" />
                 <div className="tools-title">
                   <h3>The Fellowship & daily tools</h3>
                   <button
