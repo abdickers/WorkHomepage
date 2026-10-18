@@ -10,6 +10,7 @@ import { BrandLogo } from "./brand-logo";
 import { maskLog, providerData, records } from "@/lib/provider-data.mjs";
 import { Beacon, FlowConstellation, WorkerRunes } from "./realm-widgets";
 import { celigoFlowUrl } from "@/lib/daily-data.mjs";
+import { VercelWatch } from "./vercel-watch";
 type Feed = {
   state: "idle" | "loading" | "success" | "error" | "auth";
   data: any;
@@ -68,12 +69,13 @@ function failure(result: any) {
     : null;
 }
 export function Operations() {
-  const celigoEnabled = useConnectionEnabled("celigo"), cloudflareEnabled = useConnectionEnabled("cloudflare");
+  const celigoEnabled = useConnectionEnabled("celigo"), cloudflareEnabled = useConnectionEnabled("cloudflare"), vercelEnabled = useConnectionEnabled("vercel");
   const [tab, setTab] = useState("celigo");
   const [auto, setAuto] = useState(true);
   const [feeds, setFeeds] = useState<Record<string, Feed>>({
     celigo: blank(),
     cloudflare: blank(),
+    vercel: blank(),
   });
   const current = useRef(feeds);
   const inflight = useRef(new Set<string>());
@@ -83,7 +85,7 @@ export function Operations() {
   }, [feeds]);
   async function refresh(source: string, manual = false) {
     if (!connectionEnabled(source)) return;
-    if (source === "vercel" || inflight.current.has(source)) return;
+    if (inflight.current.has(source)) return;
     const prev = current.current[source];
     if (Date.now() < prev.retryAt || (!manual && prev.state === "auth")) return;
     inflight.current.add(source);
@@ -111,13 +113,12 @@ export function Operations() {
           },
         );
       if (
-        source === "celigo" &&
-        data.sources?.flows?.status !== "success" &&
-        data.sources?.jobs?.status !== "success"
+        ["celigo", "vercel"].includes(source) &&
+        !Object.values(data.sources || {}).some((s: any) => s?.status === "success")
       ) {
-        const e = data.sources?.flows || data.sources?.jobs;
+        const e = source === "celigo" ? data.sources?.flows || data.sources?.jobs : data.sources?.deployments || data.sources?.projects;
         throw Object.assign(
-          new Error(e?.message || "Celigo did not confirm a result."),
+          new Error(e?.message || "The provider did not confirm a result."),
           {
             status: e?.status,
             retryAfterMs: e?.retryAfterMs,
@@ -132,6 +133,8 @@ export function Operations() {
           records(data.sources.jobs.result);
       } else if (source === "cloudflare") {
         records(data.result, "events");
+      } else if (source === "vercel") {
+        for (const key of ["projects", "deployments"]) if (data.sources?.[key]?.status === "success") records(data.sources[key].result);
       }
       setFeeds((f) => ({
         ...f,
@@ -166,21 +169,23 @@ export function Operations() {
   useEffect(() => {
     refresh("celigo");
     refresh("cloudflare");
+    refresh("vercel");
     const t = setInterval(() => setNow(Date.now()), 10000);
     return () => clearInterval(t);
-  }, [celigoEnabled, cloudflareEnabled]);
+  }, [celigoEnabled, cloudflareEnabled, vercelEnabled]);
   useEffect(() => {
     if (!auto) return;
     const timer = setInterval(() => {
       if (document.visibilityState === "visible") {
         refresh("celigo");
         refresh("cloudflare");
+        refresh("vercel");
       }
     }, 60000);
     return () => clearInterval(timer);
   }, [auto]);
   const feed = feeds[tab];
-  const paused = tab === "celigo" ? !celigoEnabled : tab === "cloudflare" ? !cloudflareEnabled : false;
+  const paused = tab === "celigo" ? !celigoEnabled : tab === "cloudflare" ? !cloudflareEnabled : !vercelEnabled;
   const flows = rows(feeds.celigo.data?.sources?.flows),
     jobs = rows(feeds.celigo.data?.sources?.jobs);
   const totalErrors = flows?.every(
@@ -206,6 +211,8 @@ export function Operations() {
     feed?.fetchedAt &&
     (paused || feed.state === "error" || now - Date.parse(feed.fetchedAt) > 130000);
   const sources = feeds.celigo.data?.sources;
+  const vercelSources = feeds.vercel.data?.sources;
+  const vercelPartial = vercelSources && Object.values(vercelSources).some((s: any) => s?.status !== "success");
   return (
     <section
       className={"panel operations systems realm-framed realm-gondor " + (stale ? "realm-stale" : "")}
@@ -238,6 +245,7 @@ export function Operations() {
           <button
             key={id}
             className={tab === id ? "selected" : ""}
+            aria-pressed={tab === id}
             onClick={() => setTab(id)}
           >
             <BrandLogo name={name} />
@@ -254,7 +262,6 @@ export function Operations() {
           aria-label="Refresh operations"
           disabled={
             paused ||
-            tab === "vercel" ||
             feed?.state === "loading" ||
             Date.now() < (feed?.retryAt || 0)
           }
@@ -404,24 +411,10 @@ export function Operations() {
         </>
       )}
       {tab === "vercel" && (
-        <div className="operations-empty">
-          <GuardianIcon unavailable />
-          <h4>Choose the watchtower.</h4>
-          <p>
-            The connected account returned no projects or teams. Project
-            selection is deferred; runtime and deployment logs are not being
-            monitored.
-          </p>
-          <a
-            className="outline-button"
-            href="https://vercel.com/dashboard"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open Vercel
-            <ArrowUpRight size={13} />
-          </a>
-        </div>
+        <>
+          <VercelWatch projects={rows(vercelSources?.projects)} deployments={rows(vercelSources?.deployments)} loading={feed?.state === "loading"} />
+          {vercelPartial && <p className="connection-message warning">Partial result: {failure(vercelSources?.deployments) || failure(vercelSources?.projects)}</p>}
+        </>
       )}
       {tab === "cloudflare" && (
         <>
@@ -525,14 +518,12 @@ export function Operations() {
       <div className="panel-foot">
         <span className={"local-dot " + (stale ? "stale-dot" : "")} />
         <span>
-          {paused ? "Paused in Settings" : tab === "vercel"
-            ? "Not configured"
-            : feed?.state === "loading"
+          {paused ? "Paused in Settings" : feed?.state === "loading"
               ? "Refreshing…"
               : stale
                 ? "Stale data"
                 : feed?.state === "success"
-                  ? "Live read confirmed"
+                  ? tab === "vercel" && vercelPartial ? "Partial read" : "Live read confirmed"
                   : feed?.state === "auth"
                     ? "Sign-in needed"
                     : "Awaiting a confirmed read"}

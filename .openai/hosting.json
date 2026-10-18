@@ -38,6 +38,12 @@
       "connector_ids": [
         "asdk_app_6a83901dde988191b3f3cefdcc19acfa"
       ]
+    },
+    {
+      "id": "plugin_connector_690a90ec05c881918afb6a55dc9bbaa1",
+      "connector_ids": [
+        "connector_690a90ec05c881918afb6a55dc9bbaa1"
+      ]
     }
   ],
   "connectors": [
@@ -63,6 +69,10 @@
     },
     {
       "id": "asdk_app_6a83901dde988191b3f3cefdcc19acfa",
+      "action_selection_mode": "read_only"
+    },
+    {
+      "id": "connector_690a90ec05c881918afb6a55dc9bbaa1",
       "action_selection_mode": "read_only"
     }
   ]

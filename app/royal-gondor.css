@@ -76,6 +76,13 @@
 .app[data-command-realm="work"] .tools-section .tool { border-radius:6px; background:linear-gradient(140deg,var(--panel-alt),var(--input)); }
 .app[data-command-realm="work"] .tool:hover { border-color:var(--gold); box-shadow:inset 0 1px #c8deee30,0 4px 14px #0002; }
 .app[data-command-realm="work"] .content>footer { color:var(--text); }
+.vercel-watch .cloudflare-scope { flex-wrap:wrap; overflow-wrap:anywhere; }
+.vercel-watch .cloudflare-scope>div { min-width:0; flex:1; }
+.vercel-deployments { max-height:420px; }
+.vercel-deployments caption { text-align:left; color:var(--muted); font-size:11px; padding:12px 0; }
+.vercel-deployments td:first-child a { color:var(--text); overflow-wrap:anywhere; }
+.vercel-projects { display:grid; gap:8px; padding:12px 0; }
+.vercel-projects a { color:var(--text); display:flex; justify-content:space-between; gap:10px; overflow-wrap:anywhere; }
 
 /* Tactile Gondor illustrations retain their colour and transparent silhouettes. */
 .gondor-art { display:block; object-fit:contain; flex-shrink:0; filter:drop-shadow(0 2px 3px #0005); }

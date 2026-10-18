@@ -1,9 +1,11 @@
 import { getChatGPTUser, chatGPTSignInPath } from "@/app/chatgpt-auth";
 import { connectorsForRequest } from "@/lib/connectors";
 import { connectorResponse } from "@/lib/connector-errors.mjs";
+import { projectVercelResult, VERCEL_TEAM, VERCEL_READ_LIMIT } from "@/lib/vercel-feed.mjs";
 const CELIGO = "asdk_app_6ac7b2189d148191805ef2c78f3fbb3c";
 const SITES = "connector_20205bf7d4e99a89d7154bb849718324";
 const SITE_ID = "appgprj_6acfe13398b881918807c030709a2664";
+const VERCEL = "connector_690a90ec05c881918afb6a55dc9bbaa1";
 const headers = { "Cache-Control": "private, no-store" };
 export async function POST(
   request: Request,
@@ -68,14 +70,17 @@ export async function POST(
         errors_only: false,
       }),
     );
-  if (source === "vercel")
-    return Response.json(
-      {
-        status: "not_configured",
-        message: "Choose a Vercel project and team before enabling monitoring.",
-      },
-      { status: 409, headers },
-    );
+  if (source === "vercel") {
+    const [projects, deployments] = await Promise.all([
+      client.invoke(VERCEL, "list_projects", { slug: VERCEL_TEAM, limit: String(VERCEL_READ_LIMIT) }),
+      client.invoke(VERCEL, "list_deployments", { slug: VERCEL_TEAM, limit: VERCEL_READ_LIMIT }),
+    ]);
+    return Response.json({
+      status: "success", team: VERCEL_TEAM,
+      sources: { projects: projectVercelResult(projects, "projects"), deployments: projectVercelResult(deployments, "deployments") },
+      fetchedAt: new Date().toISOString(), chatGPTSignInPath: chatGPTSignInPath("/"),
+    }, { headers });
+  }
   return Response.json(
     { status: "invalid_request", message: "Unknown operations source." },
     { status: 404, headers },

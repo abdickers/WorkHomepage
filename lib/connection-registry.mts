@@ -6,6 +6,7 @@ export const CONNECTIONS = [
   { id: "calendar", name: "Google Calendar", logo: "Calendar", purpose: "Today’s agenda", scope: "Work primary calendar · read only", connectorId: "connector_947e0d954944416db111db556030eea6", url: "https://calendar.google.com/calendar/r?authuser=dickersona%4076fireworks.com" },
   { id: "celigo", name: "Celigo", logo: "Celigo", purpose: "Production flows, jobs & errors", scope: "Observed production activity · read only", connectorId: "asdk_app_6ac7b2189d148191805ef2c78f3fbb3c", url: "https://integrator.io/" },
   { id: "cloudflare", name: "Cloudflare · Sites", logo: "Cloudflare", purpose: "This dashboard’s Worker logs", scope: "This private Site only · read only", connectorId: "connector_20205bf7d4e99a89d7154bb849718324", url: "https://dash.cloudflare.com/" },
+  { id: "vercel", name: "Vercel", logo: "Vercel", purpose: "Team projects & recent deployments", scope: "spirit-of-76-fireworks · latest 20 · read only", connectorId: "connector_690a90ec05c881918afb6a55dc9bbaa1", url: "https://vercel.com/spirit-of-76-fireworks" },
   { id: "council", name: "Claude", logo: "Claude", purpose: "The Council’s incident briefing", scope: "On demand · you approve each generation", connectorId: null, url: "https://console.anthropic.com/" },
 ] as const;
 export type ConnectionId = typeof CONNECTIONS[number]["id"];

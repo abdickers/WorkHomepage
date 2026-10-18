@@ -79,7 +79,7 @@ initialLinks.push(
   },
   {
     name: "Vercel",
-    url: "https://vercel.com/dashboard",
+    url: "https://vercel.com/spirit-of-76-fireworks",
     abbr: "V",
     color: "#e5e5e5",
   },

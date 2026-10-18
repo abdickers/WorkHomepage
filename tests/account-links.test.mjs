@@ -12,6 +12,8 @@ test('Google links select the realm account and remove conflicting numeric selec
 test('work generic destinations migrate without overwriting customized tenant URLs',()=>{
  assert.equal(accountLink('https://start.atlassian.com/',WORK_EMAIL,'Confluence'),'https://76fireworks.atlassian.net/wiki/');
  assert.equal(accountLink('https://slack.com/',WORK_EMAIL),'https://76fireworks.slack.com/');
+ assert.equal(accountLink('https://vercel.com/dashboard',WORK_EMAIL),'https://vercel.com/spirit-of-76-fireworks');
+ assert.equal(accountLink('https://vercel.com/custom-team/app',WORK_EMAIL),'https://vercel.com/custom-team/app');
  assert.equal(accountLink('https://custom.slack.com/my-team',WORK_EMAIL),'https://custom.slack.com/my-team');
  assert.equal(accountLink('https://chatgpt.com/',PERSONAL_EMAIL),'https://chatgpt.com/');
  assert.equal(accountLink('https://chatgpt.com/',WORK_EMAIL),'https://chatgpt.com/');
