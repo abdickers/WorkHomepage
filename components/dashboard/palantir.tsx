@@ -51,8 +51,8 @@ export function Palantir() {
     }
   }
   return (
-    <section className="panel palantir realm-framed realm-elven">
-      <PanelFrame kind="elven" />
+    <section className="panel palantir realm-framed realm-gondor">
+      <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
           <RealmIcon name="council" />

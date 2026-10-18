@@ -1,5 +1,6 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
+import { connectionEnabled, useConnectionEnabled } from "./connection-preferences";
 import { PolishArt } from "@/components/dashboard/polish-art";
 import { accountLink, WORK_EMAIL } from "@/lib/account-links.mjs";
 import { useEffect, useRef, useState } from "react";
@@ -80,13 +81,15 @@ function FeedLinks({ feed }: { feed: Feed | undefined }) {
     </>
   );
 }
-function useDaily(source: string, watch: boolean) {
+function useDaily(source: "mail" | "slack" | "jira", watch: boolean) {
+  const enabled = useConnectionEnabled(source);
   const [data, setData] = useState<any>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   const active = useRef(false),
     retryAt = useRef(0);
   async function refresh() {
+    if (!connectionEnabled(source)) return;
     if (active.current) return;
     if (Date.now() < retryAt.current) {
       setError("Please wait a moment before refreshing this source again.");
@@ -132,9 +135,9 @@ function useDaily(source: string, watch: boolean) {
   }
   useEffect(() => {
     refresh();
-  }, [source]);
+  }, [source, enabled]);
   useEffect(() => {
-    if (!watch) return;
+    if (!watch || !enabled) return;
     const timer = setInterval(() => {
       if (
         document.visibilityState === "visible" &&
@@ -143,30 +146,32 @@ function useDaily(source: string, watch: boolean) {
         refresh();
     }, 300000);
     return () => clearInterval(timer);
-  }, [source, watch]);
-  return { data, busy, error, refresh };
+  }, [source, watch, enabled]);
+  return { data, busy, error: enabled ? error : "Reads paused in the Royal Registry. Existing results are retained.", refresh, enabled };
 }
 function FeedFooter({
   data,
   busy,
   error,
   refresh,
+  enabled = true,
 }: {
   data: any;
   busy: boolean;
   error: string;
   refresh: () => void;
+  enabled?: boolean;
 }) {
   return (
     <footer className="daily-feed-footer">
       <span>
-        {error
+        {!enabled ? "Paused in Settings" : error
           ? `Refresh failed${data?.fetchedAt ? " · showing previous snapshot" : ""}`
           : data?.fetchedAt
             ? `${Object.values(data.feeds || {}).some((f: any) => f.status !== "success") ? "Last attempt" : "Read"} ${new Date(data.fetchedAt).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/Chicago" })} CT`
             : "Read only · refresh on demand"}
       </span>
-      <button disabled={busy} onClick={refresh} aria-label="Refresh feed">
+      <button disabled={busy || !enabled} onClick={refresh} aria-label="Refresh feed">
         <RefreshCw size={13} className={busy ? "spinning" : ""} />{" "}
         {busy ? "Reading…" : "Refresh"}
       </button>
@@ -180,8 +185,8 @@ function Ravens({ watch }: { watch: boolean }) {
   const current = tab === "inbox" ? mail : slack;
   const feed = current.data?.feeds?.[tab];
   return (
-    <section className="panel daily-panel ravens realm-framed realm-elven">
-      <PanelFrame kind="elven" />
+    <section className="panel daily-panel ravens realm-framed realm-gondor">
+      <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
           <PolishArt name="raven" className="ravens-heading-art" />
@@ -231,8 +236,8 @@ function Quests({ watch }: { watch: boolean }) {
   const source = useDaily("jira", watch);
   const [tab, setTab] = useState("assigned");
   return (
-    <section className="panel daily-panel quests realm-framed realm-elven">
-      <PanelFrame kind="elven" />
+    <section className="panel daily-panel quests realm-framed realm-gondor">
+      <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
           <Swords size={21} />
@@ -398,6 +403,7 @@ function InvoiceEditor({
   );
 }
 function Treasury() {
+  const mailEnabled = useConnectionEnabled("mail");
   const [rows, setRows] = useState<any[]>([]),
     [loaded, setLoaded] = useState(false),
     [busy, setBusy] = useState(false),
@@ -409,6 +415,7 @@ function Treasury() {
   const active = useRef(false),
     retryAt = useRef(0);
   async function action(payload: any) {
+    if (payload.action === "scan" && !connectionEnabled("mail")) return;
     if (
       active.current ||
       (payload.action === "scan" && Date.now() < retryAt.current)
@@ -471,8 +478,8 @@ function Treasury() {
           : r.dueDate?.startsWith(month) && r.status !== "excluded",
   );
   return (
-    <section className="panel daily-panel treasury realm-framed realm-dwarven">
-      <PanelFrame kind="dwarven" />
+    <section className="panel daily-panel treasury realm-framed realm-gondor">
+      <PanelFrame kind="gondor" />
       <div className="panel-heading">
         <div>
           <Coins size={21} />
@@ -523,13 +530,13 @@ function Treasury() {
         payments.
       </p>
       <div className="treasury-scan">
-        <button disabled={busy} onClick={() => action({ action: "scan" })}>
+        <button disabled={busy || !mailEnabled} onClick={() => action({ action: "scan" })} title={!mailEnabled ? "Gmail is paused in the Royal Registry" : undefined}>
           <Bird size={14} />
           {busy ? "Working…" : "Find invoices"}
         </button>
         {cursor && (
           <button
-            disabled={busy}
+            disabled={busy || !mailEnabled}
             onClick={() => action({ action: "scan", cursor })}
           >
             Scan next 10
@@ -543,6 +550,7 @@ function Treasury() {
           <RefreshCw size={14} />
         </button>
       </div>
+      {!mailEnabled && <p className="connection-paused">Invoice discovery is paused in Settings. Your saved ledger remains available.</p>}
       <p className="daily-footnote">
         Past 90 days · To: dickersona@76fireworks.com or
         itservices@76fireworks.com · 10 messages per scan. Amounts in

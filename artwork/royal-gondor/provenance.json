@@ -1,0 +1,62 @@
+{
+  "generation": "Built-in image_gen; brand new environment images; no input references",
+  "derivation": "Full image resampling with Pillow Lanczos and WebP encoding only. No cropping, repainting, or tonal changes.",
+  "assets": [
+    {
+      "name": "white-city-daylight",
+      "generated_source": "C:\\Users\\Sage4\\.codex\\generated_images\\01a1505a-c9ed-7053-abf7-adb026a9b0d7\\exec-7a1c1c7a-2c4b-4e09-b174-3cea109b95ef.png",
+      "original": "artwork\\royal-gondor\\white-city-daylight-original.png",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2680651,
+      "sha256": "37471c51e7a482d3edd8b1cfb7852c5f0969fc1800f331de8b2f2bd6f25d0674",
+      "delivery": [
+        {
+          "path": "public\\art\\royal-gondor\\white-city-daylight-1920.webp",
+          "dimensions": [
+            1920,
+            1081
+          ],
+          "bytes": 345680,
+          "quality": 88,
+          "sha256": "7c1815f143bedfd050fd93cbf425770f8c8a7256c1476b315860eb8ac4e27564"
+        },
+        {
+          "path": "public\\art\\royal-gondor\\white-city-daylight-960.webp",
+          "dimensions": [
+            960,
+            540
+          ],
+          "bytes": 127770,
+          "quality": 88,
+          "sha256": "161464d2aaf8361fc92e2b1d9f0c6895e07836a20fe936f767435fa01148391b"
+        }
+      ]
+    },
+    {
+      "name": "royal-court-twilight",
+      "generated_source": "C:\\Users\\Sage4\\.codex\\generated_images\\01a1505a-c9ed-7053-abf7-adb026a9b0d7\\exec-9a3a1db6-61e3-4b03-9801-240ae3aceddf.png",
+      "original": "artwork\\royal-gondor\\royal-court-twilight-original.png",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2722735,
+      "sha256": "e4cefe4619529d152e959e52fea024d448f9209ec0ca4a89c334dd5a97a63800",
+      "delivery": [
+        {
+          "path": "public\\art\\royal-gondor\\royal-court-twilight-1600.webp",
+          "dimensions": [
+            1600,
+            900
+          ],
+          "bytes": 275322,
+          "quality": 88,
+          "sha256": "46b796a3dd261572c9b673e05db3607c5e35675292b2d74f4ffa4ca416731fd1"
+        }
+      ]
+    }
+  ]
+}

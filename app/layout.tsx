@@ -4,8 +4,9 @@ import "./realm-presentation.css";
 import "./study-presentation.css";
 import "./command-polish.css";
 import "./gondor-presentation.css";
+import "./royal-gondor.css";
 export const metadata: Metadata = {
-  title: "The Command Center · Adam",
+  title: "Gondor Command · Adam",
   description:
     "Your daily council for work, priorities, and everything in between.",
   icons: { icon: "/favicon.svg" },

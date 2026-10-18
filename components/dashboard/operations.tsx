@@ -1,6 +1,7 @@
 "use client";
 import { PanelFrame } from "@/components/dashboard/panel-frame";
 import { GuardianIcon } from "./guardian-icon";
+import { connectionEnabled, useConnectionEnabled } from "./connection-preferences";
 import { useEffect, useRef, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { RefreshCw, ArrowUpRight, RadioTower, Check, Clock3 } from "@/components/dashboard/realm-icon";
@@ -66,6 +67,7 @@ function failure(result: any) {
     : null;
 }
 export function Operations() {
+  const celigoEnabled = useConnectionEnabled("celigo"), cloudflareEnabled = useConnectionEnabled("cloudflare");
   const [tab, setTab] = useState("celigo");
   const [auto, setAuto] = useState(true);
   const [feeds, setFeeds] = useState<Record<string, Feed>>({
@@ -79,6 +81,7 @@ export function Operations() {
     current.current = feeds;
   }, [feeds]);
   async function refresh(source: string, manual = false) {
+    if (!connectionEnabled(source)) return;
     if (source === "vercel" || inflight.current.has(source)) return;
     const prev = current.current[source];
     if (Date.now() < prev.retryAt || (!manual && prev.state === "auth")) return;
@@ -164,7 +167,7 @@ export function Operations() {
     refresh("cloudflare");
     const t = setInterval(() => setNow(Date.now()), 10000);
     return () => clearInterval(t);
-  }, []);
+  }, [celigoEnabled, cloudflareEnabled]);
   useEffect(() => {
     if (!auto) return;
     const timer = setInterval(() => {
@@ -176,6 +179,7 @@ export function Operations() {
     return () => clearInterval(timer);
   }, [auto]);
   const feed = feeds[tab];
+  const paused = tab === "celigo" ? !celigoEnabled : tab === "cloudflare" ? !cloudflareEnabled : false;
   const flows = rows(feeds.celigo.data?.sources?.flows),
     jobs = rows(feeds.celigo.data?.sources?.jobs);
   const totalErrors = flows?.every(
@@ -199,7 +203,7 @@ export function Operations() {
   } catch {}
   const stale =
     feed?.fetchedAt &&
-    (feed.state === "error" || now - Date.parse(feed.fetchedAt) > 130000);
+    (paused || feed.state === "error" || now - Date.parse(feed.fetchedAt) > 130000);
   const sources = feeds.celigo.data?.sources;
   return (
     <section
@@ -248,6 +252,7 @@ export function Operations() {
           className="icon-btn refresh-operation"
           aria-label="Refresh operations"
           disabled={
+            paused ||
             tab === "vercel" ||
             feed?.state === "loading" ||
             Date.now() < (feed?.retryAt || 0)
@@ -260,6 +265,7 @@ export function Operations() {
           />
         </button>
       </div>
+      {paused && <p className="connection-paused">Reads paused in the Royal Registry. Previous results remain visible until you resume this source.</p>}
       {tab === "celigo" && (
         <>
           <div className="realm-beacons">
@@ -518,7 +524,7 @@ export function Operations() {
       <div className="panel-foot">
         <span className={"local-dot " + (stale ? "stale-dot" : "")} />
         <span>
-          {tab === "vercel"
+          {paused ? "Paused in Settings" : tab === "vercel"
             ? "Not configured"
             : feed?.state === "loading"
               ? "Refreshing…"

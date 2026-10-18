@@ -1,9 +1,13 @@
 "use client";
 import { PanelFrame, GondorPageRail } from "@/components/dashboard/panel-frame";
+import { RoyalSettings } from "@/components/dashboard/royal-settings";
+import { GondorCrest } from "@/components/dashboard/gondor-crest";
+import { connectionEnabled, readConnectionPreferences, saveConnectionPreferences, useConnectionEnabled } from "@/components/dashboard/connection-preferences";
+import { cleanConnectionPreferences } from "@/lib/connection-registry.mjs";
 import { StudyArt } from "@/components/dashboard/study-art";
 import { PolishArt } from "@/components/dashboard/polish-art";
 import { useEffect, useRef, useState } from "react";
-import { Link2, RotateCcw, Download, Upload, Sun, Moon, Command, Mountain } from "lucide-react";
+import { RotateCcw, Sun, Moon, Command, Mountain } from "lucide-react";
 import { LayoutDashboard, ListChecks, NotebookPen, RadioTower, Settings, Search, ArrowUpRight, Plus, ArrowRight, Clock3, CalendarDays, ChevronRight, Check, X, Flame, Play, Pause, RefreshCw, Shield } from "@/components/dashboard/realm-icon";
 import { BrandLogo } from "@/components/dashboard/brand-logo";
 import { Operations } from "@/components/dashboard/operations";
@@ -210,7 +214,7 @@ export default function Dashboard() {
   const [authPath, setAuthPath] = useState("");
   const captureRef = useRef<HTMLTextAreaElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const calendarEnabled = useConnectionEnabled("calendar");
   useEffect(() => {
     const t = read<Task[]>("command-tasks-v1", routines),
       n = read<Note[]>("command-notes-v1", []),
@@ -270,30 +274,6 @@ export default function Dashboard() {
     }, 250);
     return () => clearInterval(timer);
   }, [running]);
-  useEffect(() => {
-    if (!settings) return;
-    const previous = document.activeElement as HTMLElement | null;
-    const trap = (event: KeyboardEvent) => {
-      if (event.key !== "Tab") return;
-      const nodes = document.querySelectorAll<HTMLElement>(
-        ".settings-modal button,.settings-modal input:not([hidden]),.settings-modal a",
-      );
-      const first = nodes[0],
-        last = nodes[nodes.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last?.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first?.focus();
-      }
-    };
-    document.addEventListener("keydown", trap);
-    return () => {
-      document.removeEventListener("keydown", trap);
-      previous?.focus();
-    };
-  }, [settings]);
   useEffect(() => {
     if (!notice) return;
     const t = setTimeout(() => setNotice(""), 7000);
@@ -357,7 +337,7 @@ export default function Dashboard() {
   }
   function exportData() {
     const blob = new Blob(
-      [JSON.stringify({ version: 1, tasks, notes, links }, null, 2)],
+      [JSON.stringify({ version: 1, tasks, notes, links, light, connections: readConnectionPreferences() }, null, 2)],
       { type: "application/json" },
     );
     const url = URL.createObjectURL(blob);
@@ -416,6 +396,8 @@ export default function Dashboard() {
         )
       )
         throw Error();
+      if (data.connections !== undefined) saveConnectionPreferences(cleanConnectionPreferences(data.connections));
+      if (typeof data.light === "boolean") setLight(data.light);
       setTasks(data.tasks);
       setNotes(data.notes);
       setLinks(data.links);
@@ -423,9 +405,9 @@ export default function Dashboard() {
     } catch {
       setNotice("That file is not a valid Command Center backup.");
     }
-    if (fileRef.current) fileRef.current.value = "";
   }
   async function refreshAgenda() {
+    if (!connectionEnabled("calendar")) { setAgendaMessage("Calendar reads are paused in Settings."); return; }
     if (Date.now() < retryAt) return;
     setAgendaState("loading");
     setAgendaMessage("");
@@ -486,14 +468,14 @@ export default function Dashboard() {
   }
   const section = (name: string) => view === "overview" || view === name;
   return (
-    <div className={light ? "app light" : "app"} data-command-realm="work" style={{"--realm-art": "url(/art/middle-earth-council-display-3840.jpg)"} as React.CSSProperties}>
-      <aside className="sidebar">
+    <div className={light ? "app light" : "app"} data-command-realm="work" style={{"--realm-art": "url(/art/royal-gondor/white-city-daylight-1920.webp)"} as React.CSSProperties}>
+      <aside className="sidebar" inert={settings}>
         <a className="brand" href="#" onClick={() => setView("overview")}>
-          <span className="ring-mark">A</span>
+          <GondorCrest className="brand-crest" />
           <span>
-            THE COMMAND
+            THE WHITE CITY
             <br />
-            <strong>CENTER</strong>
+            <strong>COMMAND</strong>
           </span>
         </a>
         <nav className="realm-switch" aria-label="Command center"><a href={PERSONAL_URL}>The Shire</a><a href={WORK_URL} aria-current="page">Work</a></nav>
@@ -552,7 +534,7 @@ export default function Dashboard() {
           </div>
           <button className="nav-item" onClick={() => setSettings(true)}>
             <Settings size={18} />
-            Settings & backup
+            The Royal Registry
           </button>
           <div className="profile">
             <span className="avatar">AD</span>
@@ -565,7 +547,7 @@ export default function Dashboard() {
         </div>
       </aside>
       <GondorPageRail />
-      <main>
+      <main inert={settings}>
         <header className="topbar">
           <div className="breadcrumb">
             Your workspace <ChevronRight size={13} />
@@ -600,10 +582,10 @@ export default function Dashboard() {
             <div className="hero-shade" />
             <div className="hero-copy">
               <div className="eyebrow">
-                <span /> THE COUNCIL IS IN SESSION
+                <span /> THE WHITE CITY · YOUR DAILY COUNCIL
               </div>
               <h1>
-                Adam’s Middle-earth
+                Adam’s Gondor
                 <br />
                 <em>Command Center</em>
               </h1>
@@ -625,9 +607,9 @@ export default function Dashboard() {
             <div className="hero-stamp">
               <span className="stamp-ring">✧</span>
               <span>
-                YOUR CORNER
+                THE WHITE CITY
                 <br />
-                OF MIDDLE-EARTH
+                STANDS READY
               </span>
             </div>
             <div className="hero-bottom">
@@ -636,7 +618,7 @@ export default function Dashboard() {
               </span>
               <a
                 className="landscape-link"
-                href="/art/middle-earth-council-display-3840.jpg"
+                href="/art/royal-gondor/white-city-daylight-1920.webp"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -747,8 +729,8 @@ export default function Dashboard() {
           <div className={`dashboard-grid dashboard-view-${view}`}>
             <div className="dashboard-stack dashboard-day">
             {section("priorities") && (
-              <section className="panel priorities realm-framed realm-elven">
-                <PanelFrame kind="elven" />
+              <section className="panel priorities realm-framed realm-gondor">
+                <PanelFrame kind="gondor" />
                 <div className="panel-heading">
                   <div>
                     <span className="section-icon">
@@ -873,8 +855,8 @@ export default function Dashboard() {
               </section>
             )}
             {(view === "overview" || view === "systems") && (
-              <section className="panel agenda realm-framed realm-elven">
-                <PanelFrame kind="elven" />
+              <section className="panel agenda realm-framed realm-gondor">
+                <PanelFrame kind="gondor" />
                 <div className="panel-heading">
                   <div>
                     <CalendarDays size={17} />
@@ -950,6 +932,7 @@ export default function Dashboard() {
                     </p>
                   </div>
                 )}
+                {!calendarEnabled && <p className="connection-paused">Calendar reads are paused in the Royal Registry. Previous events remain visible.</p>}
                 {agendaMessage && (
                   <p className="connection-message" role="status">
                     {agendaMessage}
@@ -969,7 +952,8 @@ export default function Dashboard() {
                 <button
                   className="outline-button full"
                   onClick={refreshAgenda}
-                  disabled={agendaState === "loading" || Date.now() < retryAt}
+                  title={!calendarEnabled ? "Calendar is paused in the Royal Registry" : undefined}
+                  disabled={!calendarEnabled || agendaState === "loading" || Date.now() < retryAt}
                 >
                   <RefreshCw
                     size={14}
@@ -996,8 +980,8 @@ export default function Dashboard() {
             <div className="dashboard-stack dashboard-support">
             {view === "overview" && <Palantir />}
             {(section("notes") || view === "priorities") && (
-              <section className="panel capture realm-framed realm-oak">
-                <PanelFrame kind="oak" />
+              <section className="panel capture realm-framed realm-gondor">
+                <PanelFrame kind="gondor" />
                 <div className="panel-heading">
                   <div>
                     <NotebookPen size={17} />
@@ -1160,8 +1144,8 @@ export default function Dashboard() {
                   ))}
                 </div>
               </section>
-              <section className="focus-band realm-framed realm-oak">
-                <PanelFrame kind="oak" />
+              <section className="focus-band realm-framed realm-gondor">
+                <PanelFrame kind="gondor" />
                 <div className="focus-intro">
                   <span className="focus-icon">
                     <PolishArt name="hourglass" className="focus-hourglass-art" />
@@ -1226,98 +1210,15 @@ export default function Dashboard() {
           </button>
         </div>
       )}
-      {settings && (
-        <div className="modal-backdrop" onClick={() => setSettings(false)}>
-          <section
-            className="settings-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="settings-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="panel-heading">
-              <div>
-                <Settings size={18} />
-                <h3 id="settings-title">Make it yours</h3>
-              </div>
-              <button
-                autoFocus
-                className="icon-btn"
-                aria-label="Close settings"
-                onClick={() => setSettings(false)}
-              >
-                <X size={18} />
-              </button>
-            </div>
-            <p className="settings-description">
-              Tasks, field notes, and shortcuts are saved in this browser.
-              Backups let you move them to another device.
-            </p>
-            <div className="backup-actions">
-              <button className="outline-button" onClick={exportData}>
-                <Download size={15} />
-                Export backup
-              </button>
-              <button
-                className="outline-button"
-                onClick={() => fileRef.current?.click()}
-              >
-                <Upload size={15} />
-                Restore backup
-              </button>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="application/json"
-                hidden
-                onChange={(e) => importData(e.target.files?.[0])}
-              />
-            </div>
-            <p className="settings-description">
-              Restoring a backup replaces this browser’s current lists and
-              shortcuts.
-            </p>
-            <h4>App shortcuts</h4>
-            <div className="link-editor">
-              {links.map((l, i) => (
-                <label key={l.name}>
-                  {l.name}
-                  <input
-                    type="url"
-                    defaultValue={l.url}
-                    aria-label={`${l.name} URL`}
-                    onBlur={(e) => {
-                      const value = e.target.value.trim();
-                      if (safeUrl(value))
-                        setLinks((ls) =>
-                          ls.map((x, j) =>
-                            j === i ? { ...x, url: value } : x,
-                          ),
-                        );
-                      else {
-                        e.target.value = l.url;
-                        setNotice("Use a full https:// or http:// address.");
-                      }
-                    }}
-                  />
-                </label>
-              ))}
-            </div>
-            <div className="settings-bottom">
-              <span>
-                <Shield size={14} /> No credentials stored in this page.
-              </span>
-              <button
-                className="gold-button"
-                onClick={() => setSettings(false)}
-              >
-                Done
-                <Check size={14} />
-              </button>
-            </div>
-          </section>
-        </div>
-      )}
+      {settings && <RoyalSettings
+        close={() => setSettings(false)} links={links} light={light} setLight={setLight}
+        exportData={exportData} importData={importData} notify={setNotice}
+        updateLink={(index, value) => {
+          if (!safeUrl(value)) { setNotice("Use a full https:// or http:// address."); return false; }
+          setLinks((items) => items.map((item, i) => i === index ? { ...item, url: value } : item));
+          return true;
+        }}
+      />}
     </div>
   );
 }

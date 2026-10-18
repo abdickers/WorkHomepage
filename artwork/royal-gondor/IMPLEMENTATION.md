@@ -1,0 +1,15 @@
+# Full Gondor work homepage
+
+The work dashboard has its own silver, slate, charcoal and pearl palette. All eleven framed sections use the existing measured Gondor frame pieces and inset surfaces; the personal Shire dashboard is untouched. New generated White City panorama and twilight court imagery is recorded in PROMPTS.md and provenance.json. The White Tree shield is an original code-native SVG. Existing provider brand marks and meaningful alert flame colors remain recognizable.
+
+The Royal Registry replaces the old settings dialog. Connections, Shortcuts, Appearance and Backup are separate sections. Keyboard focus stays in the dialog; the dashboard is inert while it is open. The Registry stays charcoal and silver in both dashboard themes.
+
+Connection switches pause future reads on this browser; they do not revoke provider authorization. Gmail controls Ravens and invoice discovery, Slack and Jira control their feeds, Calendar controls agenda reads, and Celigo/Cloudflare control production reads. Council evidence requires its own switch plus Celigo and Cloudflare. Existing results and saved invoice records remain available. Default behavior is unchanged until the user pauses a source. These preferences are browser settings, not a security boundary.
+
+The owner-only same-origin POST /api/connections projects only cached connector availability and whether on-demand Claude generation is configured. It returns no credentials, provider content, tool schemas, or account tokens. Availability is labeled separately from a successful check against the existing bounded read endpoints. Checks retain independent failure, partial, sign-in and retry states. Secure reconnection uses only server-generated Sites sign-in paths; general account management links to ChatGPT Plugins with the official connection guide. Provider permissions, the hosting audience, connector declarations and credential handling are unchanged. Vercel monitoring remains explicitly unconfigured.
+
+Backups remain version 1 compatible. New exports also include appearance and sanitized source pause preferences. They contain no credentials, live messages, provider logs, or saved invoice records. Shortcut destinations remain editable and account-aware.
+
+Validation: 23 Node tests pass; TypeScript passes. Request checks reject missing/cross-site Origin (403) and an unauthenticated same-origin caller (401). Browser checks cover dark/light themes, 1440px desktop and 375px phone, all frame rails, modal overflow, focus wrapping/Escape, shortcut editing, legacy backup restore and export, connection checks, persisted pause across reload, disabled invoice discovery/agenda/operations/Council actions, and no provider reads from the synthetic QA proxy. Local real provider reads are unavailable without hosted visitor authentication; hosted access is verified separately after deployment. QA fixtures and screenshots are ignored under outputs/.
+
+Rollback starting point: d45dbe963a8d4f122fa40017ab4975ecd86451bb (previous private Site version 21). Work branch: codex/full-gondor-work-homepage.

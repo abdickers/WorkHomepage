@@ -1,5 +1,6 @@
 "use client";
 import { StudyArt } from "./study-art";
+import { connectionEnabled, useConnectionEnabled } from "./connection-preferences";
 import { useState, useEffect, useRef } from "react";
 import { Sparkles, ShieldCheck } from "lucide-react";
 import { ArrowUpRight, RefreshCw } from "@/components/dashboard/realm-icon";
@@ -29,6 +30,8 @@ const time = (s: string) =>
     minute: "2-digit",
   });
 export function IncidentBriefing() {
+  const councilEnabled = useConnectionEnabled("council"), celigoEnabled = useConnectionEnabled("celigo"), cloudflareEnabled = useConnectionEnabled("cloudflare");
+  const readsEnabled = councilEnabled && celigoEnabled && cloudflareEnabled;
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [briefing, setBriefing] = useState<Briefing | null>(null);
   const [busy, setBusy] = useState<"prepare" | "generate" | null>(null);
@@ -42,6 +45,7 @@ export function IncidentBriefing() {
     return () => clearInterval(timer);
   }, []);
   async function action(action: "prepare" | "generate") {
+    if (!connectionEnabled("council") || !connectionEnabled("celigo") || !connectionEnabled("cloudflare")) return;
     if (inflight.current) return;
     inflight.current = true;
     setBusy(action);
@@ -110,7 +114,7 @@ export function IncidentBriefing() {
       <div className="briefing-actions">
         <button
           className="outline-button"
-          disabled={!!busy}
+          disabled={!!busy || !readsEnabled}
           onClick={() => action("prepare")}
         >
           <RefreshCw size={14} className={busy === "prepare" ? "spin" : ""} />
@@ -123,6 +127,7 @@ export function IncidentBriefing() {
         <button
           className="gold-button"
           disabled={
+            !readsEnabled ||
             !!busy ||
             !snapshot?.configured ||
             !snapshot.snapshot ||
@@ -140,6 +145,7 @@ export function IncidentBriefing() {
               : "Generate briefing"}
         </button>
       </div>
+      {!readsEnabled && <p className="connection-paused">Council reads are paused. Enable Claude, Celigo, and Cloudflare in Settings to collect evidence.</p>}
       {snapshot ? (
         <>
           <p className="briefing-snapshot">

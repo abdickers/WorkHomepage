@@ -1,0 +1,176 @@
+/* Work only. The White City replaces the woodland palette throughout. */
+.app[data-command-realm="work"] {
+  --bg:#111923; --sidebar:#101821; --panel:#19232e; --panel-alt:#202e3a; --input:#111c27;
+  --text:#e8edf2; --ink:#e8edf2; --muted:#b2bfcc; --gold:#b8c9d8; --gold-light:#eff3f7;
+  --gold-strong:#edf4fc; --line:#7e96aa63; --line-soft:#7e96aa35; --control:#293b4b;
+  --focus:#d6eafa; --green:#b4d2c5;
+  background:linear-gradient(180deg,#101a2980,#111923d9 900px,#111923f0),url('/art/royal-gondor/white-city-daylight-1920.webp') center top / cover fixed;
+  color:var(--text);
+}
+.app[data-command-realm="work"].light {
+  --bg:#e5ebef; --sidebar:#e0e7ec; --panel:#f2f5f7; --panel-alt:#e5ecf1; --input:#fafcfd;
+  --text:#233547; --ink:#233547; --muted:#4f6375; --gold:#526c82; --gold-light:#233b50;
+  --gold-strong:#243d55; --line:#6e879e70; --line-soft:#7e96aa35; --control:#dbe5ed;
+  --focus:#244e74; --green:#386153;
+  background:linear-gradient(180deg,#e7edf356,#e7edf3d9 900px,#e7edf3f0),url('/art/royal-gondor/white-city-daylight-1920.webp') center top / cover fixed;
+}
+.app[data-command-realm="work"] .sidebar { background:linear-gradient(#101923f2,#111923fa),url('/art/royal-gondor/royal-court-twilight-1600.webp') center / cover; color:#e3ebf3; --text:#e3ebf3; --muted:#adbfce; --gold:#b6ccdd; --gold-light:#eaf2f8; --line:#738a9d55; --input:#152332; }
+.app[data-command-realm="work"] .brand { color:#e7f0f8; gap:10px; margin-bottom:24px; }
+.app[data-command-realm="work"] .brand strong { font-size:19px; letter-spacing:.14em; }
+.app[data-command-realm="work"] .brand>span { min-width:0; font-size:9px; letter-spacing:.1em; }
+.app[data-command-realm="work"] .brand>span strong { font-size:16px; letter-spacing:.1em; }
+.gondor-crest { display:block; width:60px; height:auto; flex-shrink:0; color:inherit; }
+.app[data-command-realm="work"] .brand-crest { width:46px; }
+.app[data-command-realm="work"] .nav-item.active { color:#f0f5fa; background:linear-gradient(100deg,#8da8bf35,#8da8bf10); border-color:#abc1d64a; box-shadow:inset 2px 0 #c5d8e8; }
+.app[data-command-realm="work"] .realm-switch a[aria-current] { background:#829db02b; border-color:#aec5d5; color:#f0f5fa; }
+.app[data-command-realm="work"] .topbar { color:var(--text); border-color:var(--line); background:linear-gradient(90deg,#101a24a1,transparent); }
+.app[data-command-realm="work"].light .topbar { background:linear-gradient(90deg,#f0f5f7b0,transparent); }
+.app[data-command-realm="work"] :is(.avatar,.user-avatar) { background:#304454; color:#eff5fa; border-color:#829bb1; }
+.app[data-command-realm="work"] :is(.overview-intro h2,.section-intro h2) { color:var(--gold-light); }
+.app[data-command-realm="work"] .realm-gondor {
+  --surface-paint:linear-gradient(145deg,#202e3b,#17232e 72%);
+  --panel:#19232e; --panel-alt:#202e3a; --input:#111c27; --text:#e8edf2; --muted:#b2bfcc;
+  --gold:#b8c9d8; --gold-light:#eff3f7; --line:#7e96aa63; --control:#293b4b; --focus:#d6eafa;
+}
+.app[data-command-realm="work"].light .realm-gondor {
+  --surface-paint:linear-gradient(145deg,#f9fbfc,#e7eef3);
+  --panel:#f2f5f7; --panel-alt:#e5ecf1; --input:#fafcfd; --text:#233547; --muted:#4f6375;
+  --gold:#526c82; --gold-light:#233b50; --line:#6e879e70; --control:#dbe5ed; --focus:#244e74;
+}
+.app[data-command-realm="work"] .realm-gondor.realm-framed { background:none; padding:60px 30px 32px; }
+.app[data-command-realm="work"].light .daily-panel.realm-gondor { background:none; }
+.app[data-command-realm="work"].light .realm-gondor :is(.daily-entry strong,.daily-entry small,.daily-entry p,.daily-caption,.daily-empty,.daily-footnote,.daily-feed-footer,.daily-feed-footer span,.treasury-metrics strong,.treasury-metrics span,.treasury-metrics small,.invoice-row summary strong,.invoice-row summary small,.invoice-editor p,.invoice-editor>small,.invoice-editor label) { color:var(--text); }
+.app[data-command-realm="work"] .hero.realm-gondor { --surface-paint:linear-gradient(90deg,#101c2de8,#12263b78 52%,#0c172818),url('/art/royal-gondor/white-city-daylight-1920.webp') center 46% / cover; padding:0; min-height:350px; }
+.app[data-command-realm="work"] .hero.realm-gondor .hero-copy { padding:78px 42px 86px; max-width:76%; }
+.app[data-command-realm="work"] .hero.realm-gondor :is(h1,.hero-copy p,.eyebrow) { color:#eef5fc; }
+.app[data-command-realm="work"] .hero.realm-gondor .hero-copy h1 { font-size:clamp(36px,3.6vw,62px); line-height:1.02; text-shadow:0 2px 18px #0a142980; }
+.app[data-command-realm="work"] .hero.realm-gondor .hero-bottom { background:#102033b5; color:#dfebf5; }
+.app[data-command-realm="work"] .hero.realm-gondor .hero-stamp { color:#f2f6fb; text-shadow:0 1px 8px #000; }
+.app[data-command-realm="work"] .hero .gold-button { background:linear-gradient(#e5edf4,#acbdcd); color:#192b3c; border-color:#d9e5ee; box-shadow:inset 0 1px #fff; }
+.app[data-command-realm="work"] :is(.gold-button,.outline-button,.daily-panel button,.task-tabs button,.capture-options button,.prompt-presets button,.icon-btn,.text-action,.tool) { background:linear-gradient(145deg,var(--control),var(--input)); border-color:var(--line); color:var(--text); box-shadow:none; }
+.app[data-command-realm="work"] :is(.gold-button,.daily-tabs button[aria-pressed="true"],.task-tabs button.selected,.operations-tabs>button.selected,.flag-button[aria-pressed="true"]) { background:linear-gradient(145deg,#557188,#314a61); color:#f3f7fb; border-color:#98b2c8; }
+.app[data-command-realm="work"].light :is(.gold-button,.daily-tabs button[aria-pressed="true"],.task-tabs button.selected,.operations-tabs>button.selected,.flag-button[aria-pressed="true"]) { background:linear-gradient(145deg,#47637c,#2b475e); color:#fff; }
+.app[data-command-realm="work"] :is(button,a,input,textarea,select,summary):focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+.app[data-command-realm="work"] :is(.stats-strip,.search-box,.notice,.toast) { background:var(--panel); border-color:var(--line); color:var(--text); }
+.app[data-command-realm="work"] .stats-strip { background:linear-gradient(130deg,var(--panel),var(--panel-alt)); box-shadow:0 6px 22px #08111a22; }
+.app[data-command-realm="work"] :is(.task-list,.events-list,.daily-list,.tool-groups,.notes-list) { scrollbar-color:#788fa3 var(--input); }
+.app[data-command-realm="work"] :is(.task.done,.task.done>span) { color:var(--muted); }
+.app[data-command-realm="work"] :is(.check-button.checked,.quest-progress) { color:#bbd6e9; stroke:#bbd6e9; }
+.app[data-command-realm="work"].light :is(.check-button.checked,.quest-progress) { color:#315d7a; stroke:#315d7a; }
+.app[data-command-realm="work"] .quest-track { stroke:#718a9b42; }
+.app[data-command-realm="work"] .treasury-ring { border-color:#7892a64d; background:radial-gradient(ellipse,#2f46585c,transparent 70%); }
+.app[data-command-realm="work"] .treasury-ring svg { filter:saturate(.18); }
+.app[data-command-realm="work"] :is(.study-art,.polish-art) { filter:saturate(.2); }
+.app[data-command-realm="work"] .constellation-compass-art { filter:grayscale(.85) brightness(1.35); }
+.app[data-command-realm="work"] .realm-gondor :is(.rune-ring,.compass-ticks) { stroke:#adc1d466; }
+.app[data-command-realm="work"].light .realm-gondor :is(.rune-ring,.compass-ticks) { stroke:#4e6c8580; }
+.app[data-command-realm="work"] .realm-beacon.roster { --beacon-color:#cedbe5; }
+.app[data-command-realm="work"].light .realm-beacon.roster { --beacon-color:#3a5369; }
+.app[data-command-realm="work"] .connection-paused { color:var(--muted); border:1px dashed var(--line); padding:12px; margin:12px 0; font-size:13px; border-radius:5px; }
+.app[data-command-realm="work"] .focus-band.realm-gondor { padding-top:48px; }
+.app[data-command-realm="work"] .tools-section .tool { border-radius:6px; background:linear-gradient(140deg,var(--panel-alt),var(--input)); }
+.app[data-command-realm="work"] .tool:hover { border-color:var(--gold); box-shadow:inset 0 1px #c8deee30,0 4px 14px #0002; }
+.app[data-command-realm="work"] .content>footer { color:var(--text); }
+
+/* Royal Registry: an independent silver and charcoal chamber in either theme. */
+.app[data-command-realm="work"] .royal-backdrop { background:#07101bd9; backdrop-filter:blur(7px); padding:24px; z-index:100; }
+.app[data-command-realm="work"] .settings-modal.royal-registry {
+  --panel:#19232e; --panel-alt:#22303e; --text:#edf2f7; --muted:#bac7d3; --input:#111c28; --line:#91a9bf55; --gold:#bdd1e2; --gold-light:#f2f7fc; --control:#2c4154; --focus:#b5ddff;
+  color:var(--text); background:#151f2a; width:min(1080px,100%); height:min(850px,calc(100dvh - 48px)); max-height:calc(100dvh - 48px); padding:0; border:1px solid #adc2d3; border-radius:10px; overflow:hidden; box-shadow:0 0 0 5px #121c28,0 0 0 6px #7d96ab77,0 30px 110px #0009; display:grid; grid-template-rows:auto minmax(0,1fr) auto;
+}
+.registry-header { display:flex; align-items:center; gap:20px; padding:28px 30px; border-bottom:1px solid #adbdcf80; background:linear-gradient(90deg,#122030ef,#122030cd 60%,#101b2ca0),url('/art/royal-gondor/royal-court-twilight-1600.webp') center 43% / cover; }
+.registry-header>.gondor-crest { color:#dce9f4; width:66px; }
+.registry-header>div { min-width:0; flex:1; }
+.registry-header>button { align-self:flex-start; }
+.app[data-command-realm="work"] .royal-registry h3 { color:#f0f5fa; font:500 38px/1.1 "Cormorant Garamond",Georgia,serif; margin:5px 0 8px; }
+.registry-eyebrow { display:block; font:600 10px/1.6 "DM Sans",Arial,sans-serif; letter-spacing:.17em; color:#b7ccde; }
+.registry-header p { font-size:13px; color:#c6d3df; }
+.registry-layout { display:grid; grid-template-columns:180px minmax(0,1fr); min-height:0; }
+.registry-nav { background:linear-gradient(#131e2a,#101923); border-right:1px solid var(--line); padding:24px 12px; display:flex; flex-direction:column; gap:8px; min-width:0; overflow-y:auto; }
+.registry-nav>button { display:flex; align-items:center; gap:10px; min-height:46px; padding:12px; border:1px solid transparent; border-radius:5px; background:transparent; color:#b9c9d8; text-align:left; font-size:13px; }
+.registry-nav>button[aria-pressed="true"] { background:linear-gradient(100deg,#526e883f,#526e8815); border-color:#8ca8c155; color:#f5f8fc; box-shadow:inset 2px 0 #bed4e8; }
+.registry-nav>button:hover { background:#58768b24; }
+.registry-account { display:flex; flex-direction:column; gap:7px; padding:22px 10px 6px; margin-top:auto; color:#97adc1; font-size:11px; }
+.registry-account strong { font-size:11px; color:#d1deea; font-weight:500; }
+.registry-account span { overflow-wrap:anywhere; }
+.registry-content { overflow-y:auto; min-height:0; padding:28px; scrollbar-color:#7895ab #101b27; scroll-padding-block:20px; }
+.registry-section-heading { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:20px; }
+.app[data-command-realm="work"] .royal-registry h4 { font:500 28px/1.2 "Cormorant Garamond",Georgia,serif; color:#e8f0f7; margin:5px 0 8px; }
+.registry-section-heading p,.registry-guidance p,.registry-backup-card p { color:#b7c7d7; font-size:13px; line-height:1.65; }
+.registry-guidance { border:1px solid #93acc343; background:linear-gradient(120deg,#2b425645,#2b425612); padding:14px 16px; border-radius:6px; margin-bottom:16px; }
+.registry-guidance summary { display:flex; align-items:center; gap:10px; cursor:pointer; min-height:24px; font-size:13px; }
+.registry-guidance summary:after { content:"+"; margin-left:auto; color:#c8e2f5; font-size:18px; }
+.registry-guidance[open] summary:after { content:"−"; }
+.registry-guidance summary>strong { margin:0; }
+.registry-guidance>div { margin-top:12px; }
+.registry-guidance>svg { flex-shrink:0; margin-top:3px; color:#bed4e7; }
+.registry-guidance strong { display:block; font-size:13px; margin-bottom:6px; font-weight:600; }
+.registry-guidance a,.registry-text-link { display:inline-flex; align-items:center; gap:5px; color:#c8e2f5; font-size:12px; padding-block:10px; text-decoration:underline; text-underline-offset:4px; }
+.registry-guidance a+a { margin-left:18px; }
+.registry-access-message { color:#b9c9d7; font-size:12px; margin:14px 0; }
+.registry-connections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.registry-connection { border:1px solid #758ea559; padding:18px; border-radius:7px; background:linear-gradient(140deg,#223140,#192531); min-width:0; }
+.registry-connection-heading { display:flex; align-items:center; gap:12px; min-width:0; margin-bottom:12px; }
+.registry-logo { width:44px; height:44px; display:grid; place-items:center; background:#102030; border:1px solid #abc3d34d; border-radius:8px; flex-shrink:0; }
+.registry-logo .brand-logo { width:26px; height:26px; }
+.app[data-command-realm="work"] .registry-connection h4 { font:600 15px/1.4 "DM Sans",Arial,sans-serif; margin:0 0 3px; }
+.registry-status { display:flex; align-items:center; gap:6px; font-size:11px; color:#b4c4d2; }
+.registry-status i { display:block; width:6px; height:6px; border-radius:50%; background:#8da3b8; }
+.registry-status.confirmed { color:#bde0cf; }.registry-status.confirmed i { background:#9ccdaf; }
+.registry-status:is(.partial,.auth) { color:#f3d296; }.registry-status:is(.partial,.auth) i { background:#efc980; }
+.registry-status.unavailable { color:#efbaac; }.registry-status.unavailable i { background:#e5a793; }
+.registry-connection>p { font-size:13px; color:#cedae4; line-height:1.5; }
+.registry-connection>small { display:block; font-size:11px; line-height:1.6; margin-top:5px; color:#9eb2c5; }
+.registry-toggle { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 0; margin-top:12px; border-top:1px solid #91a9bf30; color:#d3dfeb; font-size:12px; cursor:pointer; }
+.app[data-command-realm="work"] .royal-registry input[type="checkbox"] { appearance:none; width:36px; height:20px; border-radius:20px; background:#0c1723; border:1px solid #829eb7; position:relative; margin:0; }
+.registry-toggle input:after { content:""; position:absolute; left:3px; top:3px; width:12px; height:12px; border-radius:50%; background:#8da6ba; }
+.app[data-command-realm="work"] .royal-registry input[type="checkbox"]:checked { background:#bed0df; border-color:#e5edf5; }
+.registry-toggle input:checked:after { left:19px; background:#1d354a; }
+.registry-card-actions { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.app[data-command-realm="work"] .royal-registry :is(.outline-button,.gold-button,.icon-btn) { background:linear-gradient(145deg,#3b5267,#203448); color:#f1f6fa; border:1px solid #97b1c975; min-height:40px; font-size:12px; box-shadow:inset 0 1px #dce9f51c; }
+.app[data-command-realm="work"] .royal-registry :is(.outline-button,.gold-button,.icon-btn):hover:not(:disabled) { background:#415e77; border-color:#c7dceb; }
+.app[data-command-realm="work"] .royal-registry .gold-button { background:linear-gradient(#dbe7f0,#adbfce); color:#142b3d; }
+.app[data-command-realm="work"] .royal-registry .registry-probe { font-size:12px; color:#bdcddd; margin-top:12px; padding-top:10px; border-top:1px solid #91a9bf30; }
+.registry-probe small { display:block; margin-top:5px; font-size:10px; color:#97aec3; }
+.registry-footnote { color:#9aafc2; font-size:12px; line-height:1.65; margin-top:20px; }
+.registry-footer { display:flex; flex-direction:row; align-items:center; justify-content:space-between; flex-wrap:nowrap; gap:12px; padding:16px 28px; background:#101b28; border-top:1px solid #91a9bf55; text-align:left; font:normal 12px/1.5 "DM Sans",Arial,sans-serif; }
+.registry-footer>span { display:flex; align-items:center; gap:8px; color:#a9becf; font:normal 11px/1.5 "DM Sans",Arial,sans-serif; }
+.registry-shortcuts { display:grid; gap:14px; }
+.registry-shortcuts label { display:grid; grid-template-columns:150px minmax(0,1fr); gap:16px; align-items:center; padding:12px 0; border-bottom:1px solid #91a9bf30; }
+.registry-shortcuts label>span { display:flex; align-items:center; gap:12px; font-size:13px; }
+.registry-shortcuts .brand-logo { width:24px; height:24px; }
+.app[data-command-realm="work"] .royal-registry input[type="url"] { color:#deebf5; background:#101c29; border-color:#91a9bf70; font-size:12px; width:100%; }
+.registry-appearances { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.registry-appearances>button { padding:0 0 20px; border:1px solid #91a9bf66; border-radius:7px; background:#1b2a39; color:#d9e5ef; overflow:hidden; text-align:left; position:relative; }
+.registry-appearances>button.chosen { border-color:#d4e4f1; box-shadow:0 0 0 2px #94b1cb66; }
+.atmosphere-preview { height:150px; display:grid; place-items:center; background:linear-gradient(#14243970,#142439b0),url('/art/royal-gondor/royal-court-twilight-1600.webp') center / cover; }
+.atmosphere-preview.dawn { background:linear-gradient(#eff7ff25,#dce9f940),url('/art/royal-gondor/white-city-daylight-960.webp') center / cover; color:#263c53; }
+.atmosphere-preview .gondor-crest { width:60px; }
+.registry-appearances>button>span+span { display:flex; align-items:center; gap:8px; padding:18px 16px 6px; font-size:13px; }
+.registry-appearances>button>small { display:block; color:#a9bfd0; font-size:11px; margin-inline:16px; }
+.registry-appearances>button>svg { position:absolute; right:12px; top:12px; background:#1c354b; border:1px solid #bcd2e4; border-radius:50%; padding:3px; width:24px; height:24px; }
+.registry-backup-card { padding:26px; border:1px solid #91a9bf55; border-radius:8px; background:linear-gradient(150deg,#293e5155,#182532); }
+.registry-backup-card>svg { color:#c3d9ea; margin-bottom:10px; }
+.registry-backup-card .backup-actions { margin-top:22px; }
+@media(min-width:2200px) { .app[data-command-realm="work"] .hero.realm-gondor { min-height:430px; } }
+@media(max-width:900px) { .registry-layout { grid-template-columns:150px minmax(0,1fr); }.registry-content { padding:22px; }.registry-connections { grid-template-columns:minmax(0,1fr); } }
+@media(max-width:730px) {
+  .app[data-command-realm="work"] .realm-gondor.realm-framed { padding:54px 24px 30px; }
+  .app[data-command-realm="work"] .hero.realm-gondor { padding:0; min-height:360px; --surface-paint:linear-gradient(90deg,#112036e8,#11203660),url('/art/royal-gondor/white-city-daylight-960.webp') 64% center / cover; }
+  .app[data-command-realm="work"] .hero.realm-gondor .hero-copy { max-width:100%; padding:65px 26px 94px; }
+  .app[data-command-realm="work"] .hero.realm-gondor .hero-copy h1 { font-size:38px; }
+  .app[data-command-realm="work"] .brand-crest { width:32px; }
+  .app[data-command-realm="work"] .royal-backdrop { padding:12px; }
+  .app[data-command-realm="work"] .settings-modal.royal-registry { height:calc(100dvh - 24px); max-height:calc(100dvh - 24px); border-radius:7px; }
+  .registry-header { gap:12px; padding:20px; }.registry-header>.gondor-crest { width:45px; }
+  .app[data-command-realm="work"] .royal-registry h3 { font-size:30px; }.registry-header p { font-size:11px; }.registry-eyebrow { font-size:9px; }
+  .registry-layout { grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); }
+  .registry-nav { padding:8px; flex-direction:row; border-right:0; border-bottom:1px solid var(--line); gap:4px; overflow-x:auto; }
+  .registry-nav>button { flex:1; flex-direction:column; gap:4px; font-size:10px; padding:7px; min-width:65px; }
+  .registry-nav>button[aria-pressed="true"] { box-shadow:inset 0 -2px #bed4e8; }.registry-account { display:none; }
+  .registry-content { padding:20px; }.registry-connections { grid-template-columns:minmax(0,1fr); }
+  .registry-shortcuts label { grid-template-columns:minmax(0,1fr); gap:8px; }.registry-shortcuts label>span { font-size:12px; }
+  .registry-footer { padding:12px 20px; }.registry-footer>span { font-size:10px; max-width:65%; }
+  .registry-appearances { grid-template-columns:minmax(0,1fr); }.registry-backup-card { padding:20px; }
+}
+@media(prefers-reduced-motion:reduce) { .app[data-command-realm="work"] *, .app[data-command-realm="work"] *:before, .app[data-command-realm="work"] *:after { scroll-behavior:auto; transition:none; } }
