@@ -1,6 +1,6 @@
 # Catalyst information center
 
-The work dashboard has a Project information navigation item opening a full-width Gondor dossier for s76h_catalyst. It is also available under Beacons > Vercel. The user narrowed the watch to Catalyst; bc-proline and 76mcp-api-gateway are still being built and are not monitored here.
+The work dashboard has a Project information navigation item opening a full-width project watch for s76h_catalyst. Select the project card to open its Gondor dossier. It is also available under Beacons > Vercel. The user narrowed the watch to Catalyst; bc-proline and 76mcp-api-gateway are still being built and are not monitored here.
 
 The server owns the Spirit of 76 Fireworks team scope and the watched name s76h_catalyst (legacy s76_catalyst alias supported). Visitor consent selects the Vercel account. Account credentials and per-chat connection IDs are never hardcoded into provider arguments.
 
@@ -13,3 +13,19 @@ Vercel MCP returns deployments inside a nested deployments/deployments envelope.
 2026-10-18 hosted verification: IT Services consent successfully supplied s76h_catalyst details, framework nextjs, Node 24.x, domains, eight real deployments, and an independent production deployment. Manual Refresh updated the hosted read timestamp. Current preview and production data are kept distinct.
 
 Local desktop and phone QA used ignored, labeled synthetic data; no fixtures are bundled in production. Later local reload checks were limited by preview infrastructure. Hosted verification supersedes those fixtures for connection/read behavior. Tests cover nested responses, unsafe domains/metadata, unrelated and unavailable projects, and separate bounded production queries.
+
+## Deployment popouts and aligned rows
+
+The dashboard shows a compact, selectable project standard with separate production
+and latest-activity states. Selecting it opens a native modal with project metadata,
+domains, production details, and deployment history. The team feed and project list
+are available in a separate Team deployment details modal. Escape, the close button,
+and clicking the backdrop dismiss either modal and restore focus to its trigger.
+Selecting details reuses the current read; it does not trigger a deployment or add
+provider requests. Unknown and denied states retain their existing meanings.
+
+Overview panels share CSS Grid row tracks at each breakpoint. Operations spans the
+two neighboring task/council rows on wide screens. Daily Council cards stretch to
+the same row height; narrow screens use the original reading order in one column.
+The Royal Registry uses the personal Settings charcoal, stone-gray, and ivory
+palette while preserving its frame geometry and existing connection controls.
