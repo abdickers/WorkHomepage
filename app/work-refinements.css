@@ -1,0 +1,111 @@
+/* Shared row tracks align neighboring panels without clipping live content. */
+.app[data-command-realm="work"] :is(.daily-council,.dashboard-grid,.dashboard-stack) { align-items:stretch; }
+.app[data-command-realm="work"] .dashboard-stack { align-content:stretch; }
+.app[data-command-realm="work"] :is(.daily-council,.dashboard-grid) .realm-framed { align-self:stretch; }
+.app[data-command-realm="work"] .dashboard-grid.dashboard-view-overview {
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);
+  grid-template-areas:"priorities systems" "agenda systems" "palantir capture";
+}
+.app[data-command-realm="work"] .dashboard-view-overview>.dashboard-stack { display:contents; }
+.app[data-command-realm="work"] .dashboard-view-overview .priorities { grid-area:priorities; }
+.app[data-command-realm="work"] .dashboard-view-overview .agenda { grid-area:agenda; }
+.app[data-command-realm="work"] .dashboard-view-overview .palantir { grid-area:palantir; }
+.app[data-command-realm="work"] .dashboard-view-overview .capture { grid-area:capture; }
+@media(min-width:1280px) {
+  .app[data-command-realm="work"] .dashboard-grid.dashboard-view-overview {
+    grid-template-columns:minmax(0,.95fr) minmax(0,1.7fr) minmax(0,1fr);
+    grid-template-areas:"priorities systems palantir" "agenda systems capture";
+  }
+}
+@media(max-width:1199px) {
+  .app[data-command-realm="work"] .dashboard-grid.dashboard-view-overview {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:"priorities agenda" "systems systems" "palantir capture";
+  }
+}
+@media(max-width:730px) {
+  .app[data-command-realm="work"] .dashboard-grid.dashboard-view-overview {
+    grid-template-columns:minmax(0,1fr);
+    grid-template-areas:"priorities" "agenda" "systems" "palantir" "capture";
+  }
+}
+
+/* The personal dashboard's charcoal, stone and ivory Settings palette. */
+.app[data-command-realm="work"] .royal-backdrop { background:#08090bd9; }
+.app[data-command-realm="work"] .settings-modal.royal-registry {
+  --panel:#272829; --panel-alt:#303132; --input:#0b0c0d; --control:#363739;
+  --text:#f1f0ea; --ink:#f1f0ea; --muted:#c6c7c1; --gold:#c8c9c2; --gold-light:#f1f0ea;
+  --line:#9c9d9766; --focus:#f4f3ec;
+  color-scheme:dark; background:linear-gradient(125deg,#303132,#111213 58%,#090a0b);
+  border-color:#bcbdb6; box-shadow:0 0 0 5px #171819,0 0 0 6px #9c9d9777,0 30px 110px #0009;
+}
+.royal-registry .registry-header { background:linear-gradient(125deg,#303132,#111213); border-color:#a6a7a155; }
+.royal-registry :is(.registry-header>.gondor-crest,h3,h4,.registry-account strong) { color:#f1f0ea; }
+.app[data-command-realm="work"] .royal-registry :is(h3,h4) { color:#f1f0ea; }
+.royal-registry :is(.registry-eyebrow,.registry-header p,.registry-account,.registry-section-heading p,.registry-guidance p,.registry-backup-card p,.registry-access-message,.registry-connection>p,.registry-connection>small,.registry-probe small,.registry-footnote,.registry-footer>span,.registry-appearances>button>small) { color:#c6c7c1; }
+.royal-registry .registry-nav { background:linear-gradient(#1b1c1d,#101112); }
+.royal-registry .registry-nav>button { color:#deded7; }
+.royal-registry :is(.registry-connection,.registry-guidance,.registry-backup-card) { background:linear-gradient(145deg,#272829,#131415); border-color:#9c9d9766; }
+.royal-registry .registry-logo { background:#101112; border-color:#9c9d9766; }
+.royal-registry :is(.registry-guidance summary:after,.registry-guidance>svg,.registry-guidance a,.registry-text-link,.registry-toggle,.registry-backup-card>svg) { color:#e2e2dc; }
+.royal-registry :is(.registry-toggle,.registry-probe,.registry-shortcuts label,.registry-footer) { border-color:#9c9d974d; }
+.royal-registry .registry-content { scrollbar-color:#9a9b96 #171819; }
+.royal-registry .registry-footer { background:#101112; }
+.app[data-command-realm="work"] .royal-registry .registry-probe { color:#c6c7c1; }
+.app[data-command-realm="work"] .royal-registry :is(.outline-button,.gold-button,.icon-btn) {
+  background:linear-gradient(#363739,#191a1b); color:#f1f0ea; border-color:#9c9d9788; box-shadow:inset 0 1px #ffffff14;
+}
+.app[data-command-realm="work"] .royal-registry :is(.outline-button,.gold-button,.icon-btn):hover:not(:disabled),
+.royal-registry .registry-nav>button:hover { background:linear-gradient(#505153,#2c2d2f); border-color:#e4e4de; }
+.app[data-command-realm="work"] .royal-registry .gold-button,
+.royal-registry .registry-nav>button[aria-pressed="true"] {
+  background:linear-gradient(#e6e5de,#bdbeb8); color:#151617; border-color:#ecece6; box-shadow:inset 0 1px #fff6;
+}
+.app[data-command-realm="work"] .royal-registry .gold-button:hover:not(:disabled),
+.royal-registry .registry-nav>button[aria-pressed="true"]:hover { background:linear-gradient(#f6f5ee,#d5d6cf); }
+.app[data-command-realm="work"] .royal-registry input[type="url"] { color:#f1f0ea; background:#0b0c0d; border-color:#9c9d9788; }
+.app[data-command-realm="work"] .royal-registry input[type="checkbox"] { background:#27282a; border-color:#9c9d9788; }
+.royal-registry .registry-toggle input:after { background:#e1e2db; }
+.app[data-command-realm="work"] .royal-registry input[type="checkbox"]:checked { background:#d4d5ce; border-color:#e4e4de; }
+.royal-registry .registry-toggle input:checked:after { background:#202122; }
+.royal-registry .registry-appearances>button { color:#f1f0ea; background:#1c1d1e; border-color:#9c9d9788; }
+.royal-registry .registry-appearances>button.chosen { border-color:#e4e4de; box-shadow:0 0 0 2px #bcbdb666; }
+.royal-registry .registry-appearances>button>svg { background:#242526; border-color:#d4d5ce; }
+.royal-registry .atmosphere-preview { filter:grayscale(1); }
+.royal-registry .registry-status:not(.confirmed,.partial,.auth,.unavailable) { color:#bfc0ba; }
+.royal-registry .registry-status:not(.confirmed,.partial,.auth,.unavailable) i { background:#9a9b96; }
+.app[data-command-realm="work"] .royal-registry :is(button,a,input,summary):focus-visible { outline:3px solid #f4f3ec; outline-offset:3px; }
+
+/* A small project standard on the board; full deployment evidence on selection. */
+.app[data-command-realm="work"] .citadel-project-card {
+  display:grid; grid-template-columns:52px minmax(0,1fr); align-items:center; gap:12px;
+  width:100%; min-width:0; padding:18px; text-align:left; color:var(--text);
+  background:linear-gradient(150deg,var(--control),var(--input)); border:1px solid var(--gold); border-radius:6px; cursor:pointer;
+  box-shadow:inset 0 0 0 4px var(--input),inset 0 0 0 5px var(--line);
+}
+.app[data-command-realm="work"] .citadel-project-card:hover { border-color:var(--gold-light); background:linear-gradient(150deg,var(--panel-alt),var(--control)); }
+.citadel-project-card>.gondor-art { width:52px; height:52px; }
+.citadel-status-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; grid-column:1/-1; }
+.citadel-status-pair>span { min-width:0; display:grid; gap:6px; align-content:start; }
+.citadel-status-pair small { font-size:10px; color:var(--muted); }
+.citadel-projects .citadel-status-pair .citadel-state { grid-column:auto; }
+.citadel-project-card .citadel-card-note { grid-column:1/-1; }
+.vercel-details-button { display:inline-flex; align-items:center; gap:8px; margin-block:8px; }
+.deployment-dialog {
+  color:var(--text); background:var(--input); border:1px solid var(--gold); border-radius:10px;
+  width:min(1000px,calc(100vw - 32px)); max-width:calc(100vw - 32px); max-height:calc(100dvh - 40px);
+  margin:auto; padding:0; overflow:hidden; box-shadow:0 24px 100px #0009; color-scheme:dark;
+}
+.deployment-dialog::backdrop { background:#08090bd9; backdrop-filter:blur(6px); }
+.deployment-dialog-shell { display:grid; grid-template-rows:auto minmax(0,1fr); max-height:calc(100dvh - 42px); min-width:0; }
+.deployment-dialog-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 24px; border-bottom:1px solid var(--line); background:var(--panel); }
+.deployment-dialog-heading>div { min-width:0; }
+.deployment-dialog-heading h3 { margin:4px 0 0; font:500 clamp(25px,3vw,34px)/1.15 "Cormorant Garamond",Georgia,serif; overflow-wrap:anywhere; color:var(--gold-light); }
+.deployment-dialog-heading .icon-btn { flex-shrink:0; }
+.deployment-dialog-body { min-height:0; min-width:0; overflow:auto; padding:24px; overscroll-behavior:contain; }
+.deployment-dialog .citadel-dossier { margin:0; }
+.deployment-dialog .operations-table-scroll { max-width:100%; }
+.deployment-dialog .vercel-deployments { max-height:none; }
+@media(max-width:730px) {
+  .deployment-dialog-heading { padding:18px; }.deployment-dialog-body { padding:16px; }
+}

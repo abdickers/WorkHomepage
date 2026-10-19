@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+import { DeploymentDialog } from "./deployment-dialog";
 import { ArrowUpRight } from "./realm-icon";
 import { Beacon } from "./realm-widgets";
 import { BrandLogo } from "./brand-logo";
@@ -14,6 +17,7 @@ export function VercelWatch({ projects, deployments, watched, loading }: {
   watched?: WatchedProject[];
   projects: VercelProject[] | null; deployments: VercelDeployment[] | null; loading: boolean;
 }) {
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const unknownState = deployments?.some((d) => d.state === "UNKNOWN");
   const count = (...states: string[]) => deployments && !unknownState ? deployments.filter((d) => states.includes(d.state)).length : null;
   return <div className="vercel-watch">
@@ -29,7 +33,9 @@ export function VercelWatch({ projects, deployments, watched, loading }: {
       <Beacon label="Build errors" tone="error" value={count("ERROR")} />
       <Beacon label="Ready" tone="roster" value={count("READY")} />
     </div>
-    {deployments ? <details className="realm-detail-table"><summary>Team deployment feed <span>Latest {deployments.length} returned</span></summary><div className="operations-table-scroll vercel-deployments">
+    <button className="outline-button vercel-details-button" aria-haspopup="dialog" onClick={() => setDetailsOpen(true)}>Team deployment details <ArrowUpRight size={14}/></button>
+    {detailsOpen && <DeploymentDialog title="Team deployment details" close={() => setDetailsOpen(false)}>
+    {deployments ? <div className="operations-table-scroll vercel-deployments">
       <table className="operations-table"><caption>Recent deployments · created time in Central time</caption>
         <thead><tr><th>Project</th><th>State</th><th>Environment</th><th>Created · CT</th></tr></thead>
         <tbody>{deployments.length ? deployments.map((d) => <tr key={d.id}>
@@ -38,10 +44,11 @@ export function VercelWatch({ projects, deployments, watched, loading }: {
           <td>{d.target}</td><td>{deploymentTime(d.createdAt)}</td>
         </tr>) : <tr><td colSpan={4}>No team deployments returned.</td></tr>}</tbody>
       </table>
-    </div></details> : <div className="operations-empty"><GuardianIcon unavailable/><p>{loading ? "Reading team deployments…" : "Team deployment access has not been confirmed."}</p></div>}
+    </div> : <div className="operations-empty"><GuardianIcon unavailable/><p>{loading ? "Reading team deployments…" : "Team deployment access has not been confirmed."}</p></div>}
     {projects && <details className="realm-detail-table"><summary>Inspect {projects.length} projects returned</summary>
       <div className="vercel-projects">{projects.length ? projects.map((p)=><a key={p.id} href={p.href} target="_blank" rel="noopener noreferrer">{p.name}<ArrowUpRight size={13}/></a>) : <p>No projects returned.</p>}</div>
     </details>}
+    </DeploymentDialog>}
     {unknownState && <p className="connection-message">Some deployment states are unknown. Counts remain unavailable until all returned states can be interpreted.</p>}
     <p className="operations-scope">Counts cover returned deployments only. Ready means deployment completed; runtime errors and uptime are not measured here.</p>
   </div>;
