@@ -4,6 +4,7 @@ import { connectorResponse } from "@/lib/connector-errors.mjs";
 import { projectVercelResult, VERCEL_TEAM, VERCEL_READ_LIMIT } from "@/lib/vercel-feed.mjs";
 import { readProjectCenter } from "@/lib/vercel-project-center.mjs";
 const CELIGO = "asdk_app_6ac7b2189d148191805ef2c78f3fbb3c";
+const CELIGO_PRODUCTION_INTEGRATION = "6a60d5774b038e24aba608b7";
 const SITES = "connector_20205bf7d4e99a89d7154bb849718324";
 const SITE_ID = "appgprj_6acfe13398b881918807c030709a2664";
 const VERCEL = "connector_690a90ec05c881918afb6a55dc9bbaa1";
@@ -44,12 +45,15 @@ export async function POST(
   if (source === "celigo") {
     const [flows, jobs] = await Promise.all([
       client.invoke(CELIGO, "list_flows", {
+        _integrationId: CELIGO_PRODUCTION_INTEGRATION,
         limit: 50,
         include: "name,disabled,_integrationId,_flowGroupingId,schedule,lastExecutedAt",
         includeErrorCounts: true,
         sort_by: "lastExecutedAt",
       }),
-      client.invoke(CELIGO, "list_current_jobs", {}),
+      client.invoke(CELIGO, "list_current_jobs", {
+        body: { _integrationIds: [CELIGO_PRODUCTION_INTEGRATION] },
+      }),
     ]);
     // Individual outcomes stay independent; neither failure becomes an empty success.
     return Response.json(

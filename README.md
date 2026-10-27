@@ -9,10 +9,10 @@ A personal daily dashboard based on [abdickers/HomePage](https://github.com/abdi
 - Browser-local persistence, JSON export / restore, and editable app shortcuts.
 - A 25-minute focus timer, dark / light themes, and Central time.
 - Read-only Google Calendar agenda, loaded explicitly on request.
-- Celigo production flows, active jobs, open errors, and last-triggered timestamps. Automatic refresh every 60 seconds while visible; an optional switch pauses refresh.
+- Celigo flows, active jobs, open errors, and last-triggered timestamps from the `BigCommerce - NetSuite - Production` integration only. The `BigCommerce - NetSuite` integration tagged `Production - Do Not Use` is excluded. Automatic refresh every 60 seconds while visible; an optional switch pauses refresh.
 - Cloudflare request/error events for this dashboard’s Worker only, through the Sites log tool. No account-wide Cloudflare integration.
 - Explicit loading, stale-data, partial-result, retry-backoff, and sign-in states. “Idle” does not mean the last sync succeeded. Counts cover the returned page, with pagination warnings.
-- The Council offers an on-demand Claude incident briefing: collect evidence, review it, then explicitly send the displayed operational counts to Anthropic. Coverage currently includes Celigo production flows/current jobs and a sample of this dashboard's Worker events. Other stacks are not included in briefings yet.
+- The Council offers an on-demand Claude incident briefing: collect evidence, review it, then explicitly send the displayed operational counts to Anthropic. Coverage currently includes flows/current jobs from `BigCommerce - NetSuite - Production` and a sample of this dashboard's Worker events. Other stacks are not included in briefings yet.
 - A reusable ChatGPT companion window remains available under the Palantír disclosure; it uses your existing ChatGPT login. There is no iframe or API-backed ChatGPT chat.
 - The Fellowship: NetSuite, GitHub, Celigo, BigCommerce, Dotdigital, Jira, Confluence, Avalara, Cybersource, Netlify, Cloudflare. Daily tools and AI assistants have separate groups.
 
