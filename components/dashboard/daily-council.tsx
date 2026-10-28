@@ -107,6 +107,7 @@ function useDaily(source: "mail" | "slack" | "jira", watch: boolean) {
         signal: controller.signal,
       });
       const d: any = await response.json();
+      if (source === "slack" && d.diagnostics) console.info("Slack Site action diagnostics", JSON.stringify(d.diagnostics));
       if (d.status !== "success") {
         retryAt.current = Date.now() + Math.max(60000, d.retryAfterMs || 0);
         setData((previous: any) => (previous?.fetchedAt ? previous : d));
