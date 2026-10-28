@@ -1,4 +1,3 @@
-import { slackSearchAction, slackSearchDiagnostics } from "@/lib/slack-search.mjs";
 import { requireWorkGoogle } from "@/lib/google-account";
 import { connectorsForRequest } from "@/lib/connectors";
 import { providerData } from "@/lib/provider-data.mjs";
@@ -87,8 +86,6 @@ export async function POST(
       ),
     };
   else if (source === "slack") {
-    const slackContext = await client.getContext();
-    const searchAction = slackSearchAction(slackContext);
     const after = new Date(Date.now() - 7 * 86400000).toLocaleDateString(
       "en-CA",
       { timeZone: "America/Chicago" },
@@ -107,13 +104,13 @@ export async function POST(
     const [dm, mentions] = await Promise.all([
       read(
         SLACK,
-        searchAction,
+        "slack_search_public_and_private",
         { ...base, keywords: [], filters: `is:dm -from:me after:${after}` },
         parse,
       ),
       read(
         SLACK,
-        searchAction,
+        "slack_search_public_and_private",
         {
           ...base,
           keywords: ["<@U03SS9LTE4A>"],
@@ -123,9 +120,6 @@ export async function POST(
       ),
     ]);
     feeds = { dm, mentions };
-    if ([dm, mentions].some(feed => ["tool_not_found", "tool_not_allowed"].includes(feed.status))) {
-      return Response.json({ status: "success", feeds, fetchedAt: new Date().toISOString(), diagnostics: slackSearchDiagnostics(slackContext) }, { headers: privateHeaders });
-    }
   } else if (source === "jira") {
     const base = {
       cloudId: "fec5858e-2f31-4fc4-b44a-1a837d389a96",
