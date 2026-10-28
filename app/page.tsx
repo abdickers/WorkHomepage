@@ -1,4 +1,5 @@
 "use client";
+import { WebWatch } from "@/components/dashboard/web-watch";
 import { PanelFrame, GondorPageRail } from "@/components/dashboard/panel-frame";
 import { RoyalSettings } from "@/components/dashboard/royal-settings";
 import { GondorArt } from "@/components/dashboard/gondor-art";
@@ -635,6 +636,7 @@ export default function Dashboard() {
               </span>
             </div>
           </section>
+          {(view === "overview" || view === "systems") && <WebWatch />}
           <div className="summary-strip">
             <div>
               <span className="stat-icon">
