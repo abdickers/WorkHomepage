@@ -43,8 +43,8 @@ export function cisaItems(data: any, now = Date.now()): WatchItem[] {
 }
 export function sortItems(items: WatchItem[]) { const rank = { urgent: 0, watch: 1, resolved: 2 }; return items.sort((a, b) => rank[a.level] - rank[b.level] || Date.parse(b.date) - Date.parse(a.date)); }
 export async function readFeed(url: string, asJson = true) {
-  const response = await fetch(url, { signal: AbortSignal.timeout(12000), headers: { Accept: asJson ? 'application/json' : 'application/atom+xml, application/xml' }, redirect: 'error', cache: 'no-store' });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const response = await fetch(url, { signal: AbortSignal.timeout(12000), headers: { Accept: asJson ? 'application/json' : 'application/atom+xml, application/xml' }, redirect: 'manual', cache: 'no-store' });
+  if (!response.ok) { await response.body?.cancel(); throw new Error(`HTTP ${response.status}`); }
   // Bound provider payloads before decoding them in the Worker.
   const reader = response.body?.getReader(); if (!reader) throw new Error('Empty feed');
   let size = 0; const chunks: Uint8Array[] = [];

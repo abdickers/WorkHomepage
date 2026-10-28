@@ -41,3 +41,10 @@ test('an individual feed failure preserves the other source results and exposes 
   try { const data = await collectWebWatch(); assert.equal(data.sources.filter(s => s.available).length, 7); assert.equal(data.sources[0].available, false); assert.deepEqual(data.items, []); }
   finally { globalThis.fetch = realFetch; }
 });
+test('feed requests use Worker-supported manual redirects and reject redirected bodies', async () => {
+  const realFetch = globalThis.fetch;
+  const { readFeed } = await import('../lib/web-watch.mts');
+  globalThis.fetch = async (_input, init) => { assert.equal(init?.redirect, 'manual'); return new Response('', { status:302, headers:{Location:'https://example.test'} }); };
+  try { await assert.rejects(() => readFeed('https://www.php.net'), /HTTP 302/); }
+  finally { globalThis.fetch = realFetch; }
+});

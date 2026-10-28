@@ -636,7 +636,6 @@ export default function Dashboard() {
               </span>
             </div>
           </section>
-          {(view === "overview" || view === "systems") && <WebWatch />}
           <div className="summary-strip">
             <div>
               <span className="stat-icon">
@@ -677,6 +676,7 @@ export default function Dashboard() {
                 <span>A little progress counts</span>
               </div>
             </div>
+            {(view === "overview" || view === "systems") && <WebWatch />}
             <button
               className="summary-action"
               onClick={() => {

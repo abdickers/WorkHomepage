@@ -1,0 +1,6 @@
+# Eye on the Web artwork
+
+Generated with the built-in image generation tool on October 28, 2026. Transparent original: `sauron-eye-original.png`. Delivery: `public/art/web-watch/sauron-eye.webp`, reduced to 256 pixels with preserved alpha for the 72-pixel widget and 60-pixel drawer header. Replaces the original simple inline SVG eye.
+
+Prompt:
+Use case: stylized-concept. Asset type: compact premium fantasy dashboard control, transparent-background emblem. Create one beautifully rendered cinematic Eye of Sauron watchtower emblem, the fiery slit-pupil eye suspended between the two curved spires of Barad-dur, dark worn blackened iron tower crown, detailed sculpted metal, molten amber and orange fire, deep ruby embers, fierce narrow almond eye with a clear black vertical slit. A sophisticated realistic collectible prop / painted film concept asset matching a dark Gondor command dashboard, NOT a cartoon or flat vector logo. Square canvas, one isolated emblem centered, object occupies 85% of frame, cropped tower base just beneath the eye, strong silhouette remains readable at 64 pixels, controlled fire glow tightly around eye, no scattered particles outside object. Genuine transparent background, no scenery, no frame, no words, no typography, no watermark, no extra eyes. Detailed hand-finished texture with crisp edges, restrained dramatic lighting.
