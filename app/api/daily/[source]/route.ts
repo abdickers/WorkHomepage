@@ -123,7 +123,7 @@ export async function POST(
       ),
     ]);
     feeds = { dm, mentions };
-    if ([dm, mentions].some(feed => feed.status === "tool_not_found")) {
+    if ([dm, mentions].some(feed => ["tool_not_found", "tool_not_allowed"].includes(feed.status))) {
       return Response.json({ status: "success", feeds, fetchedAt: new Date().toISOString(), diagnostics: slackSearchDiagnostics(slackContext) }, { headers: privateHeaders });
     }
   } else if (source === "jira") {
