@@ -1,21 +1,25 @@
 package com.abdickers.realms;
 
-import android.app.*;
-import android.appwidget.*;
-import android.content.*;
+import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
+import java.lang.ref.WeakReference;
 
-/** Native entry and setup. Never launches a website as its dashboard. */
+/** The app and launcher widget share the same native dashboard renderer and data. */
 public final class MainActivity extends Activity {
- @Override protected void onCreate(Bundle saved){super.onCreate(saved);show();}
- private void show(){
-  LinearLayout root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(24,32,24,24);root.setBackgroundColor(0xFF101C2B);setContentView(root);root.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());v.setPadding(24,bars.top+24,24,bars.bottom+24);return i;});
-  ImageView shield=new ImageView(this);shield.setImageResource(R.drawable.gondor_shield);root.addView(shield,new LinearLayout.LayoutParams(-1,160));
-  TextView title=new TextView(this);title.setText("Middle-earth Command");title.setTextSize(27);title.setGravity(Gravity.CENTER);title.setTextColor(0xFFF4E6BE);root.addView(title);
-  TextView intro=new TextView(this);intro.setText("One interactive widget. Home, Work, or Auto.\n\nAdd it to your home screen, then resize it to fill the available page. Switch realms, navigate dates, scroll your feeds and refresh directly inside the widget.\n\nThis native preview needs separate provider connections; website sign-in does not automatically connect them.");intro.setTextSize(16);intro.setTextColor(0xFFE4EAF2);intro.setPadding(0,24,0,24);root.addView(intro);
-  Button add=new Button(this);add.setText("Add Command widget");root.addView(add);add.setOnClickListener(v->{AppWidgetManager manager=getSystemService(AppWidgetManager.class);if(manager.isRequestPinAppWidgetSupported()){manager.requestPinAppWidget(new ComponentName(this,CommandWidget.class),null,null);}else new AlertDialog.Builder(this).setMessage("Long-press your home screen → Widgets → Middle-earth Command.").setPositiveButton("OK",null).show();});
-  Button settings=new Button(this);settings.setText("Connections & automatic switching");root.addView(settings);settings.setOnClickListener(v->startActivity(new Intent(this,SettingsActivity.class)));
+ private static WeakReference<MainActivity> current=new WeakReference<>(null);
+ private FrameLayout root;
+ private String lastPage="";
+ @Override protected void onCreate(Bundle state){super.onCreate(state);root=new FrameLayout(this);root.setId(R.id.app_dashboard);root.setBackgroundColor(0xFF101C2B);setContentView(root);root.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());v.setPadding(8,bars.top+8,8,bars.bottom+8);return i;});render();}
+ @Override protected void onResume(){super.onResume();current=new WeakReference<>(this);render();}
+ @Override protected void onPause(){if(current.get()==this)current.clear();super.onPause();}
+ static void redraw(){MainActivity a=current.get();if(a!=null&&!a.isFinishing()&&!a.isDestroyed())a.runOnUiThread(()->{if(a.findViewById(R.id.app_dashboard)!=null)a.render();});}
+ private void render(){
+  if(root==null||findViewById(R.id.app_dashboard)==null)return;
+  int position=0,offset=0;String page=WidgetState.decision(this,0).realm()+"."+WidgetState.section(this,0);ListView previous=root.findViewById(R.id.feed);if(page.equals(lastPage)&&previous!=null){position=previous.getFirstVisiblePosition();if(previous.getChildCount()>0)offset=previous.getChildAt(0).getTop();}
+  float density=getResources().getDisplayMetrics().density;Bundle options=new Bundle();options.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,Math.round(getResources().getDisplayMetrics().widthPixels/density));options.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,Math.round(getResources().getDisplayMetrics().heightPixels/density)-50);
+  View dashboard=CommandWidget.views(this,0,options).apply(this,root);root.removeAllViews();root.addView(dashboard,new FrameLayout.LayoutParams(-1,-1));ListView list=dashboard.findViewById(R.id.feed);if(list!=null&&page.equals(lastPage))list.setSelectionFromTop(position,offset);lastPage=page;
  }
 }

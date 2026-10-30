@@ -5,7 +5,7 @@ import org.json.*;
 import java.util.*;
 
 final class FeedStore {
- record Row(String title,String body,int icon){}
+ record Row(String title,String body,int icon,String key){Row(String title,String body,int icon){this(title,body,icon,"");}}
  record Feed(List<Row> rows,long checkedAt,String error){}
  static String key(String realm,String source){return realm+"."+source;}
  static Feed read(Context c,String realm,String source){

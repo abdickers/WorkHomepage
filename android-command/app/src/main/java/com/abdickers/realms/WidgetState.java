@@ -17,7 +17,7 @@ final class WidgetState {
  static String section(Context c,int id){return prefs(c).getString(key(id,"section"),"overview");}
  static long day(Context c,int id){return prefs(c).getLong(key(id,"day"),LocalDate.now().toEpochDay());}
  static void mode(Context c,int id,String mode){if(Set.of("home","work","auto").contains(mode))prefs(c).edit().putString(key(id,"mode"),mode).commit();}
- static void section(Context c,int id,String section){if(Set.of("overview","calendar","mail","jira","slack","systems","tools","ai").contains(section))prefs(c).edit().putString(key(id,"section"),section).commit();}
+ static void section(Context c,int id,String section){if(Panels.ALL.contains(section))prefs(c).edit().putString(key(id,"section"),section).commit();}
  static ModePolicy.Decision decision(Context c,int id){
   SharedPreferences p=prefs(c);Set<DayOfWeek> days=new HashSet<>();for(String d:p.getString("days","1,2,3,4,5").split(","))try{days.add(DayOfWeek.of(Integer.parseInt(d)));}catch(Exception ignored){}
   return ModePolicy.choose(mode(c,id),ssid(c),ZonedDateTime.now(),new ModePolicy.Rules(ModePolicy.networks(p.getString("home_wifi","")),ModePolicy.networks(p.getString("work_wifi","")),days,p.getInt("start",540),p.getInt("end",1020),p.getString("fallback","home")));

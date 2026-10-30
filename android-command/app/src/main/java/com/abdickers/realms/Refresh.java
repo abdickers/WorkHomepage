@@ -7,7 +7,7 @@ final class Refresh {
  static void request(Context context,int widgetId){
   Context c=context.getApplicationContext();String realm=WidgetState.decision(c,widgetId).realm(),source=WidgetState.section(c,widgetId);long day=WidgetState.day(c,widgetId);
   if(source.equals("overview")){source=realm.equals("work")?"systems":"weather";}
-  if(source.equals("tools")||source.equals("ai")){CommandWidget.updateAll(c);return;}
+  if(Panels.local(source)||source.equals("ai")){CommandWidget.updateAll(c);return;}
   final String selected=source,cacheSource=source.equals("calendar")?"calendar."+day:source,key=FeedStore.key(realm,cacheSource);
   long now=System.currentTimeMillis(),blocked=WidgetState.prefs(c).getLong("retry."+key,0);
   if(blocked>now){CommandWidget.updateAll(c);return;}

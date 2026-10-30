@@ -9,6 +9,8 @@
  <application android:name=".CommandApp" android:theme="@style/AppTheme" android:label="Middle-earth Command" android:icon="@drawable/gondor_shield" android:allowBackup="false" android:fullBackupContent="false" android:usesCleartextTraffic="false" android:supportsRtl="true">
   <activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
   <activity android:name=".SettingsActivity" android:exported="false"/>
+  <activity android:name=".CaptureActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
+  <activity android:name=".EntryActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
   <receiver android:name=".CommandWidget" android:exported="false">
    <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE"/><action android:name="android.intent.action.TIME_SET"/><action android:name="android.intent.action.TIMEZONE_CHANGED"/></intent-filter>
    <meta-data android:name="android.appwidget.provider" android:resource="@xml/command_widget"/>

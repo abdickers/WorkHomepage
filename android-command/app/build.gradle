@@ -2,12 +2,18 @@ plugins { id 'com.android.application' }
 android {
  namespace 'com.abdickers.realms'
  compileSdk 35
- defaultConfig { applicationId 'com.abdickers.realms'; minSdk 31; targetSdk 35; versionCode 1; versionName '0.2-native-preview'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+ defaultConfig { applicationId 'com.abdickers.realms'; minSdk 31; targetSdk 35; versionCode 2; versionName '0.3-native-preview'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+ def stableKey = System.getenv('COMMAND_KEYSTORE_FILE')
+ if (stableKey) {
+  signingConfigs { command { storeFile file(stableKey); storePassword System.getenv('COMMAND_KEYSTORE_PASSWORD'); keyAlias 'command'; keyPassword System.getenv('COMMAND_KEYSTORE_PASSWORD'); storeType 'pkcs12' } }
+  buildTypes { debug { signingConfig signingConfigs.command }; release { signingConfig signingConfigs.command } }
+ }
  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
  buildTypes { release { minifyEnabled false } }
 }
 dependencies {
  implementation 'androidx.work:work-runtime:2.10.1'
+ implementation 'com.google.android.gms:play-services-auth:22.0.0'
  testImplementation 'junit:junit:4.13.2'
  androidTestImplementation 'androidx.test:runner:1.6.2'
  androidTestImplementation 'androidx.test:rules:1.6.1'

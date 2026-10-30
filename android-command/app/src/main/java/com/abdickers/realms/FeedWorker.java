@@ -9,7 +9,7 @@ public final class FeedWorker extends Worker {
  public FeedWorker(Context c,WorkerParameters p){super(c,p);}
  @Override public Result doWork(){
   Context c=getApplicationContext();String realm=getInputData().getString("realm"),source=getInputData().getString("source");long day=getInputData().getLong("day",0);
-  if(!Set.of("home","work").contains(realm==null?"":realm)||!Set.of("calendar","systems","jira","slack","weather","hearth","mail").contains(source==null?"":source))return Result.failure();
+  if(!Set.of("home","work").contains(realm==null?"":realm)||!Set.of("calendar","systems","beacons","jira","slack","weather","hearth","mail").contains(source==null?"":source))return Result.failure();
   String cacheSource=source.equals("calendar")?"calendar."+day:source,key=FeedStore.key(realm,cacheSource);
   long generation=getInputData().getLong("generation",-1);if(generation!=Connections.generation(c))return Result.success();
   try{java.util.List<FeedStore.Row> rows=source.equals("calendar")?Feeds.calendar(c,realm,day):Feeds.read(c,realm,source);if(!isStopped())Connections.commitIfCurrent(c,generation,()->FeedStore.success(c,realm,cacheSource,rows));}
