@@ -11,6 +11,9 @@
   <activity android:name=".SettingsActivity" android:exported="false"/>
   <activity android:name=".CaptureActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
   <activity android:name=".EntryActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
+  <activity android:name=".SetupActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
+  <activity android:name=".CouncilActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
+  <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.files" android:exported="false" android:grantUriPermissions="true"><meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/setup_paths"/></provider>
   <receiver android:name=".CommandWidget" android:exported="false">
    <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE"/><action android:name="android.intent.action.TIME_SET"/><action android:name="android.intent.action.TIMEZONE_CHANGED"/></intent-filter>
    <meta-data android:name="android.appwidget.provider" android:resource="@xml/command_widget"/>

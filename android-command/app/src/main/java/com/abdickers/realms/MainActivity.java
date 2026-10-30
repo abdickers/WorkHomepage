@@ -1,7 +1,8 @@
 package com.abdickers.realms;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetManager;
+import android.appwidget.*;
+import android.content.ComponentName;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
@@ -20,6 +21,11 @@ public final class MainActivity extends Activity {
   if(root==null||findViewById(R.id.app_dashboard)==null)return;
   int position=0,offset=0;String page=WidgetState.decision(this,0).realm()+"."+WidgetState.section(this,0);ListView previous=root.findViewById(R.id.feed);if(page.equals(lastPage)&&previous!=null){position=previous.getFirstVisiblePosition();if(previous.getChildCount()>0)offset=previous.getChildAt(0).getTop();}
   float density=getResources().getDisplayMetrics().density;Bundle options=new Bundle();options.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,Math.round(getResources().getDisplayMetrics().widthPixels/density));options.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,Math.round(getResources().getDisplayMetrics().heightPixels/density)-50);
-  View dashboard=CommandWidget.views(this,0,options).apply(this,root);root.removeAllViews();root.addView(dashboard,new FrameLayout.LayoutParams(-1,-1));ListView list=dashboard.findViewById(R.id.feed);if(list!=null&&page.equals(lastPage))list.setSelectionFromTop(position,offset);lastPage=page;
+  // RemoteCollectionItems requires an AppWidgetHostView even inside our own Activity.
+  // This is an in-process view, not a launcher binding or an allocated widget ID.
+  AppWidgetHostView dashboard=new AppWidgetHostView(this);dashboard.setPadding(0,0,0,0);
+  ComponentName provider=new ComponentName(this,CommandWidget.class);
+  for(AppWidgetProviderInfo info:AppWidgetManager.getInstance(this).getInstalledProviders())if(provider.equals(info.provider)){dashboard.setAppWidget(0,info);break;}
+  dashboard.updateAppWidget(CommandWidget.views(this,0,options));root.removeAllViews();root.addView(dashboard,new FrameLayout.LayoutParams(-1,-1));if(page.equals(lastPage)){final int savedPosition=position,savedOffset=offset;dashboard.post(()->{ListView list=dashboard.findViewById(R.id.feed);if(list!=null)list.setSelectionFromTop(savedPosition,savedOffset);});}lastPage=page;
  }
 }

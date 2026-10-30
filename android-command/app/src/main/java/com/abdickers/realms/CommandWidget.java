@@ -63,7 +63,8 @@ public final class CommandWidget extends AppWidgetProvider {
    if(rows.isEmpty())rows.add(new FeedStore.Row("Your "+Panels.title(section),"Use Add below to capture your first item.",work?R.drawable.icon_notes:R.drawable.elven_raven));
    Intent add=new Intent(c,CaptureActivity.class).setData(android.net.Uri.parse("command://add/"+id)).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id);v.setTextViewText(R.id.refresh,section.equals("tools")?"Add link":"Add");v.setOnClickPendingIntent(R.id.refresh,PendingIntent.getActivity(c,id,add,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));
   }else if(section.equals("ai")){
-   rows.add(new FeedStore.Row("The AI council","Native chat connection is not configured yet. No AI request has been sent.",R.drawable.icon_council));status="Connection needed";
+   rows.add(new FeedStore.Row("Plan my day","Compose a question in your AI app",R.drawable.brand_openai,"plan"));rows.add(new FeedStore.Row("Investigate an integration","Review saved production context before sharing",R.drawable.brand_claude,"incident"));rows.add(new FeedStore.Row("Find the words","Draft a message with your AI companion",R.drawable.brand_gemini,"message"));status="The Council · choose an AI companion";
+   Intent ask=new Intent(c,CouncilActivity.class).setData(android.net.Uri.parse("command://council/"+id)).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id);v.setTextViewText(R.id.refresh,"Ask Council");v.setOnClickPendingIntent(R.id.refresh,PendingIntent.getActivity(c,id,ask,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));
   }else{
    String source=section.equals("calendar")?"calendar."+day:section;FeedStore.Feed f=FeedStore.read(c,realm,source);rows.addAll(f.rows());
    if(compact&&!f.error().isEmpty())rows.add(0,new FeedStore.Row("Refresh unavailable",f.error(),work?R.drawable.gondor_shield:R.drawable.elven_orb));

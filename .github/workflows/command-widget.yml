@@ -30,6 +30,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install setup encryption verifier
+        run: python -m pip install cryptography==50.0.2
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.11.1'
@@ -60,6 +65,8 @@ jobs:
           sudo udevadm trigger --name-match=kvm
       - name: Exercise actual home-screen widget
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          COMMAND_KEYSTORE_PASSWORD: ${{ secrets.COMMAND_KEYSTORE_PASSWORD }}
         with:
           api-level: ${{ matrix.api }}
           target: google_apis
@@ -75,11 +82,17 @@ jobs:
             adb shell am force-stop com.google.android.apps.nexuslauncher
             adb install android-command/app/build/outputs/apk/debug/app-debug.apk
             adb install android-command/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-            adb shell am instrument -w com.abdickers.realms.test/androidx.test.runner.AndroidJUnitRunner | tee command-emulator.log
+            adb shell am instrument -w -e class com.abdickers.realms.ProvisionBootstrap com.abdickers.realms.test/androidx.test.runner.AndroidJUnitRunner | tee command-setup.log
+            grep -q 'OK (1 test)' command-setup.log
+            adb pull /sdcard/Android/data/com.abdickers.realms/files/setup-request.json "$RUNNER_TEMP/setup-request.json"
+            if [ -n "$COMMAND_KEYSTORE_FILE" ]; then python scripts/seal-command-setup.py --ci-test --request "$RUNNER_TEMP/setup-request.json" --output "$RUNNER_TEMP/setup-reply.json"; fi
+            if [ -f "$RUNNER_TEMP/setup-reply.json" ]; then adb push "$RUNNER_TEMP/setup-reply.json" /sdcard/Android/data/com.abdickers.realms/files/setup-reply.json; fi
+            adb shell am instrument -w -e notClass com.abdickers.realms.ProvisionBootstrap com.abdickers.realms.test/androidx.test.runner.AndroidJUnitRunner | tee command-emulator.log
+            adb logcat -d -s RemoteViews AppWidgetHostView AndroidRuntime > command-widget-diagnostics.log
             mkdir -p emulator-screenshots
             adb pull /sdcard/Android/data/com.abdickers.realms/files/screenshots/. emulator-screenshots/ || true
             ! grep -qE 'FAILURES|INSTRUMENTATION_FAILED|Process crashed' command-emulator.log
-            grep -q 'OK (6 tests)' command-emulator.log
+            grep -q 'OK (7 tests)' command-emulator.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -88,5 +101,7 @@ jobs:
             android-command/app/build/outputs/apk/debug/app-debug.apk
             android-command/app/build/reports/
             command-emulator.log
+            command-setup.log
+            command-widget-diagnostics.log
             emulator-screenshots/
           retention-days: 30
