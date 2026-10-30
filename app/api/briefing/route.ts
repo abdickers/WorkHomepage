@@ -12,6 +12,7 @@ const headers = { "Cache-Control": "private, no-store" };
 // Best-effort per-isolate duplicate/cooldown guard, not a global billing quota.
 const attempts = new Map<string, number>();
 const CELIGO = "asdk_app_6ac7b2189d148191805ef2c78f3fbb3c";
+const CELIGO_PRODUCTION_INTEGRATION = "6a60d5774b038e24aba608b7";
 const SITES = "connector_20205bf7d4e99a89d7154bb849718324";
 const reply = (data: object, status = 200) =>
   Response.json(data, { status, headers });
@@ -67,13 +68,18 @@ export async function POST(request: Request) {
     const [flows, jobs, logs] = await Promise.all([
       safe(
         client.invoke(CELIGO, "list_flows", {
+          _integrationId: CELIGO_PRODUCTION_INTEGRATION,
           limit: 50,
           include: "name,disabled,_integrationId,schedule,lastExecutedAt",
           includeErrorCounts: true,
           sort_by: "lastExecutedAt",
         }),
       ),
-      safe(client.invoke(CELIGO, "list_current_jobs", {})),
+      safe(
+        client.invoke(CELIGO, "list_current_jobs", {
+          body: { _integrationIds: [CELIGO_PRODUCTION_INTEGRATION] },
+        }),
+      ),
       safe(
         client.invoke(SITES, "get_site_worker_logs", {
           project_id: "appgprj_6acfe13398b881918807c030709a2664",

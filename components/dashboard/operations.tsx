@@ -278,6 +278,10 @@ export function Operations({ projectView = false }: { projectView?: boolean }) {
       {paused && <p className="connection-paused">Reads paused in the Royal Registry. Previous results remain visible until you resume this source.</p>}
       {tab === "celigo" && (
         <>
+          <p className="operations-scope">
+            Celigo scope: BigCommerce - NetSuite - Production only. Production
+            - Do Not Use is excluded.
+          </p>
           <div className="realm-beacons">
             <Beacon
               label="Running"

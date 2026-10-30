@@ -1,4 +1,5 @@
 "use client";
+import { WebWatch } from "@/components/dashboard/web-watch";
 import { PanelFrame, GondorPageRail } from "@/components/dashboard/panel-frame";
 import { RoyalSettings } from "@/components/dashboard/royal-settings";
 import { GondorArt } from "@/components/dashboard/gondor-art";
@@ -675,6 +676,7 @@ export default function Dashboard() {
                 <span>A little progress counts</span>
               </div>
             </div>
+            {(view === "overview" || view === "systems") && <WebWatch />}
             <button
               className="summary-action"
               onClick={() => {
