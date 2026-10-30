@@ -26,7 +26,7 @@ final class WidgetState {
   if(!prefs(c).getBoolean("wifi_enabled",false)||c.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED)return "";
   if(!((LocationManager)c.getSystemService(Context.LOCATION_SERVICE)).isLocationEnabled())return "";
   // Background identity is intentionally unavailable without the user's separate grant.
-  if(!MainActivity.visible&&c.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)!=PackageManager.PERMISSION_GRANTED)return "";
+  if(!CommandApp.foreground()&&c.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)!=PackageManager.PERMISSION_GRANTED)return "";
   try{WifiInfo wifi=c.getSystemService(WifiManager.class).getConnectionInfo();String detected=wifi==null?"":ModePolicy.normalizeSsid(wifi.getSSID());if(!detected.isEmpty())return detected;ConnectivityManager cm=c.getSystemService(ConnectivityManager.class);Network n=cm.getActiveNetwork();NetworkCapabilities cap=cm.getNetworkCapabilities(n);if(cap!=null&&cap.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)&&cap.getTransportInfo() instanceof WifiInfo)return ModePolicy.normalizeSsid(((WifiInfo)cap.getTransportInfo()).getSSID());}catch(SecurityException ignored){}
   return "";
  }

@@ -9,10 +9,7 @@ import android.widget.*;
 
 /** Native entry and setup. Never launches a website as its dashboard. */
 public final class MainActivity extends Activity {
- static volatile boolean visible;
  @Override protected void onCreate(Bundle saved){super.onCreate(saved);show();}
- @Override protected void onResume(){super.onResume();visible=true;CommandWidget.updateAll(this);}
- @Override protected void onPause(){visible=false;super.onPause();}
  private void show(){
   LinearLayout root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(24,32,24,24);root.setBackgroundColor(0xFF101C2B);setContentView(root);root.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());v.setPadding(24,bars.top+24,24,bars.bottom+24);return i;});
   ImageView shield=new ImageView(this);shield.setImageResource(R.drawable.gondor_shield);root.addView(shield,new LinearLayout.LayoutParams(-1,160));
