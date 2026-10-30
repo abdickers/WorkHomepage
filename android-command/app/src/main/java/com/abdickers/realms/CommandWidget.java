@@ -25,6 +25,7 @@ public final class CommandWidget extends AppWidgetProvider {
  static void dispatch(Context c,int id,String op){
   if(op==null)return;
   if(Set.of("home","work","auto").contains(op))WidgetState.mode(c,id,op);
+  else if(op.equals("previous_panel")||op.equals("next_panel")){List<String> panels=List.of("overview","calendar","jira","slack","systems","mail","tools","ai");int at=panels.indexOf(WidgetState.section(c,id));WidgetState.section(c,id,panels.get(Math.floorMod(at+(op.equals("next_panel")?1:-1),panels.size())));}
   else if(Set.of("overview","calendar","mail","jira","slack","systems","tools","ai").contains(op))WidgetState.section(c,id,op);
   else if(Set.of("previous","next","date").contains(op)){long current=WidgetState.day(c,id),today=LocalDate.now().toEpochDay(),next=op.equals("date")?today:current+(op.equals("next")?1:-1);next=Math.max(today-366,Math.min(today+366,next));WidgetState.prefs(c).edit().putLong(WidgetState.key(id,"day"),next).commit();}
   else if(op.equals("refresh")){Refresh.request(c,id);return;}
@@ -34,17 +35,22 @@ public final class CommandWidget extends AppWidgetProvider {
  static void updateAll(Context c){for(int id:AppWidgetManager.getInstance(c).getAppWidgetIds(new ComponentName(c,CommandWidget.class)))update(c,id);}
  static RemoteViews views(Context c,int id,Bundle options){
   ModePolicy.Decision decision=WidgetState.decision(c,id);String realm=decision.realm(),section=WidgetState.section(c,id);boolean work=realm.equals("work");RemoteViews v=new RemoteViews(c.getPackageName(),R.layout.command_widget);
-  v.setImageViewResource(R.id.scene,work?R.drawable.gondor_scene:R.drawable.shire_scene);v.setImageViewResource(R.id.emblem,work?R.drawable.gondor_shield:R.drawable.realm_orb);v.setTextViewText(R.id.title,work?"Gondor Command":"The Shire");v.setTextViewText(R.id.reason,decision.reason()+" · "+(WidgetState.mode(c,id).equals("auto")?"Auto":"Manual"));
+  v.setImageViewResource(R.id.scene,work?R.drawable.gondor_scene:R.drawable.shire_scene);v.setImageViewResource(R.id.emblem,work?R.drawable.gondor_shield:R.drawable.realm_orb);v.setTextViewText(R.id.title,work?"Gondor Command":"The Shire");v.setTextViewText(R.id.reason,(WidgetState.mode(c,id).equals("auto")?"Auto":"Manual")+" · "+decision.reason());
+  int[] frameViews={R.id.frame_tl,R.id.frame_tr,R.id.frame_bl,R.id.frame_br,R.id.frame_top,R.id.frame_bottom,R.id.frame_left,R.id.frame_right};
+  int[] frameArt=work?new int[]{R.drawable.gondor_frame_tl,R.drawable.gondor_frame_tr,R.drawable.gondor_frame_bl,R.drawable.gondor_frame_br,R.drawable.gondor_frame_top,R.drawable.gondor_frame_bottom,R.drawable.gondor_frame_left,R.drawable.gondor_frame_right}:new int[]{R.drawable.elven_frame_tl,R.drawable.elven_frame_tr,R.drawable.elven_frame_bl,R.drawable.elven_frame_br,R.drawable.elven_frame_top,R.drawable.elven_frame_bottom,R.drawable.elven_frame_left,R.drawable.elven_frame_right};for(int n=0;n<frameViews.length;n++)v.setImageViewResource(frameViews[n],frameArt[n]);
   int[] controls={R.id.home,R.id.work,R.id.auto,R.id.overview,R.id.calendar,R.id.jira,R.id.slack,R.id.systems,R.id.mail,R.id.tools,R.id.ai,R.id.previous,R.id.date,R.id.next,R.id.refresh};
   String[] operations={"home","work","auto","overview","calendar","jira","slack","systems","mail","tools","ai","previous","date","next","refresh"};
   for(int n=0;n<controls.length;n++){v.setOnClickPendingIntent(controls[n],action(c,id,operations[n]));boolean selected=operations[n].equals(WidgetState.mode(c,id))||operations[n].equals(section);v.setTextColor(controls[n],selected?0xFFFFD98B:0xFFE4EAF2);}
+  v.setOnClickPendingIntent(R.id.previous_panel,action(c,id,"previous_panel"));v.setOnClickPendingIntent(R.id.next_panel,action(c,id,"next_panel"));v.setTextViewText(R.id.current_panel,switch(section){case "jira"->"Active quests";case "systems"->"Systems";case "mail"->"The Ravens";case "ai"->"AI council";default->section.substring(0,1).toUpperCase()+section.substring(1);});
+  boolean compact=options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,390)<300||options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,700)<450;
+  v.setViewVisibility(R.id.compact_navigation,compact?View.VISIBLE:View.GONE);v.setViewVisibility(R.id.navigation_primary,compact?View.GONE:View.VISIBLE);v.setViewVisibility(R.id.navigation_secondary,compact?View.GONE:View.VISIBLE);
   Intent settings=new Intent(c,SettingsActivity.class).setData(android.net.Uri.parse("command://settings/"+id)).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id);v.setOnClickPendingIntent(R.id.settings,PendingIntent.getActivity(c,id,settings,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));
   v.setViewVisibility(R.id.date_controls,section.equals("calendar")?View.VISIBLE:View.GONE);long day=WidgetState.day(c,id);v.setTextViewText(R.id.date,LocalDate.ofEpochDay(day).format(DateTimeFormatter.ofPattern("MMM d")));
   List<FeedStore.Row> rows=new ArrayList<>();String status;
   if(section.equals("overview")){
    String[] sources=work?new String[]{"systems","calendar."+day,"jira","slack"}:new String[]{"weather","calendar."+day,"hearth","mail"};
    String[] labels=work?new String[]{"Beacons of Production","Today’s council","Active quests","The Fellowship"}:new String[]{"Weather at Sage Cabin","Today’s calendar","The hearth","The Ravens"};
-   int[] icons={R.drawable.icon_beacon,R.drawable.icon_calendar,R.drawable.icon_quest,R.drawable.icon_notes};
+   int[] icons=work?new int[]{R.drawable.icon_beacon,R.drawable.icon_calendar,R.drawable.icon_quest,R.drawable.icon_notes}:new int[]{R.drawable.elven_weather,R.drawable.elven_calendar,R.drawable.elven_home,R.drawable.elven_raven};
    for(int n=0;n<sources.length;n++){FeedStore.Feed f=FeedStore.read(c,realm,sources[n]);String body=f.checkedAt()==0?"Connection needed · choose this panel, then Refresh.":f.rows().isEmpty()?"No matching items at last refresh.":f.rows().get(0).title()+"\n"+f.rows().get(0).body();if(!f.error().isEmpty())body="Unavailable · "+body;rows.add(new FeedStore.Row(labels[n],body,icons[n]));}
    status="Saved overview · select a panel to refresh its feed";
   }else if(section.equals("tools")){
@@ -59,7 +65,7 @@ public final class CommandWidget extends AppWidgetProvider {
   v.setTextViewText(R.id.status,status);RemoteViews.RemoteCollectionItems.Builder collection=new RemoteViews.RemoteCollectionItems.Builder().setHasStableIds(true).setViewTypeCount(1);
   for(int n=0;n<Math.min(rows.size(),20);n++){FeedStore.Row row=rows.get(n);RemoteViews item=new RemoteViews(c.getPackageName(),R.layout.feed_row);item.setTextViewText(R.id.row_title,row.title());item.setTextViewText(R.id.row_body,row.body());item.setImageViewResource(R.id.row_icon,row.icon());collection.addItem(n,item);}
   v.setRemoteAdapter(R.id.feed,collection.build());
-  if(options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,390)<300){v.setTextViewTextSize(R.id.title,android.util.TypedValue.COMPLEX_UNIT_SP,17);}
+  if(options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,390)<300){v.setTextViewTextSize(R.id.title,android.util.TypedValue.COMPLEX_UNIT_SP,17);v.setTextViewText(R.id.title,work?"Gondor":"The Shire");}
   return v;
  }
  private static PendingIntent action(Context c,int id,String op){Intent i=new Intent(c,CommandWidget.class).setAction(ACTION).setData(android.net.Uri.parse("command://widget/"+id+"/"+op)).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id).putExtra("operation",op);return PendingIntent.getBroadcast(c,0,i,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);}
