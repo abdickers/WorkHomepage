@@ -45,6 +45,7 @@ public final class CommandWidget extends AppWidgetProvider {
   v.setOnClickPendingIntent(R.id.previous_panel,action(c,id,"previous_panel"));v.setOnClickPendingIntent(R.id.next_panel,action(c,id,"next_panel"));v.setTextViewText(R.id.current_panel,switch(section){case "jira"->"Active quests";case "systems"->"Systems";case "mail"->"The Ravens";case "ai"->"AI council";default->section.substring(0,1).toUpperCase()+section.substring(1);});
   boolean compact=options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,390)<300||options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,700)<450;
   v.setViewVisibility(R.id.compact_navigation,compact?View.VISIBLE:View.GONE);v.setViewVisibility(R.id.navigation_primary,compact?View.GONE:View.VISIBLE);v.setViewVisibility(R.id.navigation_secondary,compact?View.GONE:View.VISIBLE);
+  v.setViewVisibility(R.id.reason,compact?View.GONE:View.VISIBLE);v.setViewVisibility(R.id.status,compact?View.GONE:View.VISIBLE);
   Intent settings=new Intent(c,SettingsActivity.class).setData(android.net.Uri.parse("command://settings/"+id)).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id);v.setOnClickPendingIntent(R.id.settings,PendingIntent.getActivity(c,id,settings,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));
   v.setViewVisibility(R.id.date_controls,section.equals("calendar")?View.VISIBLE:View.GONE);long day=WidgetState.day(c,id);v.setTextViewText(R.id.date,LocalDate.ofEpochDay(day).format(DateTimeFormatter.ofPattern("MMM d")));
   List<FeedStore.Row> rows=new ArrayList<>();String status;
@@ -60,6 +61,8 @@ public final class CommandWidget extends AppWidgetProvider {
    rows.add(new FeedStore.Row("The AI council","Native chat connection is not configured yet. No AI request has been sent.",R.drawable.icon_council));status="Connection needed";
   }else{
    String source=section.equals("calendar")?"calendar."+day:section;FeedStore.Feed f=FeedStore.read(c,realm,source);rows.addAll(f.rows());
+   if(compact&&!f.error().isEmpty())rows.add(0,new FeedStore.Row("Refresh unavailable",f.error(),work?R.drawable.gondor_shield:R.drawable.elven_orb));
+   v.setTextViewText(R.id.refresh,Refresh.running(c,realm,source)?"Loading…":"Refresh");
    status=Refresh.running(c,realm,source)?"Refreshing selected feed…":!f.error().isEmpty()?"Unavailable · "+f.error():f.checkedAt()==0?"Not connected · open Settings to connect this source":"Checked "+Instant.ofEpochMilli(f.checkedAt()).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MMM d, h:mm a"))+" · saved on this phone";
    if(rows.isEmpty())rows.add(new FeedStore.Row(f.checkedAt()==0?"Connect your "+section:"No matching items",f.checkedAt()==0?"Once connected, this panel shows information directly in the widget. Refresh requests only this source.":"The last successful read returned no items.",section.equals("calendar")?R.drawable.icon_calendar:R.drawable.gondor_shield));
   }
