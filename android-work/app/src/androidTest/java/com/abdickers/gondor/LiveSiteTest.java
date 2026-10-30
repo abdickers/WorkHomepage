@@ -16,7 +16,7 @@ public class LiveSiteTest {
     @Test public void opensRealWorkWebsiteAndPreservesBrowserSignIn()throws Exception{
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();UiDevice device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         Intent launch=new Intent(context,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("url","https://example.invalid/ignored");context.startActivity(launch);
-        assertTrue("Expected real browser toolbar for the protected Work site",device.wait(Until.hasObject(By.res("com.android.chrome","url_bar")),30000));
+        assertTrue("Expected real browser toolbar for the protected Work site",device.wait(Until.hasObject(By.res("com.android.chrome","url_bar").textContains("adams-middle-earth-command")),30000));
         UiObject2 address=device.findObject(By.res("com.android.chrome","url_bar"));assertNotNull(address);assertTrue("App must open the fixed Work dashboard",address.getText().contains("adams-middle-earth-command"));
         // Wait for the actual sign-in control, rather than capturing a loading screen.
         assertTrue("Private site sign-in must render",device.wait(Until.hasObject(By.text("Continue with ChatGPT")),45000));
