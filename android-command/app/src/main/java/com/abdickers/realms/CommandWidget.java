@@ -27,7 +27,8 @@ public final class CommandWidget extends AppWidgetProvider {
   if(Set.of("home","work","auto").contains(op))WidgetState.mode(c,id,op);
   else if(op.equals("previous_panel")||op.equals("next_panel")){List<String> panels=List.of("overview","calendar","jira","slack","systems","mail","tools","ai");int at=panels.indexOf(WidgetState.section(c,id));WidgetState.section(c,id,panels.get(Math.floorMod(at+(op.equals("next_panel")?1:-1),panels.size())));}
   else if(Set.of("overview","calendar","mail","jira","slack","systems","tools","ai").contains(op))WidgetState.section(c,id,op);
-  else if(Set.of("previous","next","date").contains(op)){long current=WidgetState.day(c,id),today=LocalDate.now().toEpochDay(),next=op.equals("date")?today:current+(op.equals("next")?1:-1);next=Math.max(today-366,Math.min(today+366,next));WidgetState.prefs(c).edit().putLong(WidgetState.key(id,"day"),next).commit();}
+  else if(op.equals("date"))WidgetState.prefs(c).edit().remove(WidgetState.key(id,"day")).commit();
+  else if(Set.of("previous","next").contains(op)){long current=WidgetState.day(c,id),today=LocalDate.now().toEpochDay(),next=current+(op.equals("next")?1:-1);next=Math.max(today-366,Math.min(today+366,next));WidgetState.prefs(c).edit().putLong(WidgetState.key(id,"day"),next).commit();}
   else if(op.equals("refresh")){Refresh.request(c,id);return;}
   update(c,id);
  }
