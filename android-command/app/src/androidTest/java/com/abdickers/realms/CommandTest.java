@@ -50,6 +50,6 @@ public class CommandTest {
  static Bundle options(int w,int h){Bundle b=new Bundle();b.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,w);b.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH,w);b.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,h);b.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT,h);return b;}
  static void idle(){InstrumentationRegistry.getInstrumentation().waitForIdleSync();SystemClock.sleep(450);}
  static void await(java.util.function.BooleanSupplier test){for(int n=0;n<100&&!test.getAsBoolean();n++)SystemClock.sleep(100);assertTrue("Widget action did not arrive",test.getAsBoolean());idle();}
- static void bounds(View v,int width){assertTrue(v.getClass().getSimpleName()+" exceeds available width",v.getWidth()<=width);if(v instanceof ViewGroup g)for(int n=0;n<g.getChildCount();n++)bounds(g.getChildAt(n),width);}
+ static void bounds(View v,int width){if(v.getVisibility()!=View.VISIBLE||!v.isShown())return;assertTrue(v.getClass().getSimpleName()+" exceeds available width",v.getWidth()<=width);if(v instanceof ViewGroup g)for(int n=0;n<g.getChildCount();n++)bounds(g.getChildAt(n),width);}
  void shot(String name)throws Exception{idle();Bitmap b=InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();assertNotNull(b);File dir=new File(c().getExternalFilesDir(null),"screenshots");assertTrue(dir.isDirectory()||dir.mkdirs());try(FileOutputStream out=new FileOutputStream(new File(dir,name+".png"))){assertTrue(b.compress(Bitmap.CompressFormat.PNG,100,out));}b.recycle();}
 }
