@@ -15,7 +15,7 @@ public final class SettingsActivity extends Activity {
  private final Map<String,EditText> fields=new LinkedHashMap<>();
  private final Map<String,EditText> secrets=new LinkedHashMap<>();
  private Switch wifi;
- @Override protected void onCreate(Bundle state){super.onCreate(state);ScrollView scroll=new ScrollView(this);root=new LinearLayout(this);root.setOrientation(1);root.setPadding(24,32,24,24);root.setBackgroundColor(0xFF101C2B);scroll.addView(root);setContentView(scroll);scroll.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());root.setPadding(24,bars.top+24,24,bars.bottom+24);return i;});
+ @Override protected void onCreate(Bundle state){super.onCreate(state);ScrollView scroll=new ScrollView(this);root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(24,32,24,24);root.setBackgroundColor(0xFF101C2B);scroll.addView(root);setContentView(scroll);scroll.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());root.setPadding(24,bars.top+24,24,bars.bottom+24);return i;});
   heading("Connections & switching");label("Work and Home use separate data. Saved information is visible on your unlocked home screen. No banking or Warcraft is connected.");
   heading("Automatic mode");label("Manual Home/Work stays selected until you tap Auto. Known Wi-Fi takes priority over the schedule. Outside work hours, Auto selects Home. Background checks are approximately every 30 minutes and may be delayed by Android.");
   wifi=new Switch(this);wifi.setText("Recognize configured Wi-Fi networks");wifi.setTextColor(0xFFE4EAF2);wifi.setChecked(WidgetState.prefs(this).getBoolean("wifi_enabled",false));root.addView(wifi);

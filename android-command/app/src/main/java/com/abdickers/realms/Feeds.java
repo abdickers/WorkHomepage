@@ -24,7 +24,7 @@ final class Feeds {
   Uri.Builder uri=CalendarContract.Instances.CONTENT_URI.buildUpon();ContentUris.appendId(uri,start);ContentUris.appendId(uri,end);
   String[] cols={CalendarContract.Instances.TITLE,CalendarContract.Instances.BEGIN,CalendarContract.Instances.END,CalendarContract.Instances.ALL_DAY,CalendarContract.Instances.EVENT_LOCATION};
   List<FeedStore.Row> result=new ArrayList<>();
-  try(Cursor cursor=c.getContentResolver().query(uri.build(),cols,CalendarContract.Calendars.ACCOUNT_NAME+" = ? AND "+CalendarContract.Instances.VISIBLE+" = 1",new String[]{account},CalendarContract.Instances.BEGIN+" ASC LIMIT 20")){
+  try(Cursor cursor=c.getContentResolver().query(uri.build(),cols,CalendarContract.Calendars.ACCOUNT_NAME+" = ? AND "+CalendarContract.Instances.VISIBLE+" = 1",new String[]{account},CalendarContract.Instances.BEGIN+" ASC")){
    if(cursor==null)throw new IllegalStateException("Calendar provider is unavailable.");
    while(cursor.moveToNext()&&result.size()<20){String title=cursor.isNull(0)?"Untitled event":cursor.getString(0),when=cursor.getInt(3)==1?"All day":Instant.ofEpochMilli(cursor.getLong(1)).atZone(zone).format(DateTimeFormatter.ofPattern("h:mm a"));String place=cursor.isNull(4)?"":cursor.getString(4);result.add(new FeedStore.Row(title,when+(place.isEmpty()?"":" · "+place),R.drawable.icon_calendar));}
   }

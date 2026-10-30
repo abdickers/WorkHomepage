@@ -14,7 +14,7 @@ public final class MainActivity extends Activity {
  @Override protected void onResume(){super.onResume();visible=true;CommandWidget.updateAll(this);}
  @Override protected void onPause(){visible=false;super.onPause();}
  private void show(){
-  LinearLayout root=new LinearLayout(this);root.setOrientation(1);root.setPadding(24,32,24,24);root.setBackgroundColor(0xFF101C2B);setContentView(root);root.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());v.setPadding(24,bars.top+24,24,bars.bottom+24);return i;});
+  LinearLayout root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(24,32,24,24);root.setBackgroundColor(0xFF101C2B);setContentView(root);root.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());v.setPadding(24,bars.top+24,24,bars.bottom+24);return i;});
   ImageView shield=new ImageView(this);shield.setImageResource(R.drawable.gondor_shield);root.addView(shield,new LinearLayout.LayoutParams(-1,160));
   TextView title=new TextView(this);title.setText("Middle-earth Command");title.setTextSize(27);title.setGravity(Gravity.CENTER);title.setTextColor(0xFFF4E6BE);root.addView(title);
   TextView intro=new TextView(this);intro.setText("One interactive widget. Home, Work, or Auto.\n\nAdd it to your home screen, then resize it to fill the available page. Switch realms, navigate dates, scroll your feeds and refresh directly inside the widget.\n\nThis native preview needs separate provider connections; website sign-in does not automatically connect them.");intro.setTextSize(16);intro.setTextColor(0xFFE4EAF2);intro.setPadding(0,24,0,24);root.addView(intro);
