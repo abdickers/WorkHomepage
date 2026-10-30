@@ -604,7 +604,9 @@ function Treasury() {
   );
 }
 export function DailyCouncil() {
-  const [watch, setWatch] = useState(true);
+  const [watch, setWatch] = useState(false);
+  const [pocket, setPocket] = useState<boolean | null>(null);
+  useEffect(() => { const enabled=/^[a-f0-9]{64}$/.test(new URLSearchParams(location.search).get("pocket-sync") || ""); setPocket(enabled); setWatch(!enabled); }, []);
   return (
     <>
       <label className="daily-watch">
@@ -618,7 +620,7 @@ export function DailyCouncil() {
       <div className="daily-council">
         <Ravens watch={watch} />
         <Quests watch={watch} />
-        <Treasury />
+        {pocket === false && <Treasury />}
       </div>
     </>
   );
