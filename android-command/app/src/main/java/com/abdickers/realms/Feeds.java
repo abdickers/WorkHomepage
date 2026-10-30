@@ -15,6 +15,7 @@ import java.util.*;
 final class Feeds {
  static List<FeedStore.Row> read(Context c,String realm,String source)throws Exception{
   if(source.equals("mail"))return MailFeed.read(c,realm);
+  if(source.equals("watch"))return WatchFeed.read();
   if(!"work".equals(realm))throw new IllegalStateException("Personal service connection is not configured yet. Calendar can use this phone’s synced account.");
   return switch(source){case "systems"->vercel(c);case "beacons"->CeligoFeed.read(c);case "jira"->jira(c);case "slack"->slack(c);default->throw new IllegalStateException("This native connection is not configured yet. No request was sent.");};
  }
