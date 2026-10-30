@@ -606,7 +606,7 @@ function Treasury() {
 export function DailyCouncil() {
   const [watch, setWatch] = useState(false);
   const [pocket, setPocket] = useState<boolean | null>(null);
-  useEffect(() => { const enabled=/^[a-f0-9]{64}$/.test(new URLSearchParams(location.search).get("pocket-sync") || ""); setPocket(enabled); setWatch(!enabled); }, []);
+  useEffect(() => { const params=new URLSearchParams(location.search); const enabled=params.get("app")==="work" || /^[a-f0-9]{64}$/.test(params.get("pocket-sync") || ""); setPocket(enabled); setWatch(!enabled); }, []);
   return (
     <>
       <label className="daily-watch">
