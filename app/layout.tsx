@@ -6,6 +6,7 @@ import "./command-polish.css";
 import "./gondor-presentation.css";
 import "./royal-gondor.css";
 import "./work-refinements.css";
+import "./web-watch.css";
 export const metadata: Metadata = {
   title: "Gondor Command · Adam",
   description:
@@ -21,7 +22,7 @@ export default function RootLayout({
         {/* The dashboard owns both themes; extension recoloring can replace its artwork. */}
         <meta name="darkreader-lock" />
       </head>
-      <body>{children}</body>
+      <body>{children}<script src="/pocket-sync.js" defer /></body>
     </html>
   );
 }

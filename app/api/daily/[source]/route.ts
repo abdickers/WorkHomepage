@@ -130,10 +130,18 @@ export async function POST(
     };
     const parse = (data: any) => {
       const d = data.data || data;
-      if (!Array.isArray(d.issues)) throw Error();
+      const issues = Array.isArray(d.issues)
+        ? d.issues
+        : Array.isArray(d.issues?.nodes)
+          ? d.issues.nodes
+          : null;
+      if (!issues) throw Error();
       return {
-        more: d.isLast !== true,
-        items: d.issues
+        more:
+          typeof d.pageInfo?.hasNextPage === "boolean"
+            ? d.pageInfo.hasNextPage
+            : d.isLast !== true,
+        items: issues
           .filter((i: any) => /^[A-Z][A-Z0-9_]*-\d+$/.test(i.key))
           .map((i: any) => ({
             id: i.key,

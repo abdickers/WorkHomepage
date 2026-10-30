@@ -9,10 +9,10 @@ A personal daily dashboard based on [abdickers/HomePage](https://github.com/abdi
 - Browser-local persistence, JSON export / restore, and editable app shortcuts.
 - A 25-minute focus timer, dark / light themes, and Central time.
 - Read-only Google Calendar agenda, loaded explicitly on request.
-- Celigo production flows, active jobs, open errors, and last-triggered timestamps. Automatic refresh every 60 seconds while visible; an optional switch pauses refresh.
+- Celigo flows, active jobs, open errors, and last-triggered timestamps from the `BigCommerce - NetSuite - Production` integration only. The `BigCommerce - NetSuite` integration tagged `Production - Do Not Use` is excluded. Automatic refresh every 60 seconds while visible; an optional switch pauses refresh.
 - Cloudflare request/error events for this dashboard’s Worker only, through the Sites log tool. No account-wide Cloudflare integration.
 - Explicit loading, stale-data, partial-result, retry-backoff, and sign-in states. “Idle” does not mean the last sync succeeded. Counts cover the returned page, with pagination warnings.
-- The Council offers an on-demand Claude incident briefing: collect evidence, review it, then explicitly send the displayed operational counts to Anthropic. Coverage currently includes Celigo production flows/current jobs and a sample of this dashboard's Worker events. Other stacks are not included in briefings yet.
+- The Council offers an on-demand Claude incident briefing: collect evidence, review it, then explicitly send the displayed operational counts to Anthropic. Coverage currently includes flows/current jobs from `BigCommerce - NetSuite - Production` and a sample of this dashboard's Worker events. Other stacks are not included in briefings yet.
 - A reusable ChatGPT companion window remains available under the Palantír disclosure; it uses your existing ChatGPT login. There is no iframe or API-backed ChatGPT chat.
 - The Fellowship: NetSuite, GitHub, Celigo, BigCommerce, Dotdigital, Jira, Confluence, Avalara, Cybersource, Netlify, Cloudflare. Daily tools and AI assistants have separate groups.
 
@@ -81,3 +81,7 @@ The Shire navigation opens the private personal dashboard at https://sage-cabin-
 Calendar, inbox and invoice scans check their Google connector profile before reading content. A wrong or unverified connector identity stops the read. Owner-only deployment access, read-only connector permissions and invoice recipient rules are preserved.
 
 Android 0.1.2 points Personal to the approved abdickers/HomePage URL. Existing installed builds retain their baked-in URL until replaced. CI debug signing is ephemeral; export app-local data before uninstalling an older differently signed build. No signing secret is cached or stored in the repo.
+
+## Eye on the Web
+
+The overview and systems views include a compact Sauron Eye control beside the priority counts. It shows the leading headline and priority count; a native modal drawer reveals the filterable notices and source coverage. The welcome header is shorter to keep work panels closer to the top. Authenticated, same-origin `/api/web-watch` reads official Cloudflare, Vercel, BigCommerce, NetSuite, Celigo, GitHub, PHP, and CISA feeds in parallel with timeouts, Worker-compatible manual redirect handling, and payload limits. It shows ongoing provider incidents, PHP security releases and matching newly added exploited vulnerabilities from the past 14 days, with resolved provider notices under a disclosure. Each card links to its source and suggests an applicability check; it never asserts our installations are affected. Feed failures remain explicit and failed refreshes retain visibly stale results. The watch checks on mount, on return to a visible tab, and every five minutes while visible; it does not run while closed or send notifications. The technology watchlist is in `lib/web-watch.mts`; it is not a software inventory or exhaustive web search. Provider incident history is bounded by each public feed.
