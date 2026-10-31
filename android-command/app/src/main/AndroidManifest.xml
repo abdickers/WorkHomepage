@@ -12,6 +12,8 @@
   <activity android:name=".AccountActivity" android:exported="false"/>
   <activity android:name=".SlackOAuthActivity" android:exported="false"/>
   <activity android:name=".JiraOAuthActivity" android:exported="false"/>
+  <!-- AppAuth's redirect receiver is AppCompat-based; it cannot inherit our platform theme. -->
+  <activity android:name="net.openid.appauth.RedirectUriReceiverActivity" android:theme="@style/Theme.AppCompat.Translucent.NoTitleBar"/>
   <activity android:name=".CaptureActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
   <activity android:name=".EntryActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
   <activity android:name=".SetupActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>

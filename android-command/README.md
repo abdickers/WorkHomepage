@@ -53,3 +53,9 @@ The owner-approved stable signing key is stored in encrypted GitHub Actions secr
 Google Android client (public identifier): `644801431816-fisjiuk7q3rru5trt48mt67bfhe79ner.apps.googleusercontent.com`. Google identifies the native app by package and certificate; this is not a server OAuth secret.
 
 Neither website is changed or deployed by this Android-only module. The older `android` and `android-work` modules are retained for history and are not the current solution.
+
+## Connection return fixes (0.6.1)
+
+Phone testing reported Slack consent returning as canceled and Jira setup freezing/exiting. The SDK redirect receiver now explicitly uses the AppCompat theme it needs rather than inheriting the platform Activity theme. An instrumentation regression exercises an actual external-browser redirect through the SDK receiver/management activity and back into Slack setup. Provider errors now show safe, distinct feedback instead of all being labeled cancellation.
+
+A direct public Jira registration returned `token_endpoint_auth_method: none` together with an unnecessary `client_secret`. The old path rejected every non-null secret. Registration now uses a bounded background request and extracts only the validated public client ID for PKCE; any returned secret is discarded, never retained or used. Strict endpoint/redirect/public-client checks remain. Live phone consent/read verification is still required; these fixes do not establish that either live feed is connected.

@@ -2,7 +2,7 @@ plugins { id 'com.android.application' }
 android {
  namespace 'com.abdickers.realms'
  compileSdk 35
- defaultConfig { applicationId 'com.abdickers.realms'; minSdk 31; targetSdk 35; versionCode 5; versionName '0.6-connections-preview'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'; manifestPlaceholders = [appAuthRedirectScheme: 'com.abdickers.realms']; buildConfigField 'String', 'SLACK_CLIENT_ID', '"99197120864.12471255709249"' }
+ defaultConfig { applicationId 'com.abdickers.realms'; minSdk 31; targetSdk 35; versionCode 6; versionName '0.6.1-signin-fix'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'; manifestPlaceholders = [appAuthRedirectScheme: 'com.abdickers.realms']; buildConfigField 'String', 'SLACK_CLIENT_ID', '"99197120864.12471255709249"' }
  buildFeatures { buildConfig true }
  def stableKey = System.getenv('COMMAND_KEYSTORE_FILE')
  if (stableKey) {
