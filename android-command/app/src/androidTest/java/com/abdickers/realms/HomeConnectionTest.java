@@ -6,6 +6,13 @@ import org.json.*;
 import org.junit.*;
 import java.util.*;
 import java.nio.charset.StandardCharsets;
+import android.app.Activity;
+import android.content.Intent;
+import androidx.test.core.app.ActivityScenario;
+import static androidx.test.espresso.Espresso.*;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.anything;
 import static org.junit.Assert.*;
 
 public class HomeConnectionTest {
@@ -27,5 +34,15 @@ public class HomeConnectionTest {
   JSONObject observation=new JSONObject().put("available",true).put("stationName","SYNTHETIC Cabin").put("observation",new JSONObject().put("time","2026-10-31T15:00:00Z").put("tempF",68).put("humidity",55).put("windMph",3).put("rainTodayIn",0));assertTrue(HomeFeed.weather(observation).get(0).title().contains("68°F"));observation.put("available",false).put("reason","STALE");try{HomeFeed.weather(observation);fail("Stale station must not be shown as current");}catch(IllegalStateException expected){}
   JSONObject devices=new JSONObject().put("devices",new JSONArray().put(new JSONObject().put("type","THERMOSTAT").put("id","SYNTHETIC_ID").put("temperature",20).put("mode","COOL")).put(new JSONObject().put("type","THERMOSTAT").put("id","../../bad")));List<FeedStore.Row> rows=HomeFeed.devices(devices,"hearth");assertEquals(1,rows.size());assertTrue(rows.get(0).title().contains("68°F"));assertEquals("thermostat:SYNTHETIC_ID",rows.get(0).key());FeedStore.success(c(),"home","hearth",rows);assertEquals("thermostat:SYNTHETIC_ID",FeedStore.read(c(),"home","hearth").rows().get(0).key());
   try{HomeConnection.request("/budget/snapshot","SYNTHETIC.JWT.SIGNATURE","",null);fail("No bank access through this client");}catch(IllegalArgumentException expected){}
+ }
+ @Test public void savedHearthRowOpensNativeThermostatControlsOnAnActualTap()throws Exception{
+  WidgetState.mode(c(),0,"home");WidgetState.section(c(),0,"hearth");Vault.put(c(),HomeConnection.KEY,"{}");
+  FeedStore.success(c(),"home","hearth",List.of(new FeedStore.Row("SYNTHETIC Thermostat","68°F · tap to adjust",R.drawable.elven_home,"thermostat:SYNTHETIC_ID")));
+  try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(new Intent(c(),MainActivity.class))){
+   CommandTest.await(()->{boolean[] ready={false};scenario.onActivity(a->{android.widget.ListView list=a.dashboardView().findViewById(R.id.feed);ready[0]=list!=null&&list.getChildCount()>0;});return ready[0];});
+   onData(anything()).inAdapterView(withId(R.id.feed)).atPosition(0).perform(click());
+   CommandTest.await("A cached thermostat card must open native controls",()->{boolean[] ready={false};InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{for(Activity a:androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(androidx.test.runner.lifecycle.Stage.RESUMED))if(a instanceof ThermostatActivity)ready[0]=true;});return ready[0];});
+   pressBackUnconditionally();
+  }
  }
 }
