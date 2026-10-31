@@ -10,6 +10,7 @@ final class ConnectionStatus {
   if(Set.of("overview","watch","tools","notes","priorities","ai").contains(source))return false;
   if(realm.equals("work")&&source.equals("slack")&&SlackConnection.connected(c))return false;
   if(realm.equals("work")&&source.equals("jira")&&JiraConnection.connected(c))return false;
+  if(realm.equals("home")&&Set.of("weather","hearth","camera").contains(source))return !HomeConnection.connected(c);
   if(!realm.equals("work"))return true;String key=switch(source){case "systems"->"vercel";case "beacons"->"celigo";default->source;};return !c.getSharedPreferences("vault",0).contains(key);
  }
  static Intent intent(Context c,String realm,String source){return new Intent(c,AccountActivity.class).putExtra("realm",realm).putExtra("source",source);}

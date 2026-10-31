@@ -46,8 +46,5 @@ final class Feeds {
   String query=java.net.URLEncoder.encode("assignee = currentUser() AND statusCategory != Done ORDER BY priority DESC, updated DESC","UTF-8");
   JSONObject data=BoundedHttp.get("https://76fireworks.atlassian.net/rest/api/3/search/jql?maxResults=20&fields=summary,status,priority&jql="+query,auth);JSONArray issues=data.getJSONArray("issues");List<FeedStore.Row> rows=new ArrayList<>();for(int i=0;i<Math.min(20,issues.length());i++){JSONObject issue=issues.getJSONObject(i),fields=issue.getJSONObject("fields");rows.add(new FeedStore.Row(fields.optString("summary"),issue.optString("key")+" · "+fields.getJSONObject("status").optString("name")+" · "+(fields.optJSONObject("priority")==null?"Unspecified priority":fields.optJSONObject("priority").optString("name","Unspecified priority")),R.drawable.icon_quest));}return rows;
  }
- private static List<FeedStore.Row> slack(Context c)throws Exception{
-  String query=java.net.URLEncoder.encode("is:dm -from:me after:"+LocalDate.now().minusDays(7),"UTF-8");
-  JSONObject data=BoundedHttp.get("https://slack.com/api/search.messages?query="+query+"&count=20&sort=timestamp&sort_dir=desc&highlight=false","Bearer "+credential(c,"slack"));if(!data.optBoolean("ok"))throw new IllegalStateException("Slack connection needs search access. Update it in Settings.");JSONArray matches=data.getJSONObject("messages").getJSONArray("matches");List<FeedStore.Row> rows=new ArrayList<>();for(int i=0;i<Math.min(20,matches.length());i++){JSONObject m=matches.getJSONObject(i);rows.add(new FeedStore.Row("Direct message · "+m.optString("user"),m.optString("text"),R.drawable.icon_notes));}return rows;
- }
+ private static List<FeedStore.Row> slack(Context c)throws Exception{return SlackFeed.read(c,credential(c,"slack"));}
 }
