@@ -29,11 +29,12 @@ public class OAuthRecoveryTest {
     if(url==null||!"slack.com".equals(url.getHost())||!"/oauth/v2/authorize".equals(url.getPath()))return null;
     browserOpens.incrementAndGet();
     assertEquals("S256",url.getQueryParameter("code_challenge_method"));
-    Uri redirect=Uri.parse(SlackConnection.REDIRECT).buildUpon().appendQueryParameter("error","access_denied").appendQueryParameter("state",url.getQueryParameter("state")).build();
-    // Replace only the external browser in this test. The real Android receiver,
-    // SDK management activity and our onActivityResult still run normally.
-    new Handler(Looper.getMainLooper()).postDelayed(()->c().startActivity(new Intent(Intent.ACTION_VIEW,redirect).setClassName(c(),"net.openid.appauth.RedirectUriReceiverActivity").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)),150);
-    return new Instrumentation.ActivityResult(Activity.RESULT_CANCELED,null);
+    // Redirect only the outgoing browser Intent to a real test-only Activity.
+    // Returning an ActivityResult here would simulate closing the browser and
+    // incorrectly cancel the flow before the redirect could arrive.
+    String testPackage=instrumentation.getContext().getPackageName();
+    intent.setPackage(testPackage).setClassName(testPackage,FakeOAuthBrowser.class.getName());
+    return null;
    }
   };
   instrumentation.addMonitor(browser);

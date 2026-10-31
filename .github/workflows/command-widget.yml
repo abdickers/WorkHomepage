@@ -79,6 +79,8 @@ jobs:
             adb shell wm size ${{ matrix.size }}
             adb shell wm density 480
             adb shell settings put system font_scale ${{ matrix.font }}
+            adb shell input keyevent KEYCODE_WAKEUP
+            adb shell wm dismiss-keyguard
             adb shell am force-stop com.google.android.apps.nexuslauncher
             adb install android-command/app/build/outputs/apk/debug/app-debug.apk
             adb install android-command/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
@@ -88,7 +90,7 @@ jobs:
             if [ -n "$COMMAND_KEYSTORE_FILE" ]; then python scripts/seal-command-setup.py --ci-test --request "$RUNNER_TEMP/setup-request.json" --output "$RUNNER_TEMP/setup-reply.json"; fi
             if [ -f "$RUNNER_TEMP/setup-reply.json" ]; then adb push "$RUNNER_TEMP/setup-reply.json" /sdcard/Android/data/com.abdickers.realms/files/setup-reply.json; fi
             adb shell am instrument -w -e notClass com.abdickers.realms.ProvisionBootstrap com.abdickers.realms.test/androidx.test.runner.AndroidJUnitRunner | tee command-emulator.log
-            adb logcat -d -s RemoteViews AppWidgetHostView AndroidRuntime > command-widget-diagnostics.log
+            adb logcat -d -s RemoteViews AppWidgetHostView AndroidRuntime AppAuth ActivityTaskManager > command-widget-diagnostics.log
             mkdir -p emulator-screenshots
             adb pull /sdcard/Android/data/com.abdickers.realms/files/screenshots/. emulator-screenshots/ || true
             ! grep -qE 'FAILURES|INSTRUMENTATION_FAILED|Process crashed' command-emulator.log

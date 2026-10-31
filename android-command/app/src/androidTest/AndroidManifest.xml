@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+ <application>
+  <!-- Exists only in the instrumentation APK, never the installable app. -->
+  <activity android:name="com.abdickers.realms.FakeOAuthBrowser" android:exported="true" android:theme="@android:style/Theme.Material.NoActionBar"/>
+ </application>
+</manifest>
