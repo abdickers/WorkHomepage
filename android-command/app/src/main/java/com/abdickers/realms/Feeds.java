@@ -33,7 +33,7 @@ final class Feeds {
   }
   return result;
  }
- private static String credential(Context c,String source)throws Exception{String token=Vault.get(c,source);if(token.isBlank())throw new IllegalStateException("Connect "+source+" in Settings to read its live feed.");return token;}
+ private static String credential(Context c,String source)throws Exception{if(source.equals("slack")&&SlackConnection.connected(c))return SlackConnection.token(c);String token=Vault.get(c,source);if(token.isBlank())throw new IllegalStateException("Connect "+source+" in Accounts to read its live feed.");return token;}
  private static List<FeedStore.Row> vercel(Context c)throws Exception{
   String auth="Bearer "+credential(c,"vercel");String team=WidgetState.prefs(c).getString("vercel_team","").trim();if(!team.matches("team_[A-Za-z0-9]+"))throw new IllegalStateException("Set the Vercel team ID in Settings. The team slug alone is not an API team ID.");
   JSONObject project=BoundedHttp.get("https://api.vercel.com/v9/projects/s76h_catalyst?teamId="+team,auth);String id=project.getString("id");if(!id.matches("prj_[A-Za-z0-9]+"))throw new IllegalStateException("Vercel returned an unexpected project identifier.");

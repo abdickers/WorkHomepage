@@ -21,7 +21,9 @@ This module is the replacement for the earlier browser launcher and manual snaps
 
 Website sign-in is **not** native authorization. The Work Site's connector bindings are visitor-scoped and cannot safely be copied into an APK or called with a shared bypass key. The personal site's Cloudflare Access session is also browser-scoped. Those protections are unchanged.
 
-The account UI now handles panel navigation, canceled consent and visible failures. Native Google registration exists in homepage-497902 for the package and stable certificate. A real phone consent and live read remain required; emulator account fixtures cannot prove private provider access.
+The user confirmed the standard Google sign-in works on the phone. Native Google registration exists in homepage-497902 for the package and stable certificate. Emulator account fixtures do not prove private provider feed access.
+
+Slack's native connection uses its public-client PKCE flow, with a dedicated non-distributed app registration described in `slack-app-manifest.json`. Only user scopes `search:read`, `users:read` and `users:read.email` are requested. The phone verifies the `76fireworks.slack.com` workspace and the Work email before saving rotating tokens in Android Keystore. Tokens cannot send or delete messages. Provider secrets and any API gateway are unnecessary. Registration approval, the public client ID and live phone consent are still pending; do not report Slack as connected until verified. The temporary empty build configuration is for engineering tests only and must be filled before shipping this connection.
 
 The proposed dependency on 76mcp-api-gateway was rejected by the user as outside scope. Its draft PR24 is closed, nothing was merged or deployed, and the native dependency has been removed. Do not require gateway administration, gateway invitations or gateway credentials for this app. Continue within the existing dashboard/account connection scope. Work service authorization still needs a supported implementation and live verification; do not call these services connected.
 

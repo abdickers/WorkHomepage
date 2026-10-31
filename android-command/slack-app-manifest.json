@@ -1,0 +1,19 @@
+{
+  "display_information": {
+    "name": "Middle-earth Command",
+    "description": "Read-only personal Work dashboard on Android",
+    "background_color": "#17212b"
+  },
+  "oauth_config": {
+    "redirect_urls": ["com.abdickers.realms:/oauth/slack"],
+    "scopes": {
+      "user": ["search:read", "users:read", "users:read.email"]
+    },
+    "pkce_enabled": true
+  },
+  "settings": {
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": true
+  }
+}

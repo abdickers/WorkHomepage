@@ -2,7 +2,8 @@ plugins { id 'com.android.application' }
 android {
  namespace 'com.abdickers.realms'
  compileSdk 35
- defaultConfig { applicationId 'com.abdickers.realms'; minSdk 31; targetSdk 35; versionCode 4; versionName '0.5-account-flow-preview'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+ defaultConfig { applicationId 'com.abdickers.realms'; minSdk 31; targetSdk 35; versionCode 5; versionName '0.6-connections-preview'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'; manifestPlaceholders = [appAuthRedirectScheme: 'com.abdickers.realms']; buildConfigField 'String', 'SLACK_CLIENT_ID', '""' }
+ buildFeatures { buildConfig true }
  def stableKey = System.getenv('COMMAND_KEYSTORE_FILE')
  if (stableKey) {
   signingConfigs { command { storeFile file(stableKey); storePassword System.getenv('COMMAND_KEYSTORE_PASSWORD'); keyAlias 'command'; keyPassword System.getenv('COMMAND_KEYSTORE_PASSWORD'); storeType 'pkcs12' } }
@@ -12,6 +13,7 @@ android {
  buildTypes { release { minifyEnabled false } }
 }
 dependencies {
+ implementation 'net.openid:appauth:0.11.1'
  implementation 'androidx.work:work-runtime:2.10.1'
  implementation 'com.google.android.gms:play-services-auth:22.0.0'
  implementation 'androidx.credentials:credentials:1.5.0'
