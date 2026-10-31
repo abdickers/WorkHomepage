@@ -1,0 +1,27 @@
+plugins { id 'com.android.application' }
+android {
+ namespace 'com.abdickers.realms'
+ compileSdk 35
+ defaultConfig { applicationId 'com.abdickers.realms'; minSdk 31; targetSdk 35; versionCode 7; versionName '0.7-home-connections'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'; manifestPlaceholders = [appAuthRedirectScheme: 'com.abdickers.realms']; buildConfigField 'String', 'SLACK_CLIENT_ID', '"99197120864.12471255709249"' }
+ buildFeatures { buildConfig true }
+ def stableKey = System.getenv('COMMAND_KEYSTORE_FILE')
+ if (stableKey) {
+  signingConfigs { command { storeFile file(stableKey); storePassword System.getenv('COMMAND_KEYSTORE_PASSWORD'); keyAlias 'command'; keyPassword System.getenv('COMMAND_KEYSTORE_PASSWORD'); storeType 'pkcs12' } }
+  buildTypes { debug { signingConfig signingConfigs.command }; release { signingConfig signingConfigs.command } }
+ }
+ compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+ buildTypes { release { minifyEnabled false } }
+}
+dependencies {
+ implementation 'net.openid:appauth:0.11.1'
+ implementation 'androidx.work:work-runtime:2.10.1'
+ implementation 'com.google.android.gms:play-services-auth:22.0.0'
+ implementation 'androidx.credentials:credentials:1.5.0'
+ implementation 'androidx.credentials:credentials-play-services-auth:1.5.0'
+ implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.1'
+ testImplementation 'junit:junit:4.13.2'
+ androidTestImplementation 'androidx.test:runner:1.6.2'
+ androidTestImplementation 'androidx.test:rules:1.6.1'
+ androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+ androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+}
