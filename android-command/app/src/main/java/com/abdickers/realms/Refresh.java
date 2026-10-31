@@ -4,6 +4,8 @@ import android.content.Context;
 import androidx.work.*;
 
 final class Refresh {
+ /** An explicit panel/date selection loads only that view, reusing fresh saved data. */
+ static void onOpen(Context c,int widget){String realm=WidgetState.decision(c,widget).realm(),source=WidgetState.section(c,widget);if(Panels.local(source)||java.util.Set.of("overview","ai").contains(source)||ConnectionStatus.needs(c,realm,source))return;String cache=source.equals("calendar")?"calendar."+WidgetState.day(c,widget):source;long checked=FeedStore.read(c,realm,cache).checkedAt();if(checked==0||System.currentTimeMillis()-checked>=300000)enqueue(c,realm,source,WidgetState.day(c,widget));}
  static void request(Context context,int widgetId){
   Context c=context.getApplicationContext();String realm=WidgetState.decision(c,widgetId).realm(),source=WidgetState.section(c,widgetId);long day=WidgetState.day(c,widgetId);
   if(source.equals("overview")){source=realm.equals("work")?"systems":"weather";}

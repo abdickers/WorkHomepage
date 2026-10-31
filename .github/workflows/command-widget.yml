@@ -92,7 +92,7 @@ jobs:
             mkdir -p emulator-screenshots
             adb pull /sdcard/Android/data/com.abdickers.realms/files/screenshots/. emulator-screenshots/ || true
             ! grep -qE 'FAILURES|INSTRUMENTATION_FAILED|Process crashed' command-emulator.log
-            grep -q 'OK (11 tests)' command-emulator.log
+            grep -q 'OK (12 tests)' command-emulator.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:

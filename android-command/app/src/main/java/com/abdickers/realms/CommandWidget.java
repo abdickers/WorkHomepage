@@ -32,6 +32,7 @@ public final class CommandWidget extends AppWidgetProvider {
   else if(op.equals("date"))WidgetState.prefs(c).edit().remove(WidgetState.key(id,"day")).commit();
   else if(Set.of("previous","next").contains(op)){long current=WidgetState.day(c,id),today=LocalDate.now().toEpochDay(),next=current+(op.equals("next")?1:-1);next=Math.max(today-366,Math.min(today+366,next));WidgetState.prefs(c).edit().putLong(WidgetState.key(id,"day"),next).commit();}
   else if(op.equals("refresh")){Refresh.request(c,id);return;}
+  Refresh.onOpen(c,id);
   update(c,id);
  }
  static void update(Context c,int id){if(id==0){MainActivity.redraw();return;}AppWidgetManager m=AppWidgetManager.getInstance(c);m.updateAppWidget(id,views(c,id,m.getAppWidgetOptions(id)));}
@@ -56,7 +57,7 @@ public final class CommandWidget extends AppWidgetProvider {
    String[] sources=work?new String[]{"beacons","calendar."+day,"jira","slack"}:new String[]{"weather","calendar."+day,"hearth","mail"};
    String[] labels=work?new String[]{"Beacons of Production","Today’s council","Active quests","The Fellowship"}:new String[]{"Weather at Sage Cabin","Today’s calendar","The hearth","The Ravens"};
    int[] icons=work?new int[]{R.drawable.icon_beacon,R.drawable.icon_calendar,R.drawable.icon_quest,R.drawable.icon_notes}:new int[]{R.drawable.elven_weather,R.drawable.elven_calendar,R.drawable.elven_home,R.drawable.elven_raven};
-   for(int n=0;n<sources.length;n++){FeedStore.Feed f=FeedStore.read(c,realm,sources[n]);String body=f.checkedAt()==0?"Connection needed · choose this panel, then Refresh.":f.rows().isEmpty()?"No matching items at last refresh.":f.rows().get(0).title()+"\n"+f.rows().get(0).body();if(!f.error().isEmpty())body="Unavailable · "+body;rows.add(new FeedStore.Row(labels[n],body,icons[n],"panel:"+sources[n].split("\\.")[0]));}
+   for(int n=0;n<sources.length;n++){FeedStore.Feed f=FeedStore.read(c,realm,sources[n]);String body=f.checkedAt()==0?"Choose this panel to load its information.":f.rows().isEmpty()?"No matching items at last refresh.":f.rows().get(0).title()+"\n"+f.rows().get(0).body();if(!f.error().isEmpty())body="Unavailable · "+body;rows.add(new FeedStore.Row(labels[n],body,icons[n],"panel:"+sources[n].split("\\.")[0]));}
    status="Saved overview · select a panel to refresh its feed";
   }else if(Panels.local(section)){
    rows.addAll(section.equals("tools")?ToolLinks.rows(c,realm):LocalBoard.rows(c,realm,section));status=Panels.title(section)+" · saved on this phone";
@@ -70,7 +71,7 @@ public final class CommandWidget extends AppWidgetProvider {
    if(compact&&!f.error().isEmpty())rows.add(0,new FeedStore.Row("Refresh unavailable",f.error(),work?R.drawable.gondor_shield:R.drawable.elven_orb,"error"));
    v.setTextViewText(R.id.refresh,Refresh.running(c,realm,source)?"Loading…":"Refresh");
    status=Refresh.running(c,realm,source)?"Refreshing selected feed…":!f.error().isEmpty()?"Unavailable · "+f.error():f.checkedAt()==0?(ConnectionStatus.needs(c,realm,section)?"Tap Connect to set up this panel":"Tap Refresh to load this panel"):"Checked "+Instant.ofEpochMilli(f.checkedAt()).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MMM d, h:mm a"))+" · saved on this phone";
-   if(rows.isEmpty())rows.add(new FeedStore.Row(f.checkedAt()==0?"Connect your "+section:"No matching items",f.checkedAt()==0?"Once connected, this panel shows information directly in the widget. Refresh requests only this source.":"The last successful read returned no items.",section.equals("calendar")?R.drawable.icon_calendar:R.drawable.gondor_shield,f.checkedAt()==0?(ConnectionStatus.needs(c,realm,section)?"connect":"refresh"):"empty"));
+   if(rows.isEmpty())rows.add(new FeedStore.Row(f.checkedAt()==0?(ConnectionStatus.needs(c,realm,section)?"Connect your ":"Load ")+Panels.title(section):"No matching items",f.checkedAt()==0?"Once connected, this panel shows information directly in the widget. Refresh requests only this source.":"The last successful read returned no items.",section.equals("calendar")?R.drawable.icon_calendar:R.drawable.gondor_shield,f.checkedAt()==0?(ConnectionStatus.needs(c,realm,section)?"connect":"refresh"):"empty"));
   }
   if(!section.equals("overview")&&!Panels.local(section)&&!section.equals("ai")&&ConnectionStatus.needs(c,realm,section)){v.setTextViewText(R.id.refresh,"Connect");v.setOnClickPendingIntent(R.id.refresh,ConnectionStatus.action(c,id,section));}
   v.setTextViewText(R.id.status,status);

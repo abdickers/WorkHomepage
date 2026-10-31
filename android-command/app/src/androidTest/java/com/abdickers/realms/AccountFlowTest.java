@@ -38,4 +38,9 @@ public class AccountFlowTest {
   try{WorkSession.read(c(),"jira");fail("Unconfigured service must fail before network");}catch(IllegalStateException expected){assertTrue(expected.getMessage().contains("still being connected"));}
   try{BoundedHttp.get(WorkSession.ORIGIN+"/mcp","TEST-NOT-A-TOKEN");fail("Native transport must reject general MCP tools");}catch(IllegalArgumentException expected){}
  }
+ @Test public void selectingFreshPanelReusesCacheAndUnconnectedPanelDoesNotEnqueue()throws Exception{
+  WidgetState.mode(c(),0,"work");WidgetState.prefs(c()).edit().putBoolean("work_google_connected",true).commit();FeedStore.success(c(),"work","mail",List.of(new FeedStore.Row("SYNTHETIC","",R.drawable.brand_gmail)));
+  CommandWidget.dispatch(c(),0,"mail");assertEquals("mail",WidgetState.section(c(),0));assertFalse(Refresh.running(c(),"work","mail"));
+  WidgetState.prefs(c()).edit().putBoolean("work_google_connected",false).commit();FeedStore.clear(c());CommandWidget.dispatch(c(),0,"jira");assertFalse(Refresh.running(c(),"work","jira"));assertEquals(0,WidgetState.prefs(c()).getLong("retry.work.jira",0));
+ }
 }

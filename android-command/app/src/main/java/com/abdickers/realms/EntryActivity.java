@@ -11,7 +11,7 @@ import java.util.*;
 /** Resolve tapped entries from trusted local state rather than accepting an arbitrary URL or body. */
 public final class EntryActivity extends Activity {
  @Override protected void onCreate(Bundle state){super.onCreate(state);int widget=getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,-1);String realm=getIntent().getStringExtra("realm"),section=getIntent().getStringExtra("section"),key=getIntent().getStringExtra("key");if(!CommandWidget.owns(this,widget)||!WidgetState.decision(this,widget).realm().equals(realm)||!WidgetState.section(this,widget).equals(section)){finish();return;}
-  if(section.equals("overview")&&key!=null&&key.startsWith("panel:")){String target=key.substring(6);if(Panels.forRealm(realm).contains(target)){WidgetState.section(this,widget,target);CommandWidget.update(this,widget);if(ConnectionStatus.needs(this,realm,target))startActivity(ConnectionStatus.intent(this,realm,target));}finish();return;}
+  if(section.equals("overview")&&key!=null&&key.startsWith("panel:")){String target=key.substring(6);if(Panels.forRealm(realm).contains(target)){WidgetState.section(this,widget,target);CommandWidget.update(this,widget);if(ConnectionStatus.needs(this,realm,target))startActivity(ConnectionStatus.intent(this,realm,target));else Refresh.onOpen(this,widget);}finish();return;}
   if("add".equals(key)&&Panels.local(section)){startActivity(new Intent(this,CaptureActivity.class).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,widget));finish();return;}
   if("connect".equals(key)){startActivity(ConnectionStatus.intent(this,realm,section));finish();return;}
   if("refresh".equals(key)){Refresh.request(this,widget);finish();return;}
