@@ -40,4 +40,9 @@ public class AccountFlowTest {
   CommandWidget.dispatch(c(),0,"mail");assertEquals("mail",WidgetState.section(c(),0));assertFalse(Refresh.running(c(),"work","mail"));
   WidgetState.prefs(c()).edit().putBoolean("work_google_connected",false).commit();FeedStore.clear(c());CommandWidget.dispatch(c(),0,"jira");assertFalse(Refresh.running(c(),"work","jira"));assertEquals(0,WidgetState.prefs(c()).getLong("retry.work.jira",0));
  }
+ @Test public void savingAutomaticModeKeepsAccountsAndSavedFeeds()throws Exception{
+  Vault.put(c(),"vercel","SYNTHETIC-KEEP-ME");WidgetState.prefs(c()).edit().putBoolean("work_google_connected",true).commit();FeedStore.success(c(),"work","jira",List.of(new FeedStore.Row("SYNTHETIC-KEEP-FEED","",R.drawable.brand_jira)));long generation=Connections.generation(c());
+  try(ActivityScenario<SettingsActivity> scenario=ActivityScenario.launch(new Intent(c(),SettingsActivity.class))){scenario.onActivity(SettingsActivity::saveSwitching);}
+  assertEquals(generation,Connections.generation(c()));assertEquals("SYNTHETIC-KEEP-ME",Vault.get(c(),"vercel"));assertTrue(WidgetState.prefs(c()).getBoolean("work_google_connected",false));assertEquals("SYNTHETIC-KEEP-FEED",FeedStore.read(c(),"work","jira").rows().get(0).title());
+ }
 }

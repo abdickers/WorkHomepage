@@ -7,7 +7,7 @@ import java.util.*;
 
 /** Public native Slack OAuth. Only the signed-in user's read scopes; never a bot or server key. */
 final class SlackConnection {
- static final String KEY="work_slack_session",REDIRECT="com.abdickers.realms:/oauth/slack";
+ static final String KEY="work_slack_session",REDIRECT="com.abdickers.realms://oauth/slack";
  static final String SCOPES="search:read,users:read,users:read.email";
  private static final Set<String> READ_SCOPES=Set.of("search:read","users:read","users:read.email");
  private static final Object TOKEN_LOCK=new Object();
