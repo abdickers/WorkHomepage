@@ -20,6 +20,7 @@ final class Feeds {
   return switch(source){case "systems"->vercel(c);case "beacons"->CeligoFeed.read(c);case "jira"->jira(c);case "slack"->slack(c);default->throw new IllegalStateException("This native connection is not configured yet. No request was sent.");};
  }
  static List<FeedStore.Row> calendar(Context c,String realm,long epochDay)throws Exception{
+  if(WidgetState.prefs(c).getBoolean(realm+"_google_calendar_connected",false))return GoogleCalendarFeed.read(c,realm,epochDay);
   if(c.checkSelfPermission(Manifest.permission.READ_CALENDAR)!=PackageManager.PERMISSION_GRANTED)throw new IllegalStateException("Allow calendar access in Settings to show this phone’s synced events.");
   String account=WidgetState.prefs(c).getString(realm+"_calendar","").trim();if(account.isEmpty())throw new IllegalStateException("Choose a calendar account in Settings so Home and Work events stay separate.");
   LocalDate date=LocalDate.ofEpochDay(epochDay);ZoneId zone=ZoneId.systemDefault();long start=date.atStartOfDay(zone).toInstant().toEpochMilli(),end=date.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli();

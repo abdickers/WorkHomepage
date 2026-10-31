@@ -1,1 +1,1 @@
-<resources><item name="app_dashboard" type="id"/></resources>
+<resources><item name="app_dashboard" type="id"/><item name="account_feedback" type="id"/><item name="sign_in_work" type="id"/><item name="sign_in_home" type="id"/></resources>

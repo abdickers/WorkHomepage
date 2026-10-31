@@ -8,7 +8,7 @@ import org.json.*;
 
 final class BoundedHttp {
  static final Set<String> STATUS_HOSTS=Set.of("www.cloudflarestatus.com","www.vercel-status.com","status.bigcommerce.com","status.netsuite.com","status.celigo.com","www.githubstatus.com");
- static final Set<String> HOSTS=Set.of("api.vercel.com","76fireworks.atlassian.net","slack.com","gmail.googleapis.com","api.integrator.io");
+ static final Set<String> HOSTS=Set.of("api.vercel.com","76fireworks.atlassian.net","slack.com","gmail.googleapis.com","www.googleapis.com","api.integrator.io");
  static void validate(URI uri){if(!"https".equals(uri.getScheme())||!(HOSTS.contains(uri.getHost())||STATUS_HOSTS.contains(uri.getHost()))||uri.getRawUserInfo()!=null||uri.getPort()!=-1)throw new IllegalArgumentException("Unsupported provider address");}
  static JSONObject get(String url,String authorization)throws Exception{
   URI uri=URI.create(url);validate(uri);if(authorization.indexOf('\r')>=0||authorization.indexOf('\n')>=0)throw new ProviderException("Credential contains an invalid line break. Reconnect in Settings.");

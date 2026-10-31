@@ -15,7 +15,7 @@ public final class MainActivity extends Activity {
  private AppWidgetHostView dashboard;
  AppWidgetHostView dashboardView(){return dashboard;}
  private String lastPage="";
- @Override protected void onCreate(Bundle state){super.onCreate(state);root=new FrameLayout(this);root.setId(R.id.app_dashboard);root.setBackgroundColor(0xFF101C2B);setContentView(root);root.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());v.setPadding(8,bars.top+8,8,bars.bottom+8);return i;});render();}
+ @Override protected void onCreate(Bundle state){super.onCreate(state);if(!WidgetState.prefs(this).getBoolean("welcome_seen",false)){startActivity(new android.content.Intent(this,AccountActivity.class));finish();return;}root=new FrameLayout(this);root.setId(R.id.app_dashboard);root.setBackgroundColor(0xFF101C2B);setContentView(root);root.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets bars=i.getInsets(WindowInsets.Type.systemBars());v.setPadding(8,bars.top+8,8,bars.bottom+8);return i;});render();}
  @Override protected void onResume(){super.onResume();current=new WeakReference<>(this);render();}
  @Override protected void onPause(){if(current.get()==this)current.clear();super.onPause();}
  static void redraw(){MainActivity a=current.get();if(a!=null&&!a.isFinishing()&&!a.isDestroyed())a.runOnUiThread(()->{if(a.findViewById(R.id.app_dashboard)!=null)a.render();});}

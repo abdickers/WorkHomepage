@@ -8,6 +8,10 @@ final class Refresh {
   Context c=context.getApplicationContext();String realm=WidgetState.decision(c,widgetId).realm(),source=WidgetState.section(c,widgetId);long day=WidgetState.day(c,widgetId);
   if(source.equals("overview")){source=realm.equals("work")?"systems":"weather";}
   if(Panels.local(source)||source.equals("ai")){CommandWidget.updateAll(c);return;}
+  enqueue(c,realm,source,day);
+ }
+ static void enqueue(Context context,String realm,String source,long day){
+  Context c=context.getApplicationContext();if(!java.util.Set.of("home","work").contains(realm)||!java.util.Set.of("mail","calendar","jira","slack","beacons","systems","watch","weather","hearth").contains(source))return;
   final String selected=source,cacheSource=source.equals("calendar")?"calendar."+day:source,key=FeedStore.key(realm,cacheSource);
   long now=System.currentTimeMillis(),blocked=WidgetState.prefs(c).getLong("retry."+key,0);
   if(blocked>now){CommandWidget.updateAll(c);return;}

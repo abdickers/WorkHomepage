@@ -22,7 +22,7 @@ import static androidx.test.espresso.action.ViewActions.*;
 @RunWith(AndroidJUnit4.class)
 public class CommandTest {
  Context c(){return InstrumentationRegistry.getInstrumentation().getTargetContext();}
- @Before public void reset(){WidgetState.prefs(c()).edit().clear().commit();FeedStore.clear(c());Vault.clear(c());c().getSharedPreferences("boards",0).edit().clear().commit();}
+ @Before public void reset(){WidgetState.prefs(c()).edit().clear().putBoolean("welcome_seen",true).commit();FeedStore.clear(c());Vault.clear(c());c().getSharedPreferences("boards",0).edit().clear().commit();}
  @Test public void credentialsAreEncryptedAndErrorsRetainData()throws Exception{
   String secret="EMULATOR-TEST-NOT-A-REAL-TOKEN";Vault.put(c(),"vercel",secret);assertEquals(secret,Vault.get(c(),"vercel"));assertFalse(c().getSharedPreferences("vault",0).getString("vercel","").contains(secret));
   FeedStore.success(c(),"work","jira",List.of(new FeedStore.Row("TEST task","TEST data",R.drawable.icon_quest)));long checked=FeedStore.read(c(),"work","jira").checkedAt();FeedStore.failure(c(),"work","jira","TEST unavailable");assertEquals("TEST task",FeedStore.read(c(),"work","jira").rows().get(0).title());assertEquals(checked,FeedStore.read(c(),"work","jira").checkedAt());assertEquals(0,FeedStore.read(c(),"home","jira").rows().size());
