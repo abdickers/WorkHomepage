@@ -11,6 +11,7 @@
   <activity android:name=".SettingsActivity" android:exported="false"/>
   <activity android:name=".AccountActivity" android:exported="false"/>
   <activity android:name=".SlackOAuthActivity" android:exported="false"/>
+  <activity android:name=".JiraOAuthActivity" android:exported="false"/>
   <activity android:name=".CaptureActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
   <activity android:name=".EntryActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>
   <activity android:name=".SetupActivity" android:theme="@style/CommandDialogTheme" android:exported="false"/>

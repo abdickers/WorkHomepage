@@ -10,6 +10,7 @@ import java.util.*;
 /** Account-first setup. Normal setup never asks the user for developer keys or setup files. */
 public final class AccountActivity extends Activity {
  private static final int REQUEST_SLACK=8222;
+ private static final int REQUEST_JIRA=8232;
  private LinearLayout root;
  private TextView feedback;
  private final List<Button> signInButtons=new ArrayList<>();
@@ -27,8 +28,9 @@ public final class AccountActivity extends Activity {
    Button sign=button(connected?"Reconnect "+label(realm)+" with Google":"Sign in to "+label(realm)+" with Google",()->signIn(realm));sign.setId(realm.equals("work")?R.id.sign_in_work:R.id.sign_in_home);signInButtons.add(sign);
    if(connected)button("Open "+label(realm)+" dashboard",()->open(realm));
    if(realm.equals("work")&&connected){text(SlackConnection.connected(this)?"Slack · connected":"Slack · not connected",15,0xFFCFDAE9);button(SlackConnection.connected(this)?"Reconnect Slack":"Connect Slack",()->startActivityForResult(new Intent(this,SlackOAuthActivity.class),REQUEST_SLACK));}
+   if(realm.equals("work")&&connected){text(JiraConnection.connected(this)?"Jira · connected":"Jira · not connected",15,0xFFCFDAE9);button(JiraConnection.connected(this)?"Reconnect Jira":"Connect Jira",()->startActivityForResult(new Intent(this,JiraOAuthActivity.class),REQUEST_JIRA));}
   }
-  text("Your connections",19,0xFFE8EDF4);text("Google connects email and calendar. Slack uses its own permission screen. Other dashboard services are still being connected.",14,0xFFCFDAE9);
+  text("Your connections",19,0xFFE8EDF4);text("Google connects email and calendar. Slack and Jira each use their normal permission screen. Other dashboard services are still being connected.",14,0xFFCFDAE9);
   button("Continue to dashboard",()->{WidgetState.prefs(this).edit().putBoolean("welcome_seen",true).commit();startActivity(new Intent(this,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));finish();});
  }
  private void signIn(String realm){if(busy)return;pendingRealm=realm;busy=true;for(Button b:signInButtons)b.setEnabled(false);GoogleConnection.connect(this,realm,this::complete,this::failed,this::message);}
@@ -39,6 +41,6 @@ public final class AccountActivity extends Activity {
  private static String label(String realm){return realm.equals("work")?"Work":"Home";}
  private void text(String value,int size,int color){TextView t=new TextView(this);t.setText(value);t.setTextSize(size);t.setTextColor(color);t.setPadding(0,14,0,6);root.addView(t);}
  private Button button(String title,Runnable action){Button b=new Button(this);b.setText(title);b.setTextColor(0xFFE8EDF4);b.setBackgroundResource(R.drawable.royal_button);b.setAllCaps(false);LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-1,-2);lp.setMargins(0,10,0,8);root.addView(b,lp);b.setOnClickListener(v->action.run());return b;}
- @Override protected void onActivityResult(int request,int result,Intent intent){super.onActivityResult(request,result,intent);if(request==REQUEST_SLACK){render();message(result==RESULT_OK?"Slack connected. Select Slack to load your messages.":"Slack sign-in did not finish. Your Google accounts are unchanged.");return;}if(request==GoogleConnection.REQUEST_MAIL){busy=true;for(Button b:signInButtons)b.setEnabled(false);if(result==RESULT_OK&&intent!=null)GoogleConnection.finish(this,pendingRealm,intent,this::complete,this::failed,this::message);else failed("Sign-in was canceled. Your accounts have not been changed. Tap Sign in whenever you are ready.");}}
+ @Override protected void onActivityResult(int request,int result,Intent intent){super.onActivityResult(request,result,intent);if(request==REQUEST_JIRA||request==REQUEST_SLACK){String source=request==REQUEST_JIRA?"Jira":"Slack";render();message(result==RESULT_OK?source+" connected. Select its panel to load your information.":source+" sign-in did not finish. Your Google accounts are unchanged.");return;}if(request==GoogleConnection.REQUEST_MAIL){busy=true;for(Button b:signInButtons)b.setEnabled(false);if(result==RESULT_OK&&intent!=null)GoogleConnection.finish(this,pendingRealm,intent,this::complete,this::failed,this::message);else failed("Sign-in was canceled. Your accounts have not been changed. Tap Sign in whenever you are ready.");}}
  @Override protected void onSaveInstanceState(Bundle state){state.putString("pending_realm",pendingRealm);super.onSaveInstanceState(state);}
 }

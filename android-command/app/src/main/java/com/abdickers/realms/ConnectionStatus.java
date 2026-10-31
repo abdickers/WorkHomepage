@@ -9,6 +9,7 @@ final class ConnectionStatus {
   if(source.equals("calendar"))return !WidgetState.prefs(c).getBoolean(realm+"_google_calendar_connected",false)&&(c.checkSelfPermission(android.Manifest.permission.READ_CALENDAR)!=PackageManager.PERMISSION_GRANTED||WidgetState.prefs(c).getString(realm+"_calendar","").isBlank());
   if(Set.of("overview","watch","tools","notes","priorities","ai").contains(source))return false;
   if(realm.equals("work")&&source.equals("slack")&&SlackConnection.connected(c))return false;
+  if(realm.equals("work")&&source.equals("jira")&&JiraConnection.connected(c))return false;
   if(!realm.equals("work"))return true;String key=switch(source){case "systems"->"vercel";case "beacons"->"celigo";default->source;};return !c.getSharedPreferences("vault",0).contains(key);
  }
  static Intent intent(Context c,String realm,String source){return new Intent(c,AccountActivity.class).putExtra("realm",realm).putExtra("source",source);}
