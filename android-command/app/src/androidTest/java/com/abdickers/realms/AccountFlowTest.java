@@ -14,16 +14,19 @@ import static org.junit.Assert.*;
 import static androidx.test.espresso.Espresso.*;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.click;
+import static org.hamcrest.Matchers.anything;
 import static androidx.test.espresso.assertion.ViewAssertions.*;
 
 public class AccountFlowTest {
  Context c(){return InstrumentationRegistry.getInstrumentation().getTargetContext();}
+ void awaitAccounts(){CommandTest.await("A real panel tap must open Accounts",()->{boolean[] ready={false};InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{for(Activity a:androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(androidx.test.runner.lifecycle.Stage.RESUMED))if(a instanceof AccountActivity&&a.hasWindowFocus())ready[0]=true;});return ready[0];});}
  @Before public void reset(){WidgetState.prefs(c()).edit().clear().putBoolean("welcome_seen",true).commit();FeedStore.clear(c());Vault.clear(c());c().getSharedPreferences("boards",0).edit().clear().commit();}
  @Test public void actualOverviewCardAndUnconnectedPanelOpenAccountScreen()throws Exception{
   WidgetState.mode(c(),0,"work");WidgetState.section(c(),0,"overview");
-  try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(new Intent(c(),MainActivity.class))){CommandTest.await(()->{final boolean[] ready={false};scenario.onActivity(a->{ListView list=a.dashboardView().findViewById(R.id.feed);ready[0]=list!=null&&list.getChildCount()>0;});return ready[0];});scenario.onActivity(a->{ListView list=a.dashboardView().findViewById(R.id.feed);assertTrue(list.performItemClick(list.getChildAt(0),0,list.getItemIdAtPosition(0)));});onView(withText("Your accounts")).check(matches(isDisplayed()));assertEquals("beacons",WidgetState.section(c(),0));pressBackUnconditionally();}
+  try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(new Intent(c(),MainActivity.class))){CommandTest.await(()->{final boolean[] ready={false};scenario.onActivity(a->{ListView list=a.dashboardView().findViewById(R.id.feed);ready[0]=list!=null&&list.getChildCount()>0;});return ready[0];});onData(anything()).inAdapterView(withId(R.id.feed)).atPosition(0).perform(click());awaitAccounts();onView(withText("Your accounts")).check(matches(isDisplayed()));assertEquals("beacons",WidgetState.section(c(),0));pressBackUnconditionally();}
   WidgetState.section(c(),0,"mail");Intent entry=new Intent(c(),EntryActivity.class).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,0).putExtra("realm","work").putExtra("section","mail").putExtra("key","connect");
-  try(ActivityScenario<EntryActivity> ignored=ActivityScenario.launch(entry)){onView(withId(R.id.sign_in_work)).perform(scrollTo()).check(matches(isDisplayed()));pressBackUnconditionally();}
+  try(ActivityScenario<EntryActivity> ignored=ActivityScenario.launch(entry)){awaitAccounts();onView(withId(R.id.sign_in_work)).perform(scrollTo()).check(matches(isDisplayed()));pressBackUnconditionally();}
  }
  @Test public void canceledGoogleSignInShowsRecoveryAndDoesNotConnectEitherAccount()throws Exception{
   try(ActivityScenario<AccountActivity> scenario=ActivityScenario.launch(new Intent(c(),AccountActivity.class))){onView(withId(R.id.sign_in_home)).perform(scrollTo()).check(matches(isDisplayed()));onView(withId(R.id.sign_in_work)).perform(scrollTo()).check(matches(isDisplayed()));scenario.onActivity(a->{a.onActivityResult(GoogleConnection.REQUEST_MAIL,Activity.RESULT_CANCELED,null);TextView feedback=a.findViewById(R.id.account_feedback);assertTrue(feedback.getText().toString().contains("canceled"));assertTrue(a.findViewById(R.id.sign_in_home).isEnabled());assertTrue(a.findViewById(R.id.sign_in_work).isEnabled());});assertFalse(WidgetState.prefs(c()).getBoolean("home_google_connected",false));assertFalse(WidgetState.prefs(c()).getBoolean("work_google_connected",false));onView(withId(R.id.account_feedback)).perform(scrollTo()).check(matches(isDisplayed()));new CommandTest().shot("accounts-canceled-sign-in");}
